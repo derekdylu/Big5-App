@@ -76,12 +76,12 @@ def post_user(user: model.User = Body(...)):
 
   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.user_helper(inserted_user)))
 
-@app.put("update_user/{id}", response_description="update an user", response_model=model.User)
+@app.put("/update_user/{id}", response_description="update an user by ID", response_model=model.User)
 def update_user(id: str, user: model.User = Body(...)):
   user = {k: v for k, v in user.dict().items() if v is not None}
 
-  if len(user) > 0:
-    update_result = users_col.update_one({"_id": id}, {"$set", user})
+  if len(user) >= 1:
+    update_result = users_col.update_one({"_id": id}, {"$set": user})
 
     if update_result.modified_count == 1:
       if (updated_result := users_col.find_one({"_id": id})) is not None:
@@ -125,9 +125,10 @@ def post_interview(interview: model.Interview = Body(...)):
 @app.put("/update_interview/{id}", response_description="update an interview", response_model=model.Interview)
 def update_interview(id: str, interview: model.Interview = Body(...)):
   interview = {k: v for k, v in interview.dict().items() if v is not None}
+  print(interview)
 
-  if len(interview) > 0:
-    update_result = interviews_col.update_one({"_id": id}, {"$set", interview})
+  if len(interview) >= 1:
+    update_result = interviews_col.update_one({"_id": id}, {"$set": interview})
 
     if update_result.modified_count == 1:
       if (updated_result := interviews_col.find_one({"_id": id})) is not None:
