@@ -12,5 +12,5 @@
   ```
 3. run development backend server
   ```bash
-    uvicorn backend.main:app
+    uvicorn backend.main:app --reload
   ```
