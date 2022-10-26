@@ -6,6 +6,13 @@
     # then
     . venv/bin/activate
   ```
+  ```bash
+    #for Windows
+    pip install virtualenv
+    # cd to Big5-App
+    virtualenv venv
+    venv\Scripts\activate.bat
+  ```
 2. install required packages
   ```bash
     pip3 install -r requirements.txt
