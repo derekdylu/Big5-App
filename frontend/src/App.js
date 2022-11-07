@@ -1,21 +1,13 @@
 import './App.css';
+// import EntireResult from './Components/TestResultCard/EntireResult';
 
 function App() {
+
+  // const date = "2022/11/07"
+  // const scores = [87, 23, 50, 41, 72]
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>App</p>
     </div>
   );
 }
