@@ -145,3 +145,4 @@ def delete_interview(id: str):
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
+
