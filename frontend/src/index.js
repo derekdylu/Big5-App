@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import ResultCard from './Containers/ResultCard';
 import reportWebVitals from './reportWebVitals';
+import EntireResult from './Components/TestResultCard/EntireResult';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <div className="App">
-      <ResultCard />
+      <EntireResult />
     </div>
   </React.StrictMode>
 );

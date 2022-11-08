@@ -2,8 +2,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ScoreBar from './ScoreBar';
 // import { spacing } from '@mui/system';
+import IconButton from '@mui/material/IconButton';
+// import Icon from '@mui/material/Icon';
+// import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const EntireResult = ({date, scores}) => {
+const EntireResult = () => {
+    const date = "2022/11/07"
+    const scores = [87, 23, 50, 41, 72]
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     const biggerFontStyle = {
         fontSize: 28,
@@ -11,6 +18,20 @@ const EntireResult = ({date, scores}) => {
 
     return(
         <div>
+            <Box display="flex" justifyContent="space-around">
+                <IconButton 
+                    aria-label="back"
+                    size='large'
+                >
+                    <ArrowBackIosIcon />
+                </IconButton>
+                <IconButton 
+                    aria-label="delete"
+                    size='large'
+                >
+                    <DeleteIcon />
+                </IconButton>
+            </Box>
             <Box
                 sx={{
                     mx: 10,
