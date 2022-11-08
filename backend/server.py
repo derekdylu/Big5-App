@@ -1,6 +1,6 @@
 import os
 import uvicorn
-from fastapi import FastAPI, Body, HTTPException, status
+from fastapi import FastAPI, Body, HTTPException, status, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,14 +8,17 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from typing import List
 
+import boto3
+AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
+AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
+AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+
 # import model
 from . import model
 
-if __name__ == "__main__":
-    uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
-
 load_dotenv()
 app = FastAPI()
+
 
 MONGO_URI = os.environ.get("MONGO_URI")
 PORT = os.environ.get("PORT")
@@ -48,6 +51,10 @@ def ResponseModel(data, message="success"):
 
 def ErrorResponseModel(error, code, message):
   return {"error": error, "code": code, "message": message}
+
+@app.get("/status")
+async def check_status():
+  return "status: OK"
 
 @app.get("/")
 def home():
@@ -116,6 +123,19 @@ def get_interview(id: str):
 
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
+  file = UploadFile()
+  print("Endpoint hit")
+  print(file.filename)
+  print(file.content_type)
+
+  # Upload file to S3
+  s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_KEY)
+  bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
+  bucket.upload_fileObj(file.file, file.filename, ExtraArgs={'ACL': 'public-read'})
+
+  upload_file_url = f"https://{AWS_S3_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
+  interview.link = upload_file_url
+  
   interview = jsonable_encoder(interview)
   insert_interview = interviews_col.insert_one(interview)
   inserted_interview = interviews_col.find_one({"_id": insert_interview.inserted_id})
@@ -145,3 +165,16 @@ def delete_interview(id: str):
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
+
+@app.post("/interview", status_code=201)
+async def add_interview(file: UploadFile):
+  print("Create endpoint hit")
+  print(file.filename)
+  print(file.content_type)
+
+  #upload file to s3
+  s3 = boto3.client('s3')
+  bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
+
+if __name__ == "__main__":
+    uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)

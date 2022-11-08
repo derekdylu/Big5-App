@@ -51,7 +51,7 @@ class Interview(BaseModel):
   timestamp: str = Field(...)
   topic: str = Field(...)
   score: int = Field(...)
-  big: list[int] = Field(...)
+  big: list = Field(...)
   note: str = Field(...)
   link: str = Field(...)
 
