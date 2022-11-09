@@ -70,12 +70,3 @@ export const deleteInterviewById = async (id) => {
 // ---
 // ---
 // TODO user api
-=======
-import axios from 'axios';
-
-const instance = axios.create({
-  baseURL: `http://localhost:8000/api`,
-});
-
-export default instance;
->>>>>>> 9de5819ce42936d768e50b1ddc3573a013e03785
