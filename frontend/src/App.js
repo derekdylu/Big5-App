@@ -17,6 +17,8 @@ import About from './Containers/About';
 import Error from './Containers/Error';
 
 import Camera from './Components/Camera'
+import EntireResult from './Components/TestResultCard/EntireResult';
+import PersonalPage from './Components/PersonalPage';
 
 const queryClient = new QueryClient()
 
@@ -75,6 +77,8 @@ const App = () => {
             <Route path="/about" element={<About />} />
 
             <Route path="/camera" element={<Camera />}/>
+            <Route path="/profile" element={<PersonalPage/>}/>
+            <Route path="/result" element={<EntireResult/>}/>
 
           </Routes>
         </Router>
