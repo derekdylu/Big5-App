@@ -6,6 +6,7 @@ import ScoreBar from './ScoreBar';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useNavigate } from 'react-router-dom';
 
 const EntireResult = () => {
 
@@ -16,6 +17,8 @@ const EntireResult = () => {
         fontSize: 24,
     }
 
+    const navigate = useNavigate();
+
     return(
         <>
             <Box 
@@ -25,6 +28,7 @@ const EntireResult = () => {
                 <IconButton 
                     aria-label="back"
                     size='large'
+                    onClick = {() => navigate('/profile')}
                 >
                     <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>
