@@ -61,7 +61,7 @@ const App = () => {
                 <>
                   {/* <img src={warning} alt="warning" width="200px" /> */}
                   <Typography variant="h6" color="#2D3748" fontWeight="700" sx={{mt: 2.5}} align="center">
-                    豎直手機螢幕或瀏覽器視窗以享受最佳遊戲體驗
+                    豎直手機螢幕或瀏覽器視窗以享受最佳使用體驗
                   </Typography>
                 </>
               )
