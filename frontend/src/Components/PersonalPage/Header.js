@@ -20,10 +20,6 @@ const Header = ({name, picURL}) => {
                 }}
                 // mx = '30px'
             >
-                <Button
-                >
-                    <DehazeIcon style = {{color: "white"}}/>
-                </Button>
                 <Grid
                     container
                     direction="column"
