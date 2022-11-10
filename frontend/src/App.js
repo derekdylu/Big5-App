@@ -17,7 +17,7 @@ import About from './Containers/About';
 import Error from './Containers/Error';
 
 import Camera from './Components/Camera'
-import EntireResult from './Components/TestResultCard/EntireResult';
+import EntireResult from './Components/EntireResult/EntireResult';
 import PersonalPage from './Components/PersonalPage';
 
 const queryClient = new QueryClient()
