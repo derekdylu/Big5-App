@@ -11,6 +11,11 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ScoreBar from '../EntireResult/ScoreBar';
 import PureBar from '../EntireResult/PureBar'
 
+const Transition = React.forwardRef(
+    function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const TestItem = ({date, big}) => {
     const c = ['#33B3FC', '#C856FD', '#FCCA37', '#4ED333', '#F14581']
     const itemObj = {
@@ -20,20 +25,16 @@ const TestItem = ({date, big}) => {
         paddingLeft: '25px',
         marginBottom: '15px',
     };
-
-    const Transition = React.forwardRef(
-        function Transition(props, ref) {
-            return <Slide direction="up" ref={ref} {...props} />;
-    });
     
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
-        console.log('div clicked');
+        console.log("handleClickOpen")
         setOpen(true);
     };
 
     const handleClose = () => {
+        console.log("handleClose")
         setOpen(false);
     };
 
@@ -44,10 +45,10 @@ const TestItem = ({date, big}) => {
 
     return(
         <>
-            <div style = {itemObj} >
+            <div style = {itemObj}>
+                <Button onClick = {handleClickOpen}>open</Button>
                 <Grid 
                     container spacing={2}
-                    onClick = {handleClickOpen}
                 >
                     <Grid item xs={8}>
                         <p style = {{fontWeight: '700'}}>Interview testing</p>
