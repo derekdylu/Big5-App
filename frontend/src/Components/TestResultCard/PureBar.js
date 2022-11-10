@@ -1,10 +1,10 @@
-const PureBar = ({pro, color}) => {
+const PureBar = ({pro, color, h}) => {
     const styleObj = {
         backgroundColor: `${color}`,
-        border: `solid 2px ${color}`,
         borderRadius: '30px',
-        height: '20px',
-        width: `${pro}%`
+        height: `${h}px`,
+        width: `${pro}%`,
+        marginBottom: '5px'
     }
     return(
         <div style = {styleObj}></div>
