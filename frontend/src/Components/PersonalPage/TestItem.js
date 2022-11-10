@@ -8,8 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import ScoreBar from '../TestResultCard/ScoreBar';
-import PureBar from '../TestResultCard/PureBar'
+import ScoreBar from '../EntireResult/ScoreBar';
+import PureBar from '../EntireResult/PureBar'
 
 const TestItem = ({date, big}) => {
     const c = ['#33B3FC', '#C856FD', '#FCCA37', '#4ED333', '#F14581']
