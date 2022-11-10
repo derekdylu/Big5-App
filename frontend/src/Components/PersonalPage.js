@@ -16,10 +16,10 @@ import Box from '@mui/material/Box';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 
-const PersonalPage = (id) => {
+const PersonalPage = ({username, img}) => {
 
-  const name_fake = "Isabelle"
-  const picURL_fake = "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
+  // const name_fake = "Isabelle"
+  // const picURL_fake = "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 
   return (
     <>
@@ -46,8 +46,8 @@ const PersonalPage = (id) => {
           }}
         >
           <Header
-            name = {name_fake}
-            picURL = {picURL_fake}
+            name = {username}
+            picURL = {img}
           />
          <TestHistory
             
