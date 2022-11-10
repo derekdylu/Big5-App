@@ -26,7 +26,7 @@ const TestItem = ({date, big}) => {
             return <Slide direction="up" ref={ref} {...props} />;
     });
     
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         console.log('div clicked');
@@ -44,9 +44,10 @@ const TestItem = ({date, big}) => {
 
     return(
         <>
-            <div style = {itemObj} onClick = {handleClickOpen}>
+            <div style = {itemObj} >
                 <Grid 
                     container spacing={2}
+                    onClick = {handleClickOpen}
                 >
                     <Grid item xs={8}>
                         <p style = {{fontWeight: '700'}}>Interview testing</p>
