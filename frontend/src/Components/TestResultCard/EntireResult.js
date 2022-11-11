@@ -25,12 +25,14 @@ const EntireResult = ({handleClose, date, big}) => {
             style={{
                 background: "#000"
             }}
+            paddingTop='5vh'
         >
             <Grid 
                 display="flex" 
                 width="90vw"
                 justifyContent="space-around"
                 alignItems="stretch"
+                marginBottom='0.5vh'
             >
                 <IconButton 
                     aria-label="back"
@@ -63,12 +65,11 @@ const EntireResult = ({handleClose, date, big}) => {
                 justifyContent="start"
                 alignItems="center"
                 width='80vw'
+                marginTop='0.5vh'
             >
-                <p 
-                    style = {{ fontSize: 20, marginBlockEnd: '0em' }}
+                <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
                 >Interview testing</p>
-                <p 
-                    style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
+                <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
                 >{date}</p>
                 {
                     big.map((s, id) => 
@@ -78,6 +79,8 @@ const EntireResult = ({handleClose, date, big}) => {
                 <Grid 
                     display="flex" 
                     justifyContent="space-around"
+                    marginTop='2vh'
+                    marginBottom='2vh'
                 >
                     <Button>ADD NOTE</Button>
                     <Button>EXPORT AS IMAGE</Button>

@@ -7,15 +7,6 @@ import Follow from './Follow'
 import Post from './Post'
 import Grid from '@mui/material/Grid';
 
-// import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
-
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
-
 const PersonalPage = ({username, img}) => {
 
   const dates_fake = ["2022/09/04", "2022/10/08", "2022/11/19"];
@@ -32,11 +23,12 @@ const PersonalPage = ({username, img}) => {
           direction="column"
           justifyContent="start"
           alignItems="center"
-          height="90vh"
-          width="90vw"
+          height="100vh"
+          width="100vw"
           style={{
             background: "#000"
           }}
+          paddingTop="3.5vh"
       >
           <Header
             name = {username}
@@ -50,8 +42,10 @@ const PersonalPage = ({username, img}) => {
             style={{
               background: "#000"
             }}
+            paddingLeft="8vw"
+            paddingRight="8vw"
           >
-            <p style = {{ color: 'white' }}>TEST HISTORY</p>
+            <p style = {{ color: 'white'}}>TEST HISTORY</p>
             {
               dates_fake.map((d, i) => 
                 <>
@@ -63,8 +57,8 @@ const PersonalPage = ({username, img}) => {
               )
             }
           </Grid>
-          {/* <Follow/> */}
-          {/* <Post/> */}
+          {/* <Follow/>
+          <Post/> */}
       </Grid>
     </>
   )
