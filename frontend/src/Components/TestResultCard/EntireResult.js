@@ -1,28 +1,36 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ScoreBar from '../EntireResult/ScoreBar';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
+import ScoreBar from '../EntireResult/ScoreBar';
 // import {useNavigate} from 'react-router-dom';
 
 const EntireResult = ({handleClose, date, big}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
-    const biggerFontStyle = {
-        fontSize: 24,
-    }
-
-    // const navigate = useNavigate();
 
     return(
-        <>
-            <Box 
+        <Grid
+            container
+            direction="column"
+            justifyContent="start"
+            alignItems="center"
+            height="100vh"
+            width="100vw"
+            style={{
+                background: "#000"
+            }}
+        >
+            <Grid 
                 display="flex" 
+                width="90vw"
                 justifyContent="space-around"
+                alignItems="stretch"
             >
                 <IconButton 
                     aria-label="back"
@@ -43,46 +51,39 @@ const EntireResult = ({handleClose, date, big}) => {
                 >
                     <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>
-            </Box>
-            <Box
+            </Grid>
+            <Grid
                 sx={{
-                    mx: 10,
-                    backgroundColor: '#E5E7E9', 
-                    '&:hover': {
-                        backgroundColor: '#F2F3F4',
-                        opacity: [0.9, 0.8, 0.7],
-                    },
+                    backgroundColor: '#FFFFFF', 
                     borderRadius: '30px',
-                    padding: '20px',
                     fontWeight: 'bold',
                 }}
+                container
+                direction="column"
+                justifyContent="start"
+                alignItems="center"
+                width='80vw'
             >
-                <p style = {biggerFontStyle}>Interview testing</p>
-                <p style = {{color: "gray"}}>{date}</p>
+                <p 
+                    style = {{ fontSize: 20, marginBlockEnd: '0em' }}
+                >Interview testing</p>
+                <p 
+                    style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
+                >{date}</p>
                 {
                     big.map((s, id) => 
                         <ScoreBar score = {s} id = {id}/>
                     )
                 }
                 <Grid 
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
+                    display="flex" 
+                    justifyContent="space-around"
                 >
-                    {
-                        OCEAN.map((s, id) => 
-                            <p> {s} <span style = {biggerFontStyle}>{big[id]}</span></p>
-                        )
-                    }
-                </Grid>
-                
-                <Box display="flex" justifyContent="space-around">
                     <Button>ADD NOTE</Button>
                     <Button>EXPORT AS IMAGE</Button>
-                </Box> 
-            </Box>
-        </>  
+                </Grid> 
+            </Grid>
+        </Grid>  
     )
 }
 

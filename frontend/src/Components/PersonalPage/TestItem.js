@@ -16,11 +16,11 @@ const Transition = React.forwardRef(
     function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
 });
+const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
 const TestItem = ({date, big}) => {
-    const c = ['#33B3FC', '#C856FD', '#FCCA37', '#4ED333', '#F14581']
     const itemObj = {
-        backgroundColor: 'white',
+        backgroundColor: '#FFFFFF',
         borderRadius: '50px',
         width: '95%',
         paddingLeft: '25px',
@@ -38,11 +38,6 @@ const TestItem = ({date, big}) => {
         setOpen(false);
     };
 
-    const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
-    const biggerFontStyle = {
-        fontSize: 24,
-    }
-
     return(
         <>
             <div style = {itemObj} >
@@ -50,7 +45,7 @@ const TestItem = ({date, big}) => {
                     container spacing={2}
                     onClick = {handleClickOpen}
                 >
-                    <Grid item xs={8}>
+                    <Grid item xs={7}>
                         <p style = {{fontWeight: '700'}}>Interview testing</p>
                         <p style = {{color: 'gray', fontWeight: '500'}}>{date}</p>
                     </Grid>
@@ -62,7 +57,7 @@ const TestItem = ({date, big}) => {
                     >
                         {
                             big.map((b, id) => 
-                                <PureBar pro = {b} color = {c[id]} h = {7}/>
+                                <PureBar pro = {b} color = {c[id]} h = {7} run = {false}/>
                             )
                         }
                     </Grid>
