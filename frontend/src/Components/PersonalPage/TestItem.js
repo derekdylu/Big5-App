@@ -42,12 +42,11 @@ const TestItem = ({date, big}) => {
 
     return(
         <>
-            <div style = {itemObj} >
+            <div style = {itemObj} className='testItem'>
                 <Grid 
                     container spacing={2}
                     onClick = {handleClickOpen}
                     cursor = 'pointer'
-                    className='testItem'
                 >
                     <Grid item xs={7}>
                         <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>Interview testing</p>
