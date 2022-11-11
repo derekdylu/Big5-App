@@ -1,13 +1,14 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import LinearProgress from '@mui/material/LinearProgress';
 
-const PureBar = ({pro, color, h, run}) => {
+const PureBar = ({pro, color}) => {
     const styleObj = {
         backgroundColor: `${color}`,
         borderRadius: '30px',
-        height: `${h}px`,
+        height: `7px`,
         width: `${pro}%`,
-        marginBottom: '5px'
+        marginTop: '2.5px',
+        marginBottom: '2.5px'
     }
 
     const [progress, setProgress] = useState(0);
