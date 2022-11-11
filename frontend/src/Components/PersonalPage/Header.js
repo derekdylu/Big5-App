@@ -18,7 +18,6 @@ const Header = ({name, picURL}) => {
                 style={{
                     background: "#000"
                 }}
-                // mx = '30px'
             >
                 <Grid
                     container
