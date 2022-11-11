@@ -1,11 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 // import theme from '../Themes/Theme';
 // import { ThemeProvider } from '@mui/material/styles';
-import Header from './PersonalPage/Header'
-// import TestHistory from './PersonalPage/TestHistory'
-import TestItem from './PersonalPage/TestItem';
-import Follow from './PersonalPage/Follow'
-import Post from './PersonalPage/Post'
+import Header from './Header'
+import TestItem from './TestItem'
+import Follow from './Follow'
+import Post from './Post'
 import Grid from '@mui/material/Grid';
 
 // import Dialog from '@mui/material/Dialog';

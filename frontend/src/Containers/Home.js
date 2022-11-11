@@ -1,5 +1,5 @@
 import React from 'react'
-import PersonalPage from '../Components/PersonalPage'
+import PersonalPage from '../Components/PersonalPage/PersonalPage'
 import Navigation from '../Components/Navigation'
 
 const Home = () => {
