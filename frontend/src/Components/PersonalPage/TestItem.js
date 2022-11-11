@@ -81,7 +81,6 @@ const TestItem = ({date, big}) => {
                 />  
             </Dialog>
         </>
-            
     )
 }
 export default TestItem
