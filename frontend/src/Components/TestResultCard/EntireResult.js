@@ -6,18 +6,17 @@ import ScoreBar from './ScoreBar';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useNavigate } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import {useNavigate} from 'react-router-dom';
 
-const EntireResult = () => {
+const EntireResult = ({handleClose, date, big}) => {
 
-    const date = "2022/11/07"
-    const scores = [87, 23, 50, 41, 72]
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     const biggerFontStyle = {
         fontSize: 24,
     }
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     return(
         <>
@@ -28,15 +27,16 @@ const EntireResult = () => {
                 <IconButton 
                     aria-label="back"
                     size='large'
-                    onClick = {() => navigate('/profile')}
+                    onClick = {handleClose}
                 >
                     <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>
                 <IconButton 
                     aria-label="delete"
                     size='large'
+                    onClick = {handleClose}
                 >
-                    <DeleteIcon style={{ color: 'red' }}/>
+                    <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>
             </Box>
             <Box
@@ -55,7 +55,7 @@ const EntireResult = () => {
                 <p style = {biggerFontStyle}>Interview testing</p>
                 <p style = {{color: "gray"}}>{date}</p>
                 {
-                    scores.map((s, id) => 
+                    big.map((s, id) => 
                         <ScoreBar score = {s} id = {id}/>
                     )
                 }
@@ -67,7 +67,7 @@ const EntireResult = () => {
                 >
                     {
                         OCEAN.map((s, id) => 
-                            <p> {s} <span style = {biggerFontStyle}>{scores[id]}</span></p>
+                            <p> {s} <span style = {biggerFontStyle}>{big[id]}</span></p>
                         )
                     }
                 </Grid>
