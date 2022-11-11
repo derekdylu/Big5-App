@@ -24,15 +24,15 @@ const TestItem = ({date, big}) => {
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
-        width: '95%',
-        paddingLeft: '25px',
-        marginBottom: '15px',
+        width: '90%',
+        marginTop: '1vh',
+        marginBottom: '1vh',
+        paddingLeft: '8vw',
     };
     
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
-        // console.log('div clicked');
         setOpen(true);
     };
 
@@ -50,7 +50,7 @@ const TestItem = ({date, big}) => {
                     className='testItem'
                 >
                     <Grid item xs={7}>
-                        <p style = {{fontWeight: '700'}}>Interview testing</p>
+                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>Interview testing</p>
                         <p style = {{color: 'gray', fontWeight: '500'}}>{date}</p>
                     </Grid>
                     <Grid 
@@ -61,7 +61,7 @@ const TestItem = ({date, big}) => {
                     >
                         {
                             big.map((b, id) => 
-                                <PureBar pro = {b} color = {c[id]} h = {7} run = {false}/>
+                                <PureBar pro = {b} color = {c[id]}/>
                             )
                         }
                     </Grid>
