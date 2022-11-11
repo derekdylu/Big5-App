@@ -59,6 +59,21 @@ const globalPalette = createTheme({
       700: '#704E27',
       800: '#4A341A',
       900: '#251A0D',
+    },
+    OCEAN_O: {
+      main: '#4FC1E8'
+    },
+    OCEAN_C: {
+      main: '#AC92EB'
+    },
+    OCEAN_E: {
+      main: '#FFCE54'
+    },
+    OCEAN_A: {
+      main: '#A0D568'
+    },
+    OCEAN_N: {
+      main: '#ED5564'
     }
   },
   typography: {
