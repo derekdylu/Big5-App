@@ -17,7 +17,7 @@ const ScoreBar = ({score, id}) => {
     useEffect(() => {
         const timer = setInterval(() => {
           setProgress((prevProgress) => (prevProgress >= 100 ? 100 : prevProgress + 1));
-        }, 10);
+        }, 1);
         return () => {
           clearInterval(timer);
         };
@@ -57,7 +57,7 @@ const ScoreBar = ({score, id}) => {
             </Grid>
             <Grid item xs={9 - bar_length} marginLeft = "-2vw"/>
             <Grid 
-                item xs={1.8}
+                item xs={1.5}
             >
                 <p>{score}</p>
             </Grid>
