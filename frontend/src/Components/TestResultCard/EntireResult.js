@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ScoreBar from './ScoreBar';
+import ScoreBar from '../EntireResult/ScoreBar';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -27,14 +27,19 @@ const EntireResult = ({handleClose, date, big}) => {
                 <IconButton 
                     aria-label="back"
                     size='large'
-                    onClick = {handleClose}
                 >
                     <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>
                 <IconButton 
-                    aria-label="delete"
+                    aria-label="back"
                     size='large'
                     onClick = {handleClose}
+                >
+                    <DeleteIcon style={{ color: '#ED5564' }}/>
+                </IconButton>
+                <IconButton 
+                    aria-label="delete"
+                    size='large'
                 >
                     <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                 </IconButton>

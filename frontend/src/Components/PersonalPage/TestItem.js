@@ -8,8 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import ScoreBar from '../TestResultCard/ScoreBar';
-import PureBar from '../TestResultCard/PureBar'
+import ScoreBar from '../EntireResult/ScoreBar';
+import PureBar from '../EntireResult/PureBar'
 import EntireResult from '../TestResultCard/EntireResult';
 
 const Transition = React.forwardRef(
