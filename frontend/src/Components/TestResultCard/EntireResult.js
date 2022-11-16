@@ -1,16 +1,16 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
-// import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import ScoreBar from '../EntireResult/ScoreBar';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-// import {useNavigate} from 'react-router-dom';
+
+import html2canvas from "html2canvas";
 
 const EntireResult = ({handleClose, date, big}) => {
 
@@ -26,7 +26,7 @@ const EntireResult = ({handleClose, date, big}) => {
     const handleOnClickDelNote = () => {
         setOpenNOte(false);
     }
-    
+
     const editNoteOn = () => {
         setReadOnly(false)
     }
@@ -34,9 +34,27 @@ const EntireResult = ({handleClose, date, big}) => {
         setReadOnly(true)
     }
 
-    const saveAsImage = () => {
-        console.log('save as image')
-    }
+    const exportRef = useRef();
+
+    const downloadImage = (blob, fileName) => {
+        const fakeLink = window.document.createElement("a");
+        fakeLink.style = "display:none;";
+        fakeLink.download = fileName;
+        
+        fakeLink.href = blob;
+        
+        document.body.appendChild(fakeLink);
+        fakeLink.click();
+        document.body.removeChild(fakeLink);
+        
+        fakeLink.remove();
+    };
+
+    const exportAsImage = async (el, imageFileName) => {
+        const canvas = await html2canvas(el);
+        const image = canvas.toDataURL("image/png", 1.0);
+        downloadImage(image, imageFileName);
+    };
 
     return(
         <>
@@ -80,6 +98,8 @@ const EntireResult = ({handleClose, date, big}) => {
                     </IconButton>
                 </Grid>
                 <Grid
+                    className='resultBox'
+                    ref={exportRef}
                     sx={{
                         backgroundColor: '#FFFFFF', 
                         borderRadius: '30px',
@@ -152,7 +172,10 @@ const EntireResult = ({handleClose, date, big}) => {
                             <Button onClick={handleOnClickAddNote}>ADD NOTE</Button>
                         </Grid>
                     )}
-                    <Button onClick={saveAsImage}style = {{marginBottom: '2vh'}}>EXPORT AS IMAGE</Button>
+                    <Button 
+                        onClick={() => exportAsImage(exportRef.current, "test")}
+                        style = {{marginBottom: '2vh'}}
+                    >EXPORT AS IMAGE</Button>
                 </Grid>
             </Grid>
         </>
