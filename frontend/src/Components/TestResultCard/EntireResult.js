@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,7 +13,7 @@ import ScoreBar from '../EntireResult/ScoreBar';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({handleClose, date, big}) => {
+const EntireResult = ({handleLast, handleNext, handleClose, date, big, dates, bigs, page}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
 
@@ -80,6 +81,7 @@ const EntireResult = ({handleClose, date, big}) => {
                     <IconButton 
                         aria-label="back"
                         size='large'
+                        onClick={handleLast}
                     >
                         <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
@@ -93,6 +95,7 @@ const EntireResult = ({handleClose, date, big}) => {
                     <IconButton 
                         aria-label="delete"
                         size='large'
+                        onClick={handleNext}
                     >
                         <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
@@ -115,9 +118,9 @@ const EntireResult = ({handleClose, date, big}) => {
                     <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
                     >Interview testing</p>
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
-                    >{date}</p>
+                    >{dates[page]}</p>
                     {
-                        big.map((s, id) => 
+                        bigs[page].map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>
                         )
                     } 
@@ -150,16 +153,14 @@ const EntireResult = ({handleClose, date, big}) => {
                                 noValidate
                                 autoComplete="off"
                             >
-                                <div>
-                                    <TextField
-                                        multiline
-                                        variant="outlined"
-                                        defaultValue=""
-                                        InputProps={{
-                                            readOnly: readOnly,
-                                        }}
-                                    />
-                                </div>
+                                <TextField
+                                    multiline
+                                    variant="outlined"
+                                    defaultValue=""
+                                    InputProps={{
+                                        readOnly: readOnly,
+                                    }}
+                                />
                             </Box>
                         </Grid>
                         </>):(
