@@ -9,7 +9,7 @@ const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 const ScoreBar = ({score, id}) => {
     
     const color_name = ['OCEAN_O', 'OCEAN_C', 'OCEAN_E', 'OCEAN_A', 'OCEAN_N']
-    const bar_length = parseInt(score)/100*8
+    const bar_length = Math.max(parseInt(score)/100*8, 0.6);
     // console.log(bar_length)
 
     const [progress, setProgress] = useState(0);
