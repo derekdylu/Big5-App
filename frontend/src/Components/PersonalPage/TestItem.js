@@ -20,7 +20,7 @@ const Transition = React.forwardRef(
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
-const TestItem = ({date, big}) => {
+const TestItem = ({id, date, big, dates, bigs}) => {
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -39,6 +39,22 @@ const TestItem = ({date, big}) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [page, setPage] = useState(id);
+
+    const handleLast = () => {
+        if(page > 0)
+            setPage(page - 1)
+        else
+            setPage(0)
+    }
+
+    const handleNext = () => {
+        if(page < bigs.length - 1)
+            setPage(page + 1)
+        else
+            setPage(bigs.length - 1)
+    }
 
     return(
         <>
@@ -73,9 +89,14 @@ const TestItem = ({date, big}) => {
                 TransitionComponent={Transition}
             >
                 <EntireResult
+                    handleLast = {handleLast}
+                    handleNext = {handleNext}
                     handleClose = {handleClose}
                     date = {date}
                     big = {big}
+                    dates = {dates}
+                    bigs = {bigs}
+                    page = {page}
                 />  
             </Dialog>
         </>

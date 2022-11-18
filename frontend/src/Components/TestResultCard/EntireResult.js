@@ -1,18 +1,19 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
-// import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import ScoreBar from '../EntireResult/ScoreBar';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-// import {useNavigate} from 'react-router-dom';
 
-const EntireResult = ({handleClose, date, big}) => {
+import html2canvas from "html2canvas";
+
+const EntireResult = ({handleLast, handleNext, handleClose, date, big, dates, bigs, page}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
 
@@ -26,7 +27,7 @@ const EntireResult = ({handleClose, date, big}) => {
     const handleOnClickDelNote = () => {
         setOpenNOte(false);
     }
-    
+
     const editNoteOn = () => {
         setReadOnly(false)
     }
@@ -34,9 +35,27 @@ const EntireResult = ({handleClose, date, big}) => {
         setReadOnly(true)
     }
 
-    const saveAsImage = () => {
-        console.log('save as image')
-    }
+    const exportRef = useRef();
+
+    const downloadImage = (blob, fileName) => {
+        const fakeLink = window.document.createElement("a");
+        fakeLink.style = "display:none;";
+        fakeLink.download = fileName;
+        
+        fakeLink.href = blob;
+        
+        document.body.appendChild(fakeLink);
+        fakeLink.click();
+        document.body.removeChild(fakeLink);
+        
+        fakeLink.remove();
+    };
+
+    const exportAsImage = async (el, imageFileName) => {
+        const canvas = await html2canvas(el);
+        const image = canvas.toDataURL("image/png", 1.0);
+        downloadImage(image, imageFileName);
+    };
 
     return(
         <>
@@ -62,6 +81,7 @@ const EntireResult = ({handleClose, date, big}) => {
                     <IconButton 
                         aria-label="back"
                         size='large'
+                        onClick={handleLast}
                     >
                         <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
@@ -75,11 +95,14 @@ const EntireResult = ({handleClose, date, big}) => {
                     <IconButton 
                         aria-label="delete"
                         size='large'
+                        onClick={handleNext}
                     >
                         <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
                 </Grid>
                 <Grid
+                    className='resultBox'
+                    ref={exportRef}
                     sx={{
                         backgroundColor: '#FFFFFF', 
                         borderRadius: '30px',
@@ -95,9 +118,9 @@ const EntireResult = ({handleClose, date, big}) => {
                     <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
                     >Interview testing</p>
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
-                    >{date}</p>
+                    >{dates[page]}</p>
                     {
-                        big.map((s, id) => 
+                        bigs[page].map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>
                         )
                     } 
@@ -130,16 +153,14 @@ const EntireResult = ({handleClose, date, big}) => {
                                 noValidate
                                 autoComplete="off"
                             >
-                                <div>
-                                    <TextField
-                                        multiline
-                                        variant="outlined"
-                                        defaultValue=""
-                                        InputProps={{
-                                            readOnly: readOnly,
-                                        }}
-                                    />
-                                </div>
+                                <TextField
+                                    multiline
+                                    variant="outlined"
+                                    defaultValue=""
+                                    InputProps={{
+                                        readOnly: readOnly,
+                                    }}
+                                />
                             </Box>
                         </Grid>
                         </>):(
@@ -152,7 +173,10 @@ const EntireResult = ({handleClose, date, big}) => {
                             <Button onClick={handleOnClickAddNote}>ADD NOTE</Button>
                         </Grid>
                     )}
-                    <Button onClick={saveAsImage}style = {{marginBottom: '2vh'}}>EXPORT AS IMAGE</Button>
+                    <Button 
+                        onClick={() => exportAsImage(exportRef.current, "test")}
+                        style = {{marginBottom: '2vh'}}
+                    >EXPORT AS IMAGE</Button>
                 </Grid>
             </Grid>
         </>

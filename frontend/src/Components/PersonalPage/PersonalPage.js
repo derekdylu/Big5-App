@@ -9,11 +9,12 @@ import Grid from '@mui/material/Grid';
 
 const PersonalPage = ({username, img}) => {
 
-  const dates_fake = ["2022/09/04", "2022/10/08", "2022/11/19"];
+  const dates_fake = ["2022/09/04", "2022/10/08", "2022/10/30", "2022/11/19"];
   const bigs_fake = [
         [33, 90, 100, 44, 76], 
         [10, 48, 39, 85, 40],
-        [78, 41, 9, 30, 57]
+        [78, 41, 9, 30, 57],
+        [50, 12, 99, 2, 60]
   ];
 
   return (
@@ -50,8 +51,11 @@ const PersonalPage = ({username, img}) => {
               dates_fake.map((d, i) => 
                 <>
                   <TestItem
+                    id = {i}
                     date = {d}
                     big =  {bigs_fake[i]}
+                    dates = {dates_fake}
+                    bigs = {bigs_fake}
                   />
                 </>
               )
