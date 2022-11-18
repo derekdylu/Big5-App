@@ -17,7 +17,7 @@ export const getInterviews = async () => {
     });
 }
 
-// get an interviwe
+// get an interviwe by id
 export const getInterviewById = async (id) => {
     return await instance.get(`/interview/${id}`).then((res) => {
         return res.data;
@@ -46,10 +46,10 @@ export const updateInterviewById = async (id, _userId, _timestamp, _topic, _scor
     let param = {};
 
     if (_topic != null) {
-        param = {...param, "cuisine": _topic}
+        param = {...param, "topic": _topic}
     }
     if (_note != null) {
-        param = {...param, "cart": _note}
+        param = {...param, "note": _note}
     }
 
     param = JSON.stringify(param);
@@ -65,7 +65,48 @@ export const deleteInterviewById = async (id) => {
     })
 }
 
-// ---
-// ---
-// ---
-// TODO user api
+// --- users
+
+// get all users
+export const getUsers = async () => {
+    return await instance.get('/users').then((res) => {
+        return res.data;
+    });
+}
+
+// get an user by id
+export const getUserbyId = async (id) => {
+    return await instance.get(`/user/${id}`).then((res) => {
+        return res.data;
+    })
+}
+
+// post an user
+export const postUser = async (_username, _img, _interview) => {
+    const param = JSON.stringify({
+        username: _username,
+        img: _img,
+        interview: []
+    });
+
+    return await instance.post('/post_user', param, jsonHeader).then((res) => {
+        return res.data;
+    })
+}
+
+// update an user
+export const updateUserById = async (id, _username, _img, _interview) => {
+    let param = {}
+
+    if (_interview != null) {
+        param = {...param, "interview": _interview}
+    }
+
+    param = JSON.stringify(param)
+    return await instance.put(`update_user/${id}`, param, jsonHeader).then((res) => {
+        return res.data
+    })
+}
+
+// --- OAuth
+// TODO
