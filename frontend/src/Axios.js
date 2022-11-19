@@ -17,7 +17,7 @@ export const getInterviews = async () => {
     });
 }
 
-// get an interviwe
+// get an interview
 export const getInterviewById = async (id) => {
     return await instance.get(`/interview/${id}`).then((res) => {
         return res.data;

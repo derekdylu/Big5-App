@@ -77,7 +77,6 @@ const App = () => {
             <Route path="/about" element={<About />} />
 
             <Route path="/camera" element={<Camera />}/>
-            <Route path="/profile" element={<PersonalPage/>}/>
             <Route path="/result" element={<EntireResult/>}/>
 
           </Routes>
