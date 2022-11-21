@@ -18,13 +18,14 @@ from authlib.integrations.starlette_client import OAuthError
 from . import model
 
 if __name__ == "__main__":
-    uvicorn.run("app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
 
 load_dotenv()
 app = FastAPI()
 
 MONGO_URI = os.environ.get("MONGO_URI")
-PORT = os.environ.get("PORT")
+# PORT = os.environ.get("PORT")
+PORT = "8000"
 
 client = MongoClient(MONGO_URI, int(PORT))
 
@@ -46,8 +47,12 @@ app.add_middleware(
 )
 
 # OAuth settings
-GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
-GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
+
+# GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
+# GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
+GOOGLE_CLIENT_ID="278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+
 if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
   raise BaseException('Missing env variables')
 
@@ -62,7 +67,8 @@ oauth.register(
 )
 
 # middleware, secret key
-SECRET_KEY = os.environ.get('SECRET_KEY') or None
+# SECRET_KEY = os.environ.get('SECRET_KEY') or None
+SECRET_KEY="OulLJiqkldb436-X6M11hKvr7wvLyG8TPi5PkLf4"
 if SECRET_KEY is None:
     raise 'Missing SECRET_KEY'
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
