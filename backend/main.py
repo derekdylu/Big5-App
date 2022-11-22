@@ -108,6 +108,12 @@ def get_user(id: str):
     return user
   raise HTTPException(status_code=404, detail=f"User id {id} not found")
 
+@app.get("/user_by_email/{email}", response_description="get an user by email", response_model=model.User)
+def get_user_by_email(email: str):
+  if (user := users_col.find_one({"email": email})) is not None:
+    return user
+  raise HTTPException(status_code=404, detail=f"User email {email} not found")
+
 @app.post("/post_user", response_description="post a user by ID", response_model=model.User)
 def post_user(user: model.User = Body(...)):
   user = jsonable_encoder(user)
