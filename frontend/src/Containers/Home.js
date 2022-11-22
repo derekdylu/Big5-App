@@ -11,8 +11,6 @@ const Home = () => {
       : null
   )
 
-  
-
   return (
     <>
       <Grid
@@ -35,6 +33,10 @@ const Home = () => {
           </>
         )
       }
+        {/* <PersonalPage
+          username = {user.name}
+          img = {user.picture}
+        /> */}
       </Grid>
     </>
   )

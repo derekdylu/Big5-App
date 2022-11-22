@@ -40,12 +40,15 @@ function a11yProps(index) {
   };
 }
 
-const Graph = () => {
+const Graph = (career, big) => {
 
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const str = JSON.stringify(big)
+    console.log(str);
 
     return (
         <>
@@ -64,7 +67,7 @@ const Graph = () => {
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs 
                         value={value} 
-                        onChange={handleChange} 
+                        onChange={handleChange}
                         variant="scrollable"
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
@@ -74,11 +77,6 @@ const Graph = () => {
                         <Tab label="EXTRAVERSION" {...a11yProps(2)} />
                         <Tab label="AGREEABLENESS" {...a11yProps(3)} />
                         <Tab label="NEUROTICISM" {...a11yProps(4)} />
-                        {/* <Tab label="O" {...a11yProps(0)} />
-                        <Tab label="C" {...a11yProps(1)} />
-                        <Tab label="E" {...a11yProps(2)} />
-                        <Tab label="A" {...a11yProps(3)} />
-                        <Tab label="N" {...a11yProps(4)} /> */}
                     </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
@@ -95,7 +93,7 @@ const Graph = () => {
                             paddingRight="8vw"
                             borderRadius='16px'  
                         >
-                            <p>This is graph for 'O'.</p>
+                            <p>This is graph for 'O'</p>
                         </Grid>
                     </TabPanel>
                     <TabPanel value={value} index={1}>

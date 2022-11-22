@@ -14,9 +14,10 @@ import Graph from './Graph';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({handleLast, handleNext, handleClose, date, big, dates, bigs, page}) => {
+const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, career}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
+    
 
     const [openNote, setOpenNOte] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
@@ -133,7 +134,10 @@ const EntireResult = ({handleLast, handleNext, handleClose, date, big, dates, bi
                         width='80vw'
                         marginTop='0.5vh'
                     >
-                        <Graph/>
+                        <Graph 
+                            career = {career}
+                            big = {bigs[page]}                        
+                        />
                     </Grid>
                      
                     { openNote ? (<>
