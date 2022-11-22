@@ -1,23 +1,24 @@
 import Grid from '@mui/material/Grid';
 
-const Follow = () => {
+const Graph = () => {
 
     return (
         <>
+            <p> Tap to see distribution</p>
             <Grid
                 container
                 direction="column"
                 justifyContent="start"
                 alignItems="start"
                 style={{
-                    background: "#000"
+                    background: "#DBDBDB"
                 }}
                 paddingLeft="8vw"
                 paddingRight="8vw"
             >
-                <p style = {{ color: 'white' }}>FOLLOWING/FOLLOWERs (coming soon)</p>
+                <p>This is the graph.</p>
             </Grid>
         </>
     )
 }
-export default Follow
+export default Graph
