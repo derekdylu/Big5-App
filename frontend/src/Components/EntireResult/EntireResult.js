@@ -71,6 +71,9 @@ const EntireResult = ({handleClose, date, big}) => {
                         )
                     }
                 </Grid>
+                <p style = {{color: "gray"}}>{date}</p>
+                <p style = {{color: "gray"}}>{date}</p>
+                <p style = {{color: "gray"}}>{date}</p>
                 <Box display="flex" justifyContent="space-around">
                     <Button>ADD NOTE</Button>
                     <Button>EXPORT AS IMAGE</Button>
