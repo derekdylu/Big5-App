@@ -2,11 +2,13 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ScoreBar from './ScoreBar';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
+import ScoreBar from './ScoreBar';
+import Graph from './Graph';
 // import {useNavigate} from 'react-router-dom';
 
 const EntireResult = ({handleClose, date, big}) => {
@@ -15,8 +17,6 @@ const EntireResult = ({handleClose, date, big}) => {
     const biggerFontStyle = {
         fontSize: 24,
     }
-
-    // const navigate = useNavigate();
 
     return(
         <>
@@ -71,7 +71,6 @@ const EntireResult = ({handleClose, date, big}) => {
                         )
                     }
                 </Grid>
-                
                 <Box display="flex" justifyContent="space-around">
                     <Button>ADD NOTE</Button>
                     <Button>EXPORT AS IMAGE</Button>

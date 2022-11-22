@@ -25,13 +25,12 @@ const Home = () => {
     // const fetchedTasks = await response.json()
     // console.log('hi, this is', fetchedTasks)
 
-    const userData = await axios.get(`http://127.0.0.1:8000//users`);
-    console.log("response", userData)
+    // const userData = await axios.get(`http://127.0.0.1:8000//users`);
+    // console.log("response", userData)
 
     // const data = await userData.json();
     // console.log("data", data);
-  }
-
+  };
 
   return (
     <>
