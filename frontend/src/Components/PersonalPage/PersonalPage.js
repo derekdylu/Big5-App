@@ -32,7 +32,7 @@ const PersonalPage = ({userId}) => {
           background: "#000"
         }}
         sx={{
-          pt: 4
+          pt: 2
         }}
       >
         <Grid
@@ -43,26 +43,36 @@ const PersonalPage = ({userId}) => {
           style={{
             background: "#000"
           }}
-          paddingLeft="8vw"
-          paddingRight="8vw"
         >
-          <p style = {{ color: 'white'}}>TEST HISTORY</p>
-          {
-            dates_fake.map((d, i) => 
-              <>
-                <TestItem
-                  id = {i}
-                  date = {d}
-                  big =  {bigs_fake[i]}
-                  dates = {dates_fake}
-                  bigs = {bigs_fake}
-                />
-              </>
-            )
-          }
+          <Grid
+            container
+            direction="column"
+            justifyContent="start"
+            alignItems="start"
+            style={{
+              background: "#000"
+            }}
+            paddingLeft="8vw"
+            paddingRight="8vw"
+          >
+            <p style = {{ color: 'white'}}>TEST HISTORY</p>
+            {
+              dates_fake.map((d, i) => 
+                <>
+                  <TestItem
+                    id = {i}
+                    date = {d}
+                    big =  {bigs_fake[i]}
+                    dates = {dates_fake}
+                    bigs = {bigs_fake}
+                  />
+                </>
+              )
+            }
+          </Grid>
+          <Follow/>
+          <Post/>
         </Grid>
-        {/* <Follow/>
-        <Post/> */}
       </Grid>
     </>
   )
