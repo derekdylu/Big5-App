@@ -55,7 +55,7 @@ const PersonalPage = ({userId}) => {
             paddingLeft="8vw"
             paddingRight="8vw"
           >
-            <p style = {{ color: 'white'}}>TEST HISTORY</p>
+            <p style = {{ color: 'white'}}>INTERVIEW HISTORY</p>
             {
               dates_fake.map((d, i) => 
                 <>
