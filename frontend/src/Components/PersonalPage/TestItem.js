@@ -12,7 +12,7 @@ import ScoreBar from '../EntireResult/ScoreBar';
 import PureBar from '../EntireResult/PureBar'
 import EntireResult from '../EntireResult/EntireResult';
 
-import './TestItem.css'
+// import './TestItem.css'
 
 const Transition = React.forwardRef(
     function Transition(props, ref) {
