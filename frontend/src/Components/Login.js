@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
-const Login = () => {
+const Login = ({stateChanged}) => {
   const googleClientId = "278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
   
   // localStorage.removeItem("user")
@@ -31,6 +31,7 @@ const Login = () => {
     setUser(userObject)
     localStorage.setItem("user", JSON.stringify(userObject))
     document.getElementById("signInDiv").hidden = true
+    stateChanged()
   }
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const Login = () => {
     document.getElementById("signInDiv").hidden = false
     setUser(null)
     localStorage.removeItem('user');
+    stateChanged()
   };
 
   return (

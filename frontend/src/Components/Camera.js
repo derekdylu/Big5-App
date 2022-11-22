@@ -27,7 +27,7 @@ const Camera = () => {
   useEffect(() => {
     currentDuration = Math.floor((Date.now()-beginTime)/1000)
     console.log(currentDuration)
-  }, )
+  })
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -103,12 +103,12 @@ const Camera = () => {
           background: "#000"
         }}
       >
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '95%' }}>
           <LinearProgress variant="determinate" value={progress} color="secondary"/>
           <LinearProgress variant="determinate" value={progress} color="primary"/>
         </Box>
-        <Grid item>
-          <Webcam audio={false} width={width-32} ref={webcamRef} />
+        <Grid item container width={width-32}>
+          <Webcam audio={false} ref={webcamRef} />
         </Grid>
         <Grid item>
           <Grid
@@ -116,12 +116,12 @@ const Camera = () => {
             direction="row"
             justifyContent="space-evenly"
             alignItems="center"
-            style={{
-              
+            sx={{
+              mt: 2
             }}
           >
             <IconButton aria-label="back" size="large">
-              <ArrowBackIosRoundedIcon fontSize="inherit" color="primary"/>
+              <ArrowBackIosRoundedIcon fontSize="inherit" color="white"/>
             </IconButton>
             
             {capturing ? (
@@ -134,7 +134,7 @@ const Camera = () => {
             )}
 
             <IconButton aria-label="reset" size="large">
-              <UndoRoundedIcon fontSize="inherit" color="primary"/>
+              <UndoRoundedIcon fontSize="inherit" color="white"/>
             </IconButton>
           </Grid>
         </Grid>
