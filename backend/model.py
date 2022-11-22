@@ -24,6 +24,7 @@ class PyObjectId(ObjectId):
 class User(BaseModel):
   id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
   username: str = Field(...)
+  email: str = Field(...)
   img: str = Field(...)
   interview: list = Field(...)
 
@@ -34,6 +35,7 @@ class User(BaseModel):
     schema_extra = {
       "example": {
         "username": "derekdylu",
+        "email": "abc@bcg.com",
         "img": "./",
         "interview": [],
       }
@@ -43,6 +45,7 @@ def user_helper(user) -> dict:
   return {
     "id": user["_id"],
     "username": user["username"],
+    "email": user["email"],
     "img": user["img"],
     "interview": user["interview"]
   }
