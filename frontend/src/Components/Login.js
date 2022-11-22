@@ -69,9 +69,9 @@ const Login = () => {
             <div>
               <Typography color="primary">You logged in as {loginData.email}</Typography>
               <img src={loginData.imageUrl} alt="user image" />
-              <h3>User Logged in</h3>
-              <p>Name: {loginData.name}</p>
-              <p>Email Address: {loginData.email}</p>
+              <h3 style = {{ color: 'white'}}>User Logged in</h3>
+              <p style = {{ color: 'white'}}>Name: {loginData.name}</p>
+              <p style = {{ color: 'white'}}>Email Address: {loginData.email}</p>
               <Button onClick={handleLogout}>Logout</Button>
             </div>
           ) : (
