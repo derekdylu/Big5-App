@@ -23,7 +23,7 @@ const btnLine = css`
   width: 28px;
   height: 4px;
   margin: 0 0 5px 0;
-  background-color: #000;
+  background-color: #fff;
   ${easeSlow};
   &.closer {
     background-color: #000;  
@@ -105,6 +105,7 @@ class Navigation extends React.Component {
             <Link to="/">Home</Link>
             <Link to="/setting">Setting</Link>
             <Link to="/about">About</Link>
+            <Link to="/" onClick={(e) => this.props.logout(e)}>Logout</Link>
           </nav>
         </div>
       </React.Fragment>

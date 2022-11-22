@@ -4,122 +4,87 @@ const font = "'Noto Sans TC', sans-serif";
 
 const globalPalette = createTheme({
   status: {
-    danger: '#F16063',
+    danger: '#FF2E00',
   },
   palette: {
     primary: {
-      main: '#44C177',
-      100: '#DAF3E4',
-      300: '#8FDAAD',
-      500: '#44C177', // default
-      700: '#2C7D4D',
-      900: '#143A24',
-      contrastText: '#251A0D'
+      main: '#00D1FF',
+      500: '#00D1FF', // main
+      contrastText: '#ffffff'
     },
     secondary: {
-      main: '#FCD219',
-      100: '#FEF6D1',
-      300: '#FDE475',
-      500: '#FCD219', // main
-      700: '#A48910',
-      900: '#4C3F08',
-      contrastText: '#4A341A'
+      main: '#00FFC2',
+      500: '#00FFC2',
+      contrastText: '#ffffff'
     },
-    error: {
-      main: '#F16063',
-      contrastText: '#FFFFFF'
+    black: {
+      main: '#000000',
+      500: '#000000',
+      contrastText: '#ffffff'
     },
-    red: {
-      main: '#FF7768'
-    },
-    purple: {
-      main: '#5552FF'
-    },
-    warning: {
-      main: '#F69039'
+    white: {
+      main: '#ffffff',
+      500: '#ffffff',
+      contrastText: '#000000'
     },
     grey: {
-      100: '#F7FAFC',
-      200: '#EDF2F7',
-      300: '#E2E8F0',
-      400: '#CBD5E0',
-      500: '#A0AEC0',
-      600: '#718096',
-      700: '#4A5568',
-      800: '#2D3748',
-      900: '#1A202C'
+      300: '#DBDBDB',
+      500: '#CCCCCC',
+      700: '#5C5C5C'
+    },    
+    warning: {
+      main: '#FF2E00',
+      contrastText: '#FFFFFF'
     },
-    carton: {
-      100: '#ECDCCA',
-      200: '#E3CBAF',
-      300: '#D6B38A',
-      400: '#C99B65',
-      500: '#BA8241',
-      600: '#956834',
-      700: '#704E27',
-      800: '#4A341A',
-      900: '#251A0D',
+    error: {
+      main: '#FF2E00',
+      contrastText: '#FFFFFF'
     },
     OCEAN_O: {
-      main: '#4FC1E8'
+      main: '#4FC1E8',
+      500: '#4FC1E8'
     },
     OCEAN_C: {
-      main: '#AC92EB'
+      main: '#AC92EB',
+      500: '#AC92EB'
     },
     OCEAN_E: {
-      main: '#FFCE54'
+      main: '#FFCE54',
+      500: '#FFCE54'
     },
     OCEAN_A: {
-      main: '#A0D568'
+      main: '#A0D568',
+      500: '#A0D568'
     },
     OCEAN_N: {
-      main: '#ED5564'
+      main: '#ED5564',
+      500: '#ED5564'
     }
   },
   typography: {
     fontFamily: font,
     h1: {
-      fontSize: '36px',
+      fontSize: '48px',
       fontWeight: '600',
       lineHeight: 1.4,
     },
     h2: {
-      fontSize: '32px',
+      fontSize: '24px',
       lineHeight: 1.4,
-    },
-    h3: {
-      fontSize: '28px',
-      lineHeight: 1.4,
-    },
-    h4: {
-      fontSize: '25px',
-      lineHeight: 1.5,
-    },
-    h5: {
-      fontSize: '22px',
-      lineHeight: 1.5,
-    },
-    h6: {
-      fontSize: '20px',
-      lineHeight: 1.5,
     },
     body1: {
       fontSize: '18px',
-      lineHeight: 1.5,
+      fontWeight: '600',
+      lineHeight: 1.5
     },
     body2: {
-      fontSize: '16px',
-      lineHeight: 1.5,
-    },
-    body3: {
-      fontSize: '14px',
+      fontSize: '18px',
       lineHeight: 1.5,
     },
     button: {
-      color: '#251A0D',
-      fontSize: '18px',
-      fontWeight: '600',
-      lineHeight: '27px',
+      color: "#000000",
+      fontSize: '12px',
+      lineHeight: '1.5',
     },
     caption: {
       fontSize: '12px',
@@ -132,8 +97,7 @@ const theme = createTheme({
   components: {
     MuiButtonBase: {
       defaultProps: {
-        // The props to change the default for.
-        disableRipple: true, // No more ripple, on the whole application 💣!
+        disableRipple: true,
         disableElevation: true,
       },
     },
@@ -250,20 +214,6 @@ const theme = createTheme({
         },
       ],
     },
-    MuiMenuItem: {
-      variants: {
-        // {
-          props: { variant: 'primary' },
-          style: {
-            backgroundColor: "#123456",
-            "&:hover": {
-            backgroundColor: globalPalette.palette.secondary.main,
-            }
-          // }
-        },
-        
-      }
-    }
   },
 }, globalPalette);
 
