@@ -10,7 +10,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import ScoreBar from '../EntireResult/ScoreBar';
 import PureBar from '../EntireResult/PureBar'
-import EntireResult from '../TestResultCard/EntireResult';
+import EntireResult from '../EntireResult/EntireResult';
 
 import './TestItem.css'
 
