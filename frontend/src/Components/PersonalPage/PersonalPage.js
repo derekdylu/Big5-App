@@ -61,8 +61,8 @@ const PersonalPage = ({username, img}) => {
               )
             }
           </Grid>
-          {/* <Follow/>
-          <Post/> */}
+          <Follow/>
+          <Post/>
       </Grid>
     </>
   )
