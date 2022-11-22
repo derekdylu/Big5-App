@@ -17,6 +17,7 @@ const Transition = React.forwardRef(
         return <Slide direction="up" ref={ref} {...props} />;
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
+const career = 'manager'
 
 const TestItem = ({id, date, big, dates, bigs}) => {
     const itemObj = {
@@ -90,11 +91,10 @@ const TestItem = ({id, date, big, dates, bigs}) => {
                     handleLast = {handleLast}
                     handleNext = {handleNext}
                     handleClose = {handleClose}
-                    date = {date}
-                    big = {big}
                     dates = {dates}
                     bigs = {bigs}
                     page = {page}
+                    career = {career}
                 />  
             </Dialog>
         </>
