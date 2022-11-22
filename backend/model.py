@@ -83,5 +83,3 @@ def interview_helper(interview) -> dict:
     "big": interview["big"],
     "note": interview["note"]
   }
-
-# --- SSO
