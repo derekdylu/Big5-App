@@ -23,7 +23,7 @@ if __name__ == "__main__":
 load_dotenv()
 app = FastAPI()
 
-MONGO_URI = os.environ.get("MONGO_URI")
+MONGO_URI = os.environ.get("MONGO_URI");
 # PORT = os.environ.get("PORT")
 PORT = "8000"
 

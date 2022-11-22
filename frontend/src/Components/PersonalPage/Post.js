@@ -12,6 +12,8 @@ const Post = () => {
                 style={{
                     background: "#000"
                 }}
+                paddingLeft="8vw"
+                paddingRight="8vw"
             >
                 <p style = {{ color: 'white' }}>POST (coming soon)</p>
             </Grid>

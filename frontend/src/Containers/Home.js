@@ -13,20 +13,25 @@ const Home = () => {
   const picURL_fake = "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 
   useEffect( () => {
-    // getUserInfo("6357d9eb8c4455fbfb9d9bd2");
-    getUserInfo();
+    console.log("start")
+    fetchAllUsers();
+    console.log("end")
   }, []);
 
-  const getUserInfo = async () => {
-    console.log("start GET")
-    // const userData = await axios.get(`http://localhost:8000//user/${id}`);
-    const userData = await axios.get(`http://localhost:8000//users`);
-    console.log("end GET")
-    // console.log("response", userData)
+  const fetchAllUsers = async () => {
+    console.log('function: fetchAllUsers')
+    // const response = await fetch("/users/")
+    // console.log('response:', response.json())
+    // const fetchedTasks = await response.json()
+    // console.log('hi, this is', fetchedTasks)
+
+    const userData = await axios.get(`http://127.0.0.1:8000//users`);
+    console.log("response", userData)
 
     // const data = await userData.json();
     // console.log("data", data);
-  };
+  }
+
 
   return (
     <>
