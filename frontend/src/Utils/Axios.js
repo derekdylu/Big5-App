@@ -81,10 +81,18 @@ export const getUserbyId = async (id) => {
     })
 }
 
+// get an user by email
+export const getUserbyEmail = async (email) => {
+    return await instance.get(`/user_by_email/${email}`).then((res) => {
+        return res.data;
+    })
+}
+
 // post an user
-export const postUser = async (_username, _img, _interview) => {
+export const postUser = async (_username, _email, _img, _interview) => {
     const param = JSON.stringify({
         username: _username,
+        email: _email,
         img: _img,
         interview: []
     });

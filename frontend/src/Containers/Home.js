@@ -4,7 +4,8 @@ import Login from '../Components/Login'
 
 import Grid from '@mui/material/Grid';
 
-import landingLogo from '../Images/landing_logo.png'
+import logo from '../Images/logo.gif'
+import wordmark from '../Images/wordmark.png'
 
 const Home = () => {
   const [ user, setUser ] = useState(
@@ -15,7 +16,6 @@ const Home = () => {
 
   function stateChanged () {
     setUser(localStorage.getItem('user'))
-    console.log("state changed", user)
   }
 
   return (
@@ -41,7 +41,14 @@ const Home = () => {
         >
           {
             !user && (
-              <img src={landingLogo} alt="landing" width="67%" style={{ marginBottom: "100px" }}/>
+              <div>
+                <div>
+                  <img src={logo} alt="logo" width="50%" style={{ marginBottom: "40px", display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '50%'}}/>
+                </div>
+                <div>
+                  <img src={wordmark} alt="wordmark" width="50%" style={{ marginBottom: "100px", display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '50%'}} />
+                </div>
+              </div>
             )
           }
           <Login stateChanged={stateChanged} />

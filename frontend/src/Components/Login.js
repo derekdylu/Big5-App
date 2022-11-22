@@ -3,6 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import jwt_decode from 'jwt-decode';
 
+import { getUserbyEmail, postUser } from '../Utils/Axios';
+
 import Navigation from '../Components/Navigation'
 
 import Grid from '@mui/material/Grid';
@@ -25,13 +27,35 @@ const Login = ({stateChanged}) => {
   // const [ user, setUser ] = useState(null)
 
   function handleCallbackResponse(response) {
-    // console.log("encoded jwt id", response.credential)
     var userObject = jwt_decode(response.credential)
-    // console.log(userObject)
-    setUser(userObject)
-    localStorage.setItem("user", JSON.stringify(userObject))
+    console.log("user object", userObject)
+
+    // check if user's regisered in db
+    getUserbyEmail(userObject.email).then((res) => {
+      setUser(res)
+      localStorage.setItem("user", JSON.stringify(res))
+      console.log("a registered account has been found in DB", res)
+      stateChanged()
+    }).catch((err) => {
+      const newUser = {
+        "username": userObject.name,
+        "email": userObject.email,
+        "img": userObject.picture,
+        "interview": [],
+      }
+      console.log("new user", newUser)
+      postUser(userObject.name, userObject.email, userObject.picture, []).then((res) => {
+        console.log(res)
+        setUser(newUser)
+        localStorage.setItem("user", JSON.stringify(newUser))
+        console.log("new account has been created", newUser)
+        stateChanged()
+      }).catch((err) => {
+        console.log(err)
+      })
+    })
+
     document.getElementById("signInDiv").hidden = true
-    stateChanged()
   }
 
   useEffect(() => {
@@ -73,10 +97,10 @@ const Login = ({stateChanged}) => {
           <Navigation logout={handleLogout} />
           <Avatar
             alt="avatar"
-            src={user.picture}
+            src={user.img}
             sx={{ width: 100, height: 100 }}
           />
-          <Typography variant="body1" color="#fff" sx={{mt: 1.5}}>{user.name}</Typography>
+          <Typography variant="body1" color="#fff" sx={{mt: 1.5}}>{user.username}</Typography>
         </Grid>
       )}
     </>
