@@ -25,12 +25,7 @@ from . import model
 load_dotenv()
 app = FastAPI()
 
-<<<<<<< HEAD
-MONGO_URI = os.environ.get("MONGO_URI");
-=======
-
 MONGO_URI = os.environ.get("MONGO_URI")
->>>>>>> 695352b1c95f01c929b42cae36477d42a2d649a7
 # PORT = os.environ.get("PORT")
 PORT = "8000"
 
