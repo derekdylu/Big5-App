@@ -13,14 +13,11 @@ const Home = () => {
       : null
   )
 
-<<<<<<< HEAD
-=======
   function stateChanged () {
     setUser(localStorage.getItem('user'))
     console.log("state changed", user)
   }
 
->>>>>>> a36d3b60bee6eff17e35300897d6cf1cec8d8f98
   return (
     <>
       <Grid
@@ -32,23 +29,6 @@ const Home = () => {
           backgroundColor: "black"
         }}
       >
-<<<<<<< HEAD
-      {
-        user && (
-          <>
-            <Login />
-            <PersonalPage
-              username = {user.name}
-              img = {user.picture}
-            />
-          </>
-        )
-      }
-        {/* <PersonalPage
-          username = {user.name}
-          img = {user.picture}
-        /> */}
-=======
         <Grid
         container
         direction="column"
@@ -75,7 +55,6 @@ const Home = () => {
             </>
           )
         }
->>>>>>> a36d3b60bee6eff17e35300897d6cf1cec8d8f98
       </Grid>
     </>
   )
