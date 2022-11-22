@@ -4,14 +4,14 @@ const Graph = () => {
 
     return (
         <>
-            <p>This is the graph.</p>
+            <p> Tap to see distribution</p>
             <Grid
                 container
                 direction="column"
                 justifyContent="start"
                 alignItems="start"
                 style={{
-                    background: "#000"
+                    background: "#DBDBDB"
                 }}
                 paddingLeft="8vw"
                 paddingRight="8vw"
