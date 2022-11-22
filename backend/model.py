@@ -52,6 +52,7 @@ class Interview(BaseModel):
   userId: str = Field(...)
   timestamp: str = Field(...)
   topic: str = Field(...)
+  industry: str = Field(...)
   score: int = Field(...)
   big: list = Field(...)
   note: str = Field(...)
@@ -66,6 +67,7 @@ class Interview(BaseModel):
         "userId": "abc1234567890",
         "timestamp": "1234567890",
         "topic": "topic",
+        "industry": "軟體工程師",
         "score": 0,
         "big": [1,2,3,4,5],
         "note": "note",
