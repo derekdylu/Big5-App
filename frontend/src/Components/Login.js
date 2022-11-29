@@ -11,9 +11,6 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-
-import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
 const Login = ({stateChanged}) => {
   const googleClientId = "278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
