@@ -86,5 +86,6 @@ def interview_helper(interview) -> dict:
     "topic": interview["topic"],
     "score": interview["score"],
     "big": interview["big"],
-    "note": interview["note"]
+    "note": interview["note"],
+    "industry": interview["industry"]
   }
