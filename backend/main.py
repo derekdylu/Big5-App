@@ -158,6 +158,7 @@ def get_interview(id: str):
     return interview
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
+
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
   file = UploadFile()
