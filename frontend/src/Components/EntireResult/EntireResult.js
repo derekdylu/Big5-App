@@ -10,7 +10,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import ScoreBar from '../EntireResult/ScoreBar';
-import Graph from './Graph';
+import ShowChart from './ShowChart';
+// import Graph from './Graph';
 
 import html2canvas from "html2canvas";
 
@@ -134,7 +135,7 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
                         width='80vw'
                         marginTop='0.5vh'
                     >
-                        <Graph 
+                        <ShowChart 
                             career = {career}
                             big = {bigs[page]}                        
                         />
