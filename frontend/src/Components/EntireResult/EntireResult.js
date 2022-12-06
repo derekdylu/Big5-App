@@ -8,19 +8,28 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { updateInterviewById, getInterviewById } from '../../Utils/Axios';
 
 import ScoreBar from '../EntireResult/ScoreBar';
 import Graph from './Graph';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, career}) => {
+const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, page, industry}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
-
     const [openNote, setOpenNOte] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
+    const [note, setNote] = useState('')
+
+    // useEffect(() => {
+    //     getInterviewById(interview.id).then((res) => {
+    //         setNote(res)
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     })
+    // }, [])
 
     const handleOnClickAddNote = () => {
         setOpenNOte(true);
@@ -35,7 +44,17 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
     }
     const editNoteOff = () => {
         setReadOnly(true)
+        // updateInterviewById(interview.id, null, null, null, null, null, note)
+        //     .then()
+        //     .catch((err) => {
+        //         console.log(err)
+        //     })
     }
+
+    const handleChange = (event) => {
+        setNote(event.target.value);
+    };
+    
 
     const exportRef = useRef();
 
@@ -109,6 +128,7 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
                         backgroundColor: '#FFFFFF', 
                         borderRadius: '30px',
                         fontWeight: 'bold',
+                        pb: 2
                     }}
                     container
                     direction="column"
@@ -135,23 +155,25 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
                         marginTop='0.5vh'
                     >
                         <Graph 
-                            career = {career}
+                            industry = {industry}
                             big = {bigs[page]}                        
                         />
                     </Grid>
                      
-                    { openNote ? (<>
+                    { openNote ? (
+                        <>
                         <Grid
                             display="flex" 
                             justifyContent="space-around"
                             marginTop='2vh'
                         >
+                            <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
                             { readOnly ? (
-                                <Button onClick={editNoteOn}>EDIT</Button>
+                                <Button onClick={editNoteOn} color="black">EDIT</Button>
                             ):(
-                                <Button onClick={editNoteOff}>SAVE</Button>
+                                <Button onClick={editNoteOff} color="black">SAVE</Button>
                             )}
-                            <Button onClick={handleOnClickDelNote}>DELETE</Button>
+                            <Button onClick={handleOnClickDelNote} color="warning">DELETE</Button>
                         </Grid>
                         <Grid
                             display="flex" 
@@ -173,13 +195,16 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
                                     multiline
                                     variant="outlined"
                                     defaultValue=""
+                                    value={note}
+                                    onChange={handleChange}
                                     InputProps={{
                                         readOnly: readOnly,
                                     }}
                                 />
                             </Box>
                         </Grid>
-                        </>):(
+                        </>
+                        ):(
                         <Grid 
                             display="flex" 
                             justifyContent="space-around"
@@ -189,10 +214,6 @@ const EntireResult = ({handleLast, handleNext, handleClose, dates, bigs, page, c
                             <Button onClick={handleOnClickAddNote}>ADD NOTE</Button>
                         </Grid>
                     )}
-                    <Button 
-                        onClick={() => exportAsImage(exportRef.current, "test")}
-                        style = {{marginBottom: '2vh'}}
-                    >EXPORT AS IMAGE</Button>
                 </Grid>
             </Grid>
         </>
