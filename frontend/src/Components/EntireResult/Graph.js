@@ -52,7 +52,7 @@ const Graph = (career, big) => {
 
     return (
         <>
-            <p style = {{marginTop: '3vh', marginLeft: '5vw', fontWeight: '400'}}> Tap to see distribution</p>
+            <Typography variant="caption"> Tap to see distribution</Typography>
             <Grid
                 container
                 direction="row"
@@ -63,7 +63,7 @@ const Graph = (career, big) => {
                 marginRight = '5vw'   
                 
             >
-                <Box sx={{ width: '80%' }}>
+                <Box width='100vw' style={{ overflow: 'hidden' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs 
                         value={value} 
@@ -71,12 +71,13 @@ const Graph = (career, big) => {
                         variant="scrollable"
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
+                        sx={{pr: 4}}
                     >
                         <Tab label="OPENESS" {...a11yProps(0)} />
                         <Tab label="CONSCIENTIOUS" {...a11yProps(1)} />
                         <Tab label="EXTRAVERSION" {...a11yProps(2)} />
                         <Tab label="AGREEABLENESS" {...a11yProps(3)} />
-                        <Tab label="NEUROTICISM" {...a11yProps(4)} />
+                        <Tab label="NEUROTICISM" {...a11yProps(4)}/>
                     </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>

@@ -33,14 +33,6 @@ const Home = () => {
 
   return (
     <>
-      <Link to="/camera">
-        <Fab variant="extended" style={style} color="primary" sx={{ boxShadow: 3 }}>
-          <FiberSmartRecordRoundedIcon sx={{mr: 1}} />
-          <Typography>
-            TEST
-          </Typography>
-        </Fab>
-      </Link>
       <Grid
         container
         direction="column"
@@ -77,8 +69,16 @@ const Home = () => {
         {
           user && (
             <>
+              <Link to="/camera">
+                <Fab variant="extended" style={style} color="primary" sx={{ boxShadow: 3 }}>
+                  <FiberSmartRecordRoundedIcon sx={{mr: 1}} />
+                  <Typography>
+                    TEST
+                  </Typography>
+                </Fab>
+              </Link>
               <PersonalPage
-                userId={0}
+                userId={user._id}
               />
             </>
           )
