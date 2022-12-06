@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-// import theme from '../Themes/Theme';
-// import { ThemeProvider } from '@mui/material/styles';
+import theme from '../../Themes/Theme'
+import { getInterviewsByUserId, getInterviewsByIndustry } from '../../Utils/Axios';
 
 import Header from './Header'
 import TestItem from './TestItem'
@@ -10,7 +10,8 @@ import Post from './Post'
 import Grid from '@mui/material/Grid';
 
 const PersonalPage = ({userId}) => {
-
+  // fake data
+  console.log("user id", userId)
   const dates_fake = ["2022/09/04", "2022/10/08", "2022/10/30", "2022/11/19"];
   const bigs_fake = [
     [33, 90, 100, 44, 76], 
@@ -18,6 +19,17 @@ const PersonalPage = ({userId}) => {
     [78, 41, 9, 30, 57],
     [50, 12, 99, 2, 60]
   ];
+
+  const [data, setData] = useState()
+
+  useEffect(() => {
+    getInterviewsByUserId(userId).then((res) => {
+      setData(res)
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [])
 
   return (
     <>

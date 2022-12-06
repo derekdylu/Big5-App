@@ -44,9 +44,11 @@ const Login = ({stateChanged}) => {
       postUser(userObject.name, userObject.email, userObject.picture, []).then((res) => {
         console.log(res)
         setUser(newUser)
-        localStorage.setItem("user", JSON.stringify(newUser))
-        console.log("new account has been created", newUser)
         stateChanged()
+        getUserbyEmail(newUser.email).then((res) => {
+          localStorage.setItem("user", JSON.stringify(res))
+          console.log("new account has been created", res)
+        })
       }).catch((err) => {
         console.log(err)
       })

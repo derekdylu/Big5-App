@@ -1,14 +1,17 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Webcam from "react-webcam";
 import { useStopwatch } from 'react-timer-hook';
 import theme from '../Themes/Theme';
+import AWS from 'aws-sdk';
+import { postInterview } from '../Utils/Axios';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import LinearProgress from "@material-ui/core/LinearProgress";
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -27,6 +30,20 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 import useWindowDimensions from '../Hooks/useWindowDimensions'
+
+
+const S3_BUCKET = "imp-big5";
+const REGION = "ap-northeast-1";
+
+AWS.config.update({
+  accessKeyId: "AKIASOAYAC7MCO7RLK5Y",
+  secretAccessKey: "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"
+})
+
+const myBucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET},
+  region: REGION,
+})
 
 const questions = [
   "請你簡單的自我介紹。",
@@ -75,7 +92,12 @@ const Camera = (expiryTimestamp) => {
   const [login, setLogin] = useState(false);
   const [industry, setIndustry] = useState('--');
   const [complete, setComplete] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [open, setOpen] = React.useState(false);
+  const [user, setUser] = useState({})
+  const [s3Progress , setS3Progress] = useState(0);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,11 +121,13 @@ const Camera = (expiryTimestamp) => {
   useEffect(() => {
     if (localStorage.getItem('user')) {
       setLogin(true)
+      setUser(localStorage.getItem('user'))
+      console.log("user is set to", user)
     }
   }, [])
 
   useEffect(() => {
-    setProgress(seconds*100/15)
+    setProgress(seconds * 100 / 15)
     seconds > 15 && handleCompleteCapture()
   }, [seconds])
 
@@ -120,26 +144,44 @@ const Camera = (expiryTimestamp) => {
     window.location.reload(false);
   }
 
+  const handleFileInput = (e) => {
+    setSelectedFile(e.target.files[0]);
+  }
+
   const handleConfirm = () => {
+    setUploading(true)
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
         type: "video/webm"
       });
-      console.log("video detected", blob)
-      // await fs.writeFile(mp4Blob, Buffer.from(webmToMp4(await fs.readFile(blob))));
-      
-      // const url = URL.createObjectURL(mp4Blob);
-      // const a = document.createElement("a");
-      // document.body.appendChild(a);
-      // a.style = "display: none";
-      // a.href = url;
-      // a.download = "react-webcam-stream-capture.webm";
-      // a.click();
-      // window.URL.revokeObjectURL(url);
+      const filename = JSON.parse(user)._id.toString() + Date.now().toString()
+      const params = {
+        ACL: 'public-read',
+        Body: blob,
+        Bucket: S3_BUCKET,
+        Key: filename
+      };
+
+      const link = "s3://" + S3_BUCKET + "/" + filename
+      postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", link)
+        .then((res) => {
+        navigate("/");
+        }).catch((err) => {
+          console.log("err", err)
+        })
+  
+      myBucket.putObject(params)
+        .on('httpUploadProgress', (evt) => {
+          setS3Progress(Math.round((evt.loaded / evt.total) * 100))
+        })
+        .send((err) => {
+          if (err) console.log(err)
+        })
       
       setRecordedChunks([]);
     } else {
       console.log("no video detected")
+      setUploading(false)
     }
   }
 
@@ -214,11 +256,11 @@ const Camera = (expiryTimestamp) => {
           <Button onClick={handleClose} autoFocus variant="secondary2">
             Cancel
           </Button>
-          <Link to="/">
-            <Button onClick={handleClose} variant="secondary3">
+          <Button onClick={handleClose} variant="secondary3">
+            <Link to="/" style={{ textDecoration: 'none', color: theme.palette.warning.main }}>
               Discard
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </DialogActions>
       </Dialog>
       {
@@ -240,32 +282,35 @@ const Camera = (expiryTimestamp) => {
                 {questions[index]}
               </Typography>
             }
-            <Box sx={{ width: videoConstraints.width, mb: -1 }}>
-              <StyledLinearProgress variant="determinate" value={progress} />
-              <StyledLinearProgress variant="determinate" value={progress} />
-            </Box>
+            {
+              !complete &&
+              <Box sx={{ width: videoConstraints.width, mb: -0.5 }}>
+                <StyledLinearProgress variant="determinate" value={progress} />
+              </Box>
+            }
             <Grid item width={videoConstraints.width} height={videoConstraints.height}>
               {
                 complete ?
                 (
                   <>
                     <Typography variant="body1" sx={{ color: '#fff'}}>
+                      upoload: {s3Progress}
+                    </Typography>
+                    <Typography variant="body1" sx={{ color: '#fff'}}>
                       Select your purpose (industry)
                     </Typography>
-                    {/* <Paper elevation={0} style={{maxWidth: '100vw', background: 'transparent', overflow: 'hidden'}}> */}
-                      <Stack
-                        direction="column"
-                        justifyContent="flex-start"
-                        alignItems="flex-start"
-                        spacing={1}
-                        sx={{mt:1.5}}
-                        style={{overflow: 'auto'}}
-                      >
-                        {industriesList.map(x => 
-                          <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
-                        )}
-                      </Stack>
-                    {/* </Paper> */}
+                    <Stack
+                      direction="column"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      spacing={1}
+                      sx={{mt:1.5}}
+                      style={{overflow: 'auto'}}
+                    >
+                      {industriesList.map(x => 
+                        <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
+                      )}
+                    </Stack>
                   </>
                 ):(
                   <Webcam audio={false} ref={webcamRef} videoConstraints={videoConstraints}/>
@@ -282,34 +327,56 @@ const Camera = (expiryTimestamp) => {
                   mt: 2
                 }}
               >
-                
-                <IconButton aria-label="back" size="large" sx={{mr: 4}} onClick={handleClickOpen}>
-                  <ArrowBackIosRoundedIcon fontSize="inherit" color="white"/>
-                </IconButton>
-                
+                {!uploading &&
+                  <IconButton aria-label="back" size="large" sx={{mr: 4}} onClick={handleClickOpen}>
+                    <ArrowBackIosRoundedIcon fontSize="inherit" color="white"/>
+                  </IconButton>
+                }
                 {capturing ? (
                   <Button variant="secondary2" onClick={handleStopCaptureClick}>Cancel</Button>
                 ) : 
                   <>
                   {
                     complete ? (
-                      <Button variant="secondary2" onClick={handleConfirm}>Confirm</Button>
+                      <Button variant="secondary2" onClick={handleConfirm}>
+                      {
+                        uploading ?
+                        (
+                          <CircularProgress
+                            size={24}
+                            sx={{
+                              color: theme.palette.primary[500],
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              marginTop: '-12px',
+                              marginLeft: '-12px',
+                            }}
+                          />
+                        ) : (
+                          <>Confirm</>
+                        )
+                      }
+                      </Button>
                     ):(
                       <Button variant="secondary2" onClick={handleStartCaptureClick}>Record</Button>
                     )
                   }
                   </>
                 }
-
-                {
-                  complete ?
-                  <IconButton aria-label="reset" size="large" sx={{ml: 4}} onClick={handleRetake}>
-                    <UndoRoundedIcon fontSize="inherit" color="white"/>
-                  </IconButton>
-                  :
-                  <IconButton aria-label="reset" size="large" sx={{ml: 4}}>
-                    <UndoRoundedIcon fontSize="inherit" color="black"/>
-                  </IconButton>
+                {!uploading &&
+                  <>
+                  {
+                    complete ?
+                    <IconButton aria-label="reset" size="large" sx={{ml: 4}} onClick={handleRetake}>
+                      <UndoRoundedIcon fontSize="inherit" color="white"/>
+                    </IconButton>
+                    :
+                    <IconButton aria-label="reset" size="large" sx={{ml: 4}}>
+                      <UndoRoundedIcon fontSize="inherit" color="black"/>
+                    </IconButton>
+                  }
+                  </>
                 }
               </Grid>
             </Grid>

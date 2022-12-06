@@ -19,17 +19,32 @@ export const getInterviews = async () => {
 
 // get an interview by id
 export const getInterviewById = async (id) => {
-    return await instance.get(`/interview/${id}`).then((res) => {
+    return await instance.get(`/interview/id/${id}`).then((res) => {
+        return res.data;
+    })
+}
+
+// get interviews by user id
+export const getInterviewsByUserId = async (userId) => {
+    return await instance.get(`/interviews/userid/${userId}`).then((res) => {
+        return res.data;
+    })
+}
+
+// get interviews by industry
+export const getInterviewsByIndustry = async (industry) => {
+    return await instance.get(`/interviews/industry/${industry}`).then((res) => {
         return res.data;
     })
 }
 
 // post an interview
-export const postInterview = async (_userId, _timestamp, _topic, _score, _big, _note, _link) => {
+export const postInterview = async (_userId, _timestamp, _topic, _industry, _score, _big, _note, _link) => {
     const param = JSON.stringify({
         userId: _userId,
         timestamp: _timestamp,
         topic: _topic,
+        industry: _industry,
         score: _score,
         big: _big,
         note: _note,
