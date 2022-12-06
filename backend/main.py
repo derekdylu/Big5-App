@@ -14,10 +14,14 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuthError
 
+#AWS settings
 import boto3
-AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
-AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
-AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+# AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
+# AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
+# AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+AWS_S3_BUCKET_NAME = "imp-big5"
+AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
+AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
 
 # import model
 from . import model
@@ -158,9 +162,9 @@ def get_interview(id: str):
     return interview
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
+
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
-  file = UploadFile()
   print("Endpoint hit")
   print(file.filename)
   print(file.content_type)
