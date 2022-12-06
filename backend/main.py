@@ -156,27 +156,53 @@ def get_interviews():
   
   return list
 
-@app.get("/interview/{id}", response_description="get an interview by ID", response_model=model.Interview)
+@app.get("/interview/id/{id}", response_description="get an interview by ID", response_model=model.Interview)
 def get_interview(id: str):
   if (interview := interviews_col.find_one({"_id": id})) is not None:
     return interview
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
+@app.get("/interviews/userid/{user_id}", response_description="get interviews by user id", response_model=List[model.Interview])
+def get_interviews_by_user_id(user_id: str):
+  list = []
+
+  for ele in interviews_col.find({"userId": user_id}):
+    list.append(model.interview_helper(ele))
+  
+  return list
+
+
+@app.get("/interviews/industry/{industry}", response_description="get interviews by industry", response_model=List[model.Interview])
+def get_interviews_by_user_id(industry: str):
+  list = []
+
+  for ele in interviews_col.find({"industry": industry}):
+    list.append(model.interview_helper(ele))
+  
+  return list
+
+# @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
+# def post_interview(interview: model.Interview = Body(...)):
+#   print("Endpoint hit")
+#   print(file.filename)
+#   print(file.content_type)
+
+#   # Upload file to S3
+#   s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_KEY)
+#   bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
+#   bucket.upload_fileObj(file.file, file.filename, ExtraArgs={'ACL': 'public-read'})
+
+#   upload_file_url = f"https://{AWS_S3_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
+#   interview.link = upload_file_url
+  
+#   interview = jsonable_encoder(interview)
+#   insert_interview = interviews_col.insert_one(interview)
+#   inserted_interview = interviews_col.find_one({"_id": insert_interview.inserted_id})
+
+#   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.interview_helper(inserted_interview)))
 
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
-  print("Endpoint hit")
-  print(file.filename)
-  print(file.content_type)
-
-  # Upload file to S3
-  s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_KEY)
-  bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
-  bucket.upload_fileObj(file.file, file.filename, ExtraArgs={'ACL': 'public-read'})
-
-  upload_file_url = f"https://{AWS_S3_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
-  interview.link = upload_file_url
-  
   interview = jsonable_encoder(interview)
   insert_interview = interviews_col.insert_one(interview)
   inserted_interview = interviews_col.find_one({"_id": insert_interview.inserted_id})
