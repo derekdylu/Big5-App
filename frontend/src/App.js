@@ -80,7 +80,6 @@ const App = () => {
             <Route path="/result" element={<EntireResult/>}/>
             <Route path="/test" element={<PersonalPage/>}/>
 
-
           </Routes>
         </Router>
       </ThemeProvider>

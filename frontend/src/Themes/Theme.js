@@ -162,8 +162,8 @@ const theme = createTheme({
           props: { variant: 'secondary3' },
           style: {
             color: globalPalette.palette.error.main,
-            borderRadius: '32px',
-            height: '43px',
+            borderRadius: '33px',
+            height: '48px',
             backgroundColor: "#ffffff",
             "&:hover":{
               backgroundColor: globalPalette.palette.error.main,
@@ -179,8 +179,8 @@ const theme = createTheme({
           props: { variant: 'secondary4' },
           style: {
             color: globalPalette.palette.secondary[700],
-            borderRadius: '32px',
-            height: '43px',
+            borderRadius: '33px',
+            height: '48px',
             backgroundColor: globalPalette.palette.secondary[100],
             "&:hover":{
               backgroundColor: globalPalette.palette.secondary[100],
