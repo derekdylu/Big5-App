@@ -56,7 +56,7 @@ export const postInterview = async (_userId, _timestamp, _topic, _industry, _sco
     });
 }
 
-// update a game
+// update an interview by id
 export const updateInterviewById = async (id, _userId, _timestamp, _topic, _score, _big, _note, _link) => {
     let param = {};
 
