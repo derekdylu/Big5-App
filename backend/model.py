@@ -84,8 +84,9 @@ def interview_helper(interview) -> dict:
     "userId": interview["userId"],
     "timestamp": interview["timestamp"],
     "topic": interview["topic"],
+    "industry": interview["industry"],
     "score": interview["score"],
     "big": interview["big"],
     "note": interview["note"],
-    "industry": interview["industry"]
+    "link": interview["link"]
   }
