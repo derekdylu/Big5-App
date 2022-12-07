@@ -22,6 +22,7 @@ import boto3
 AWS_S3_BUCKET_NAME = "imp-big5"
 AWS_SECRET_KEY = ""
 AWS_ACCESS_KEY_ID = ""
+REGION = "ap-northeast-1"
 
 # import model
 from . import model
@@ -46,6 +47,7 @@ interviews_col = database["interviews"]
 origins = [
   "http://localhost",
   "http://localhost:3000",
+  "https://5eeyou.netlify.app"
 ]
 
 app.add_middleware(
