@@ -16,7 +16,7 @@ import ShowChart from './ShowChart';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({interview, date, big, industry, handleClose}) => {
+const EntireResult = ({ date, big, industry, handleClose}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
