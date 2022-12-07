@@ -16,7 +16,7 @@ import ShowChart from './ShowChart';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, page, industry}) => {
+const EntireResult = ({interview, date, big, industry, handleClose}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
@@ -103,7 +103,7 @@ const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, pag
                     <IconButton 
                         aria-label="back"
                         size='large'
-                        onClick={handleLast}
+                        // onClick={handleLast}
                     >
                         <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
@@ -117,7 +117,7 @@ const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, pag
                     <IconButton 
                         aria-label="delete"
                         size='large'
-                        onClick={handleNext}
+                        // onClick={handleNext}
                     >
                         <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
                     </IconButton>
@@ -141,9 +141,9 @@ const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, pag
                     <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
                     >Interview testing</p>
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
-                    >{dates[page]}</p>
+                    >{date}</p>
                     {
-                        bigs[page].map((s, id) => 
+                        big.map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>
                         )
                     }
@@ -157,7 +157,7 @@ const EntireResult = ({id, handleLast, handleNext, handleClose, dates, bigs, pag
                     >
                         <ShowChart 
                             industry = {industry}
-                            big5 = {bigs[page]}                        
+                            big5 = { big }                        
                         />
                     </Grid>
                      

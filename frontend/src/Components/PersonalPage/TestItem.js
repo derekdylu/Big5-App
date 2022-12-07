@@ -17,10 +17,9 @@ const Transition = React.forwardRef(
         return <Slide direction="up" ref={ref} {...props} />;
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
-const career = 'manager'
 
-const TestItem = ({id, date, big, dates, bigs}) => {
-// const TestItem = ({id, date, big }) => {
+// const TestItem = ({id, date, big, dates, bigs}) => {
+const TestItem = ({id, date, big, industry, interviews}) => {
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -40,66 +39,22 @@ const TestItem = ({id, date, big, dates, bigs}) => {
         setOpen(false);
     };
 
-    const [page, setPage] = useState(id);
+    // const [page, setPage] = useState(id);
 
-    const handleLast = () => {
-        if(page > 0)
-            setPage(page - 1)
-        else
-            setPage(0)
-    }
+    // const handleLast = () => {
+    //     if(page > 0)
+    //         setPage(page - 1)
+    //     else
+    //         setPage(0)
+    // }
 
-    const handleNext = () => {
-        if(page < bigs.length - 1)
-            setPage(page + 1)
-        else
-            setPage(bigs.length - 1)
-    }
+    // const handleNext = () => {
+    //     if(page < bigs.length - 1)
+    //         setPage(page + 1)
+    //     else
+    //         setPage(bigs.length - 1)
+    // }
 
-    return(
-        <>
-            <div style = {itemObj} className='testItem'>
-                <Grid 
-                    container spacing={2}
-                    onClick = {handleClickOpen}
-                    cursor = 'pointer'
-                >
-                    <Grid item xs={7}>
-                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>Interview testing</p>
-                        <p style = {{color: 'gray', fontWeight: '500'}}>{date}</p>
-                    </Grid>
-                    <Grid 
-                        item xs={4}
-                        container
-                        direction="column"
-                        justifyContent="center"
-                    >
-                        {
-                            big.map((b, id) => 
-                                <PureBar pro = {b} color = {c[id]}/>
-                            )
-                        }
-                    </Grid>
-                </Grid>
-            </div>
-            <Dialog
-                fullScreen
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
-                <EntireResult
-                    handleLast = {handleLast}
-                    handleNext = {handleNext}
-                    handleClose = {handleClose}
-                    dates = {dates}
-                    bigs = {bigs}
-                    page = {page}
-                    career = {career}
-                />  
-            </Dialog>
-        </>
-    )
     // return(
     //     <>
     //         <div style = {itemObj} className='testItem'>
@@ -133,18 +88,60 @@ const TestItem = ({id, date, big, dates, bigs}) => {
     //             TransitionComponent={Transition}
     //         >
     //             <EntireResult
-    //                 date = {date}
-    //                 big = {big}
-    //                 // handleLast = {handleLast}
-    //                 // handleNext = {handleNext}
+    //                 handleLast = {handleLast}
+    //                 handleNext = {handleNext}
     //                 handleClose = {handleClose}
-    //                 // dates = {dates}
-    //                 // bigs = {bigs}
-    //                 // page = {page}
+    //                 dates = {dates}
+    //                 bigs = {bigs}
+    //                 page = {page}
     //                 career = {career}
     //             />  
     //         </Dialog>
     //     </>
     // )
+    return(
+        <>
+            <div style = {itemObj} className='testItem'>
+                <Grid 
+                    container spacing={2}
+                    onClick = {handleClickOpen}
+                    cursor = 'pointer'
+                >
+                    <Grid item xs={7}>
+                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>Interview testing</p>
+                        <p style = {{color: 'gray', fontWeight: '500'}}>{date}</p>
+                    </Grid>
+                    <Grid 
+                        item xs={4}
+                        container
+                        direction="column"
+                        justifyContent="center"
+                    >
+                        {
+                            big.map((b, id) => 
+                                <PureBar pro = {b} color = {c[id]}/>
+                            )
+                        }
+                    </Grid>
+                </Grid>
+            </div>
+            <Dialog
+                fullScreen
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Transition}
+            >
+                <EntireResult
+                    interviews = {interviews}
+                    date = {date}
+                    big = {big}
+                    industry = {industry}
+                    // handleLast = {handleLast}
+                    // handleNext = {handleNext}
+                    handleClose = {handleClose}  
+                />  
+            </Dialog>
+        </>
+    )
 }
 export default TestItem
