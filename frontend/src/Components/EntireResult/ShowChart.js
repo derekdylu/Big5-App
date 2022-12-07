@@ -1,159 +1,354 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import NativeSelect from '@mui/material/NativeSelect';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import CanvasJSReact from '../../canvasjs.react';
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { getInterviewsByIndustry } from '../../Utils/Axios'
 
-// class App extends Component {
-// 	render() {
-// 		const options = {
-// 			animationEnabled: true,
-// 			title:{
-// 				text: "Monthly Sales - 2017"
-// 			},
-// 			axisX: {
-// 				valueFormatString: "MMM"
-// 			},
-// 			axisY: {
-// 				title: "Sales (in USD)",
-// 				prefix: "$"
-// 			},
-// 			data: [{
-// 				yValueFormatString: "$#,###",
-// 				xValueFormatString: "MMMM",
-// 				type: "spline",
-// 				dataPoints: [
-// 					{ x: new Date(2017, 0), y: 25060 },
-// 					{ x: new Date(2017, 1), y: 27980 },
-// 					{ x: new Date(2017, 2), y: 42800 },
-// 					{ x: new Date(2017, 3), y: 32400 },
-// 					{ x: new Date(2017, 4), y: 35260 },
-// 					{ x: new Date(2017, 5), y: 33900 },
-// 					{ x: new Date(2017, 6), y: 40000 },
-// 					{ x: new Date(2017, 7), y: 52500 },
-// 					{ x: new Date(2017, 8), y: 32300 },
-// 					{ x: new Date(2017, 9), y: 42000 },
-// 					{ x: new Date(2017, 10), y: 37160 },
-// 					{ x: new Date(2017, 11), y: 38400 }
-// 				]
-// 			}]
-// 		}
-// 		return (
-// 		<div>
-// 			<CanvasJSChart options = {options}
-// 				/* onRef={ref => this.chart = ref} */
-// 			/>
-// 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-// 		</div>
-// 		);
-// 	}
-// }
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+import theme from '../../Themes/Theme';
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ pt: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+const fakeBig = [12,33,44,52,35]
+const fakeScore = 72
+const industry = "🎨 ART"
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
+const industriesList = [
+  "🎨 ART",
+  "🛠️ ENGINEERING",
+  "💻 SOFTWARE",
+  "🏗️ CIVIL ENGINEERING",
+  "💼 CONSULTANTING",
+  "👥 MANAGEMENT",
+  "⚽️ SPORTS",
+  "🎥 MEDIA",
+  "🏭 MANUFACTURING"
+]
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+const ShowChart = () => {
 
-const ShowChart = (industry, big5) => {
-  // for tabs
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-      setValue(newValue);
+  const [rank, setRank] = useState([0, 0, 0, 0, 0, 0])
+  const [filter, setFilter] = useState(industry)
+  const [allInterviews, setAllInterviews] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    changeIndustry(industry)
+  }, [])
+
+  const changeIndustry = (target) => {
+    setLoading(true)
+    getInterviewsByIndustry(target).then((res) => {
+      console.log("get interviews by industry", res)
+      setAllInterviews(res)
+      calculateRank(fakeBig, fakeScore, res)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const calculateRank = (big, score, all) => {
+    let _order = []
+    for (let i = 0; i < big.length; i++) {
+      let __order = []
+      all.map(x => {
+        __order.push(x.big[i])
+      })
+      __order.push(big[i])
+      __order.sort()
+      _order.push(__order)
+    }
+    let __order = []
+    all.map(x => {
+      __order.push(x.score)
+    })
+    __order.push(score)
+    __order.sort()
+    _order.push(__order)
+
+    let _rank = []
+    for (let j = 0; j < _order.length - 1; j++) {
+      let percentile = Math.floor((1 - _order[j].indexOf(big[j]) / _order[j].length) * 100)
+      _rank.push(percentile)
+    }
+    let percentile = Math.floor((1 - _order[_order.length - 1].indexOf(score) / _order[_order.length - 1].length) * 100)
+    _rank.push(percentile)
+    setRank(_rank)
+    setLoading(false)
+    console.log(_rank)
+  }
+
+  const handleChange = (event) => {
+    setFilter(event.target.value)
+    changeIndustry(event.target.value)
   };
 
   return (
     <>
-      {/* <Typography variant="caption"> Tap to see distribution</Typography> */}
       <Grid
         container
-        direction="row"
-        justifyContent="start"
+        direction="column"
+        justifyContent="flex-start"
         alignItems="center"
-        width='80vw'
-        marginLeft = '5vw'
-        marginRight = '5vw'
+        sx={{
+          px: 2,
+          pt: 2
+        }}
       >
-        <Box width='100vw' style={{ overflow: 'hidden' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="flex-start"
+          spacing={1}
+          sx={{
+            my: 2
+          }}
+        >
+          <NativeSelect
+            value={filter}
             onChange={handleChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            sx={{pr: 4}}
+            size="small"
           >
-            <Tab label="OPENESS" {...a11yProps(0)} />
-            <Tab label="CONSCIENTIOUS" {...a11yProps(1)} />
-            <Tab label="EXTRAVERSION" {...a11yProps(2)} />
-            <Tab label="AGREEABLENESS" {...a11yProps(3)} />
-            <Tab label="NEUROTICISM" {...a11yProps(4)}/>
-          </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
+            {industriesList.map(x =>
+              <option value={x}>{x}</option>
+            )}
+          </NativeSelect>
+        </Grid>
+        <Typography variant="caption" sx={{mt:-1, mb:0.5}}>
+          Your PR value among industry groups
+        </Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={1}
+        >
+          <Grid item xs={6}>
             <Grid
               container
               direction="column"
-              justifyContent="start"
-              alignItems="center"
+              justifyContent="flex-start"
+              alignItems="flex-start"
               style={{
-                background: "#DBDBDB"
+                background: theme.palette.OCEAN_O.main,
+                borderRadius: "16px",
               }}
-              width="70vw"
-              paddingLeft="8vw"
-              paddingRight="8vw"
-              borderRadius='16px'
+              sx={{
+                px: 2,
+                py: 2
+              }}
             >
-              <p>This is graph for 'O'</p>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  Openness
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[0]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
             </Grid>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Item Three
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            Item Four
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            Item Five
-          </TabPanel>
-        </Box>
+          </Grid>
+          
+          <Grid item xs={6}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              style={{
+                background: theme.palette.OCEAN_C.main,
+                borderRadius: "16px",
+              }}
+              sx={{
+                px: 2, py: 2, mb: 1
+              }}
+            >
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  C16s
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[1]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={1}
+        >
+          <Grid item xs={6} id="grid wrapper">
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              style={{
+                background: theme.palette.OCEAN_E.main,
+                borderRadius: "16px",
+              }}
+              sx={{
+                px: 2,
+                py: 2
+              }}
+            >
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  Extraversion
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[2]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="body2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          
+          <Grid item xs={6}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              style={{
+                background: theme.palette.OCEAN_A.main,
+                borderRadius: "16px",
+              }}
+              sx={{
+                px: 2, py: 2, mb: 1
+              }}
+            >
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  Agreeableness
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[3]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={1}
+        >
+          <Grid item xs={6}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              style={{
+                background: theme.palette.OCEAN_N.main,
+                borderRadius: "16px",
+              }}
+              sx={{
+                px: 2,
+                py: 2
+              }}
+            >
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  Neuroticism
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[4]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          
+          <Grid item xs={6}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              style={{
+                background: theme.palette.grey[700],
+                borderRadius: "16px",
+              }}
+              sx={{
+                px: 2, py: 2, mb: 1
+              }}
+            >
+              <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+                {/* <EmojiEventsRoundedIcon sx={{ color: theme.palette.secondary[900] }}/> */}
+                <Typography color="#ffffff" variant="caption" fontWeight="700" sx={{pl: 0.25}}>
+                  Overall
+                </Typography>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
+                <Typography color="#ffffff" fontSize="42pt" fontWeight="900" sx={{ letterSpacing: -2 }}>
+                  {loading ?
+                    <CircularProgress />
+                    : rank[5]
+                  }
+                </Typography>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                  %
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      
       </Grid>
     </>
   )
