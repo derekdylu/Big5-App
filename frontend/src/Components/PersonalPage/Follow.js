@@ -15,7 +15,7 @@ const Follow = () => {
                 paddingLeft="8vw"
                 paddingRight="8vw"
             >
-                <p style = {{ color: 'white' }}>FOLLOWING/FOLLOWERs (coming soon)</p>
+                <p style = {{ color: 'white' }}>FOLLOWING/FOLLOWERS (coming soon)</p>
             </Grid>
         </>
     )
