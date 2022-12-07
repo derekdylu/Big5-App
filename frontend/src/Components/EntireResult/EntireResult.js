@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 import { updateInterviewById, getInterviewById } from '../../Utils/Axios';
 
 import ScoreBar from '../EntireResult/ScoreBar';
@@ -86,12 +87,11 @@ const EntireResult = ({interview, date, big, industry, handleClose}) => {
                 direction="column"
                 justifyContent="start"
                 alignItems="center"
-                height="100vh"
-                width="100vw"
                 style={{
                     background: "#000"
                 }}
-                paddingTop='5vh'
+                paddingTop='16px'
+                paddingBottom='32px'
             >
                 <Grid 
                     display="flex" 
@@ -129,7 +129,7 @@ const EntireResult = ({interview, date, big, industry, handleClose}) => {
                         backgroundColor: '#FFFFFF', 
                         borderRadius: '30px',
                         fontWeight: 'bold',
-                        pb: 2
+                        pb: 1
                     }}
                     container
                     direction="column"
@@ -150,17 +150,13 @@ const EntireResult = ({interview, date, big, industry, handleClose}) => {
                     <Grid
                         container
                         direction="column"
-                        justifyContent="start"
-                        alignItems="start"
-                        width='80vw'
-                        marginTop='0.5vh'
                     >
                         <ShowChart 
-                            industry = {industry}
+                            industry = { industry }
                             big5 = { big }                        
                         />
                     </Grid>
-                     
+                    
                     { openNote ? (
                         <>
                         <Grid
@@ -168,7 +164,7 @@ const EntireResult = ({interview, date, big, industry, handleClose}) => {
                             justifyContent="space-around"
                             marginTop='2vh'
                         >
-                            <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
+                            
                             { readOnly ? (
                                 <Button onClick={editNoteOn} color="black">EDIT</Button>
                             ):(
@@ -209,12 +205,12 @@ const EntireResult = ({interview, date, big, industry, handleClose}) => {
                         <Grid 
                             display="flex" 
                             justifyContent="space-around"
-                            marginTop='3vh'
-                            marginBottom='2vh'
+                            marginTop='2vh'
                         >
-                            <Button onClick={handleOnClickAddNote}>ADD NOTE</Button>
+                            <Button onClick={handleOnClickAddNote} color="black">ADD NOTE</Button>
                         </Grid>
                     )}
+                    <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
                 </Grid>
             </Grid>
         </>
