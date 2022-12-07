@@ -10,9 +10,9 @@ import Post from './Post'
 import Grid from '@mui/material/Grid';
 
 // fake data 2.0
-const fake_interview_id1 = "00x001";
-const fake_interview_id2 = "00x002";
-const fake_interview_id3 = "00x003";
+const fake_interview_id1 = "639049dfdcc8d88496be5004";
+const fake_interview_id2 = "63904a41dcc8d88496be5005";
+const fake_interview_id3 = "6390517fdcc8d88496be5006";
 
 const fake_user = {
   id: "638cc603363b3cb6e72dacbf",
@@ -29,10 +29,10 @@ const fake_user = {
 const interviews = [
   {
     id: fake_interview_id1,
-    userId: "000xwlkalwkel",
+    userId: "638cc603363b3cb6e72dacbf",
     timestamp: "2022/09/04",
     topic: "11111.....11111.....",
-    industry: "💻 SOFTWARE",
+    industry: "🎨 ART",
     score: 111,
     big: [33, 90, 100, 44, 76],
     note: "This is note 1 .................",
@@ -40,10 +40,10 @@ const interviews = [
   },
   {
     id: fake_interview_id2,
-    userId: "000xwlkalwkel",
+    userId: "638cc603363b3cb6e72dacbf",
     timestamp: "2022/10/08",
     topic: "22222............22222............",
-    industry: "⚽️ SPORTS",
+    industry: "🎥 MEDIA",
     score: 222,
     big: [10, 48, 39, 85, 40],
     note: "This is note 2 ....................",
@@ -51,10 +51,10 @@ const interviews = [
   },
   {
     id: fake_interview_id3,
-    userId: "000xwlkalwkel",
+    userId: "638cc603363b3cb6e72dacbf",
     timestamp: "2022/11/19",
     topic: "333",
-    industry: "🎨 ART",
+    industry: "🏗️ CIVIL ENGINEERING",
     score: 333,
     big: [78, 41, 9, 30, 57],
     note: "This is note 3 .........................",
@@ -119,11 +119,7 @@ const PersonalPage = ({userId}) => {
               interviews.map((interview, i) => 
                 <>
                   <TestItem
-                    id = {interview.id}
-                    date = {interview.timestamp}
-                    big =  {interview.big}
-                    industry = {interview.industry}
-                    interviews = {interviews}
+                    interview={interview}
                   />
                 </>
               )

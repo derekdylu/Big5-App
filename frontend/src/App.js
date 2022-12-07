@@ -22,6 +22,10 @@ import PersonalPage from './Components/PersonalPage/PersonalPage';
 
 const queryClient = new QueryClient()
 
+const test_func = () => {
+  console.log("hi test hi test")
+}
+
 const App = () => {
   const { width, height, ratio } = useWindowDimensions()
   const [open, setOpen] = useState(false);
@@ -79,7 +83,6 @@ const App = () => {
             <Route path="/camera" element={<Camera />}/>
             <Route path="/result" element={<EntireResult/>}/>
             <Route path="/test" element={<PersonalPage/>}/>
-
           </Routes>
         </Router>
       </ThemeProvider>
