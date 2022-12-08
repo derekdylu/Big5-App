@@ -301,11 +301,11 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes, 
           model.layer4[1].conv1 = nn.Conv3d(512, 512, kernel_size=(3, 3, 3),stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
           model.layer4[1].conv2 = nn.Conv3d(512, 512, kernel_size=(3, 3, 3),stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
           model.bn1 = nn.BatchNorm3d(64)
-        tmp_model = model
-        if model_name == 'densenet':
-            tmp_model.classifier = nn.Linear(tmp_model.classifier.in_features, n_finetune_classes)
-        else:
-            tmp_model.fc = nn.Linear(tmp_model.fc.in_features, n_finetune_classes)
+    tmp_model = model
+    if model_name == 'densenet':
+        tmp_model.classifier = nn.Linear(tmp_model.classifier.in_features, n_finetune_classes)
+    else:
+        tmp_model.fc = nn.Linear(tmp_model.fc.in_features, n_finetune_classes)
 
     return model
 
@@ -323,7 +323,8 @@ class Res_CNN(nn.Module):
                   conv1_t_stride=1,
                   no_max_pool=True,
                   widen_factor=1, dropout_rate = 0)
-        pretrain_path = './pretrain_weight_3d18.pth'
+        # pretrain_path = './pretrain_weight_3d18.pth'
+        pretrain_path = None
         self.resnet = load_pretrained_model(resnet, pretrain_path, model_name = None, n_finetune_classes = num_classes)
         
         # freeze weight
