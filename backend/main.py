@@ -244,3 +244,7 @@ async def add_interview(file: UploadFile):
   #upload file to s3
   s3 = boto3.client('s3')
   bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
+
+@app.get("/predict")
+async def predict():
+  return {"message": "Hello World"}
