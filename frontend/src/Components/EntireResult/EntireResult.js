@@ -1,15 +1,17 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import React, { useState, useRef, useCallback, useEffect, Component } from 'react'
+import {useParams} from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-import { updateInterviewById, getInterviewById } from '../../Utils/Axios';
+import { updateInterviewById, getInterviewById, deleteInterviewById } from '../../Utils/Axios';
 
 import ScoreBar from '../EntireResult/ScoreBar';
 import ShowChart from './ShowChart';
@@ -17,7 +19,60 @@ import ShowChart from './ShowChart';
 
 import html2canvas from "html2canvas";
 
-const EntireResult = ({ date, big, industry, handleClose}) => {
+// fake data
+const fake_interview_id1 = "639049dfdcc8d88496be5004";
+const fake_interview_id2 = "63904a41dcc8d88496be5005";
+const fake_interview_id3 = "6390517fdcc8d88496be5006";
+
+const interviews = [
+    {
+      _id: fake_interview_id1,
+      userId: "638cc603363b3cb6e72dacbf",
+      timestamp: "2022/09/04",
+      topic: "11111.....11111.....",
+      industry: "🎨 ART",
+      score: 111,
+      big: [33, 90, 100, 44, 76],
+      note: "This is note 1 .................",
+      link: "111"
+    },
+    {
+      _id: fake_interview_id2,
+      userId: "638cc603363b3cb6e72dacbf",
+      timestamp: "2022/10/08",
+      topic: "22222............22222............",
+      industry: "🎥 MEDIA",
+      score: 222,
+      big: [10, 48, 39, 85, 40],
+      note: "This is note 2 ....................",
+      link: "222"
+    },
+    {
+      _id: fake_interview_id3,
+      userId: "638cc603363b3cb6e72dacbf",
+      timestamp: "2022/11/19",
+      topic: "333",
+      industry: "🏗️ CIVIL ENGINEERING",
+      score: 333,
+      big: [78, 41, 9, 30, 57],
+      note: "This is note 3 .........................",
+      link: "333"
+    },
+  ]
+  //===========================================================
+
+  // class EntireResult extends Component {
+  //   //   componentDidMount(){
+  //   //       console.log(this.props);
+  //   //       let id = this.props.match.params.interviewId; 
+  //   //   }
+  //     render(){
+  //         return(
+  //             <p>hi, param: </p>
+  //         )
+  //     }
+  // }
+const EntireResult = ({ interview, handleClose, setInterviews}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
@@ -26,7 +81,7 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
     const [note, setNote] = useState('')
 
     // useEffect(() => {
-    //     getInterviewById(interview.id).then((res) => {
+    //     getInterviewById(interview._id).then((res) => {
     //         setNote(res)
     //     }).catch((err) => {
     //         console.log(err)
@@ -46,7 +101,7 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
     }
     const editNoteOff = () => {
         setReadOnly(true)
-        // updateInterviewById(interview.id, null, null, null, null, null, note)
+        // updateInterviewById(interview._id, null, null, null, null, null, note)
         //     .then()
         //     .catch((err) => {
         //         console.log(err)
@@ -57,6 +112,16 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
         setNote(event.target.value);
     };
     
+    const handleDel = () => {
+      console.log('delete interview')
+      deleteInterviewById(interview._id).then((res) => {
+        setInterviews(res)
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+      })
+
+    }
 
     const exportRef = useRef();
 
@@ -100,27 +165,34 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
                     alignItems="stretch"
                     marginBottom='0.5vh'
                 >
-                    <IconButton 
+                    {/* <IconButton 
                         aria-label="back"
                         size='large'
                         // onClick={handleLast}
                     >
                         <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton 
                         aria-label="back"
                         size='large'
                         onClick = {handleClose}
                     >
-                        <DeleteIcon style={{ color: '#ED5564' }}/>
+                        <HomeIcon style={{ color: 'white' }}/>
                     </IconButton>
                     <IconButton 
+                        aria-label="back"
+                        size='large'
+                        onClick = {handleDel}
+                    >
+                        <DeleteIcon style={{ color: '#ED5564' }}/>
+                    </IconButton>
+                    {/* <IconButton 
                         aria-label="delete"
                         size='large'
                         // onClick={handleNext}
                     >
                         <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
-                    </IconButton>
+                    </IconButton> */}
                 </Grid>
                 <Grid
                     className='resultBox'
@@ -139,11 +211,11 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
                     marginTop='0.5vh'
                 >
                     <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
-                    >Interview testing</p>
+                    >{interview.topic}</p>
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
-                    >{date}</p>
+                    >{interview.timestamp}</p>
                     {
-                        big.map((s, id) => 
+                        interview.big.map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>
                         )
                     }
@@ -152,8 +224,8 @@ const EntireResult = ({ date, big, industry, handleClose}) => {
                         direction="column"
                     >
                         <ShowChart 
-                            industry = { industry }
-                            big5 = { big }                        
+                            industry = { interview.industry }
+                            big5 = { interview.big }                        
                         />
                     </Grid>
                     

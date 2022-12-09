@@ -83,6 +83,7 @@ const App = () => {
             <Route path="/camera" element={<Camera />}/>
             <Route path="/result" element={<EntireResult/>}/>
             <Route path="/test" element={<PersonalPage/>}/>
+            <Route path="/interview/:interviewId" element={<EntireResult/>}/>
           </Routes>
         </Router>
       </ThemeProvider>
