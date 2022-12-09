@@ -33,6 +33,13 @@ const TestItem = ({interview, interviews, setInterviews}) => {
     
     const [open, setOpen] = useState(false);
 
+    const changeDateFormat = (timestamp) => {
+        let result = Date(timestamp)
+        let arr = result.split(' ')
+        let newFormat = arr[3] + ' ' + arr[1] + ' ' + arr[2]
+        console.log(newFormat)
+        return newFormat
+    }
     const handleClickOpen = () => {
         // console.log('func')
         // navigate('/interview/id/test', {
@@ -58,7 +65,7 @@ const TestItem = ({interview, interviews, setInterviews}) => {
                 >
                     <Grid item xs={7}>
                         <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>{interview.topic}</p>
-                        <p style = {{color: 'gray', fontWeight: '500'}}>{interview.timestamp}</p>
+                        <p style = {{color: 'gray', fontWeight: '500'}}>{changeDateFormat(interview.timestamp)}</p>
                     </Grid>
                     <Grid 
                         item xs={4}
@@ -83,7 +90,8 @@ const TestItem = ({interview, interviews, setInterviews}) => {
                 <EntireResult
                     interview = {interview}
                     handleClose = {handleClose}
-                    setInterviews = {setInterviews} 
+                    setInterviews = {setInterviews}
+                    date = {changeDateFormat(interview.timestamp)}
                 />  
             </Dialog>
         </>
