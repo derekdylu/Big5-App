@@ -21,7 +21,7 @@ const Transition = React.forwardRef(
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
-const TestItem = ({interview}) => {
+const TestItem = ({interview, interviews, setInterviews}) => {
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -34,11 +34,17 @@ const TestItem = ({interview}) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
-        
+        // console.log('func')
+        // navigate('/interview/id/test', {
+        //     state: {
+        //         interviewId: interview._id
+        //     }
+        // });
         setOpen(true);
     };
 
     const handleClose = () => {
+        // navigate('/');
         setOpen(false);
     };
 
@@ -51,7 +57,7 @@ const TestItem = ({interview}) => {
                     cursor = 'pointer'
                 >
                     <Grid item xs={7}>
-                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>Interview testing</p>
+                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>{interview.topic}</p>
                         <p style = {{color: 'gray', fontWeight: '500'}}>{interview.timestamp}</p>
                     </Grid>
                     <Grid 
@@ -75,23 +81,10 @@ const TestItem = ({interview}) => {
                 TransitionComponent={Transition}
             >
                 <EntireResult
-                    date = {interview.timestamp}
-                    big = {interview.big}
-                    industry = {interview.industry}
-                    // handleLast = {handleLast}
-                    // handleNext = {handleNext}
-                    handleClose = {handleClose}  
+                    interview = {interview}
+                    handleClose = {handleClose}
+                    setInterviews = {setInterviews} 
                 />  
-                {/* <Link to={`/interview/id/${id}`} >
-                    <EntireResult
-                        date = {interview.timestamp}
-                        big = {interview.big}
-                        industry = {interview.industry}
-                        // handleLast = {handleLast}
-                        // handleNext = {handleNext}
-                        handleClose = {handleClose}  
-                    />  
-                </Link> */}
             </Dialog>
         </>
     )
