@@ -64,7 +64,6 @@ const interviews = [
 ]
 /*=================================================================================*/ 
 
-
 const PersonalPage = ({userId}) => {
 
   console.log("user id", userId)
@@ -119,7 +118,7 @@ const PersonalPage = ({userId}) => {
           >
             <p style = {{ color: 'white'}}>INTERVIEW HISTORY</p>
             {
-              data.map((interview, i) => 
+              data?.map((interview, i) => 
                 <>
                   <TestItem
                     interview={interview}
