@@ -73,7 +73,7 @@ export const updateInterviewById = async (id, _userId, _timestamp, _topic, _scor
     })
 }
 
-// delete a game
+// delete am interview
 export const deleteInterviewById = async (id) => {
     return await instance.delete(`/delete_interview/${id}`).then((res) => {
         return res.data;

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect, Component } from 'react'
-import {useParams} from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
+import theme from '../../Themes/Theme';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -8,8 +9,14 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import { updateInterviewById, getInterviewById, deleteInterviewById } from '../../Utils/Axios';
 
@@ -20,73 +27,67 @@ import ShowChart from './ShowChart';
 import html2canvas from "html2canvas";
 
 // fake data
-const fake_interview_id1 = "639049dfdcc8d88496be5004";
-const fake_interview_id2 = "63904a41dcc8d88496be5005";
-const fake_interview_id3 = "6390517fdcc8d88496be5006";
+// const fake_interview_id1 = "639049dfdcc8d88496be5004";
+// const fake_interview_id2 = "63904a41dcc8d88496be5005";
+// const fake_interview_id3 = "6390517fdcc8d88496be5006";
 
-const interviews = [
-    {
-      _id: fake_interview_id1,
-      userId: "638cc603363b3cb6e72dacbf",
-      timestamp: "2022/09/04",
-      topic: "11111.....11111.....",
-      industry: "🎨 ART",
-      score: 111,
-      big: [33, 90, 100, 44, 76],
-      note: "This is note 1 .................",
-      link: "111"
-    },
-    {
-      _id: fake_interview_id2,
-      userId: "638cc603363b3cb6e72dacbf",
-      timestamp: "2022/10/08",
-      topic: "22222............22222............",
-      industry: "🎥 MEDIA",
-      score: 222,
-      big: [10, 48, 39, 85, 40],
-      note: "This is note 2 ....................",
-      link: "222"
-    },
-    {
-      _id: fake_interview_id3,
-      userId: "638cc603363b3cb6e72dacbf",
-      timestamp: "2022/11/19",
-      topic: "333",
-      industry: "🏗️ CIVIL ENGINEERING",
-      score: 333,
-      big: [78, 41, 9, 30, 57],
-      note: "This is note 3 .........................",
-      link: "333"
-    },
-  ]
+// const interviews = [
+//     {
+//       _id: fake_interview_id1,
+//       userId: "638cc603363b3cb6e72dacbf",
+//       timestamp: "2022/09/04",
+//       topic: "11111.....11111.....",
+//       industry: "🎨 ART",
+//       score: 111,
+//       big: [33, 90, 100, 44, 76],
+//       note: "This is note 1 .................",
+//       link: "111"
+//     },
+//     {
+//       _id: fake_interview_id2,
+//       userId: "638cc603363b3cb6e72dacbf",
+//       timestamp: "2022/10/08",
+//       topic: "22222............22222............",
+//       industry: "🎥 MEDIA",
+//       score: 222,
+//       big: [10, 48, 39, 85, 40],
+//       note: "This is note 2 ....................",
+//       link: "222"
+//     },
+//     {
+//       _id: fake_interview_id3,
+//       userId: "638cc603363b3cb6e72dacbf",
+//       timestamp: "2022/11/19",
+//       topic: "333",
+//       industry: "🏗️ CIVIL ENGINEERING",
+//       score: 333,
+//       big: [78, 41, 9, 30, 57],
+//       note: "This is note 3 .........................",
+//       link: "333"
+//     },
+//   ]
   //===========================================================
 
-  // class EntireResult extends Component {
-  //   //   componentDidMount(){
-  //   //       console.log(this.props);
-  //   //       let id = this.props.match.params.interviewId; 
-  //   //   }
-  //     render(){
-  //         return(
-  //             <p>hi, param: </p>
-  //         )
-  //     }
-  // }
-const EntireResult = ({ interview, handleClose, setInterviews}) => {
+const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
     const [openNote, setOpenNOte] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
-    const [note, setNote] = useState('')
+    const [note, setNote] = useState(interview.note || '')
+    const [delWindowOpen, setDelWindowOpen] = useState(false)
 
-    // useEffect(() => {
-    //     getInterviewById(interview._id).then((res) => {
-    //         setNote(res)
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-    // }, [])
+    useEffect(() => {
+        getInterviewById(interview._id).then((res) => {
+            setNote(res)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [])
+
+    const handleEditTopic = () => {
+        console.log('edit topic')
+    }
 
     const handleOnClickAddNote = () => {
         setOpenNOte(true);
@@ -101,26 +102,35 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
     }
     const editNoteOff = () => {
         setReadOnly(true)
-        // updateInterviewById(interview._id, null, null, null, null, null, note)
-        //     .then()
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
+        updateInterviewById(interview._id, interview.userId, interview.timestamp, interview.topic, interview.score, interview.big, interview.note)
+            .then()
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const handleChange = (event) => {
         setNote(event.target.value);
     };
     
-    const handleDel = () => {
+    const handleDelOpen = () => {
       console.log('delete interview')
-      deleteInterviewById(interview._id).then((res) => {
+      setDelWindowOpen(true)
+   
+    }
+
+    const handleDelClose = () => {
+        setDelWindowOpen(false)
+    }
+
+    const delInterview = () => {
+        setDelWindowOpen(false)
+        deleteInterviewById(interview._id).then((res) => {
         setInterviews(res)
         console.log(res)
       }).catch((err) => {
         console.log(err)
       })
-
     }
 
     const exportRef = useRef();
@@ -145,8 +155,33 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
         downloadImage(image, imageFileName);
     };
 
+    const currNote = interview.note;
+
     return(
         <>
+            <Dialog
+                open={delWindowOpen}
+                onClose={handleDelClose}
+            >
+                <DialogTitle>
+                {"Delete this interview record?"}
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    You are going to discard this record, it can not be restore.
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleDelClose} autoFocus variant="secondary2">
+                    Cancel
+                </Button>
+                <Button onClick={delInterview} variant="secondary3">
+                    <Link to="/" style={{ textDecoration: 'none', color: theme.palette.warning.main }}>
+                    Delete
+                    </Link>
+                </Button>
+                </DialogActions>
+            </Dialog>
             <Grid
                 container
                 direction="column"
@@ -182,7 +217,7 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
                     <IconButton 
                         aria-label="back"
                         size='large'
-                        onClick = {handleDel}
+                        onClick = {handleDelOpen}
                     >
                         <DeleteIcon style={{ color: '#ED5564' }}/>
                     </IconButton>
@@ -209,11 +244,25 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
                     alignItems="center"
                     width='80vw'
                     marginTop='0.5vh'
+                    paddingTop='2vh'
                 >
-                    <p style = {{ fontSize: 20, marginBlockEnd: '0em' }}
-                    >{interview.topic}</p>
+                    <Grid 
+                        display="flex" 
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                         <p style = {{ fontSize: 20, margin: '0px'}}>{interview.topic}</p>
+                        <IconButton 
+                            aria-label="back"
+                            size='large'
+                            onClick={handleEditTopic}
+                        >
+                            <CreateIcon style={{ color: 'black' }}/>     
+                        </IconButton>
+                    </Grid>
+                   
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
-                    >{interview.timestamp}</p>
+                    >{date}</p>
                     {
                         interview.big.map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>
@@ -243,6 +292,7 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
                                 <Button onClick={editNoteOff} color="black">SAVE</Button>
                             )}
                             <Button onClick={handleOnClickDelNote} color="warning">DELETE</Button>
+                            <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
                         </Grid>
                         <Grid
                             display="flex" 
@@ -263,8 +313,8 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
                                 <TextField
                                     multiline
                                     variant="outlined"
-                                    defaultValue=""
-                                    value={note}
+                                    defaultValue="note"
+                                    value={interview.note}
                                     onChange={handleChange}
                                     InputProps={{
                                         readOnly: readOnly,
@@ -280,9 +330,10 @@ const EntireResult = ({ interview, handleClose, setInterviews}) => {
                             marginTop='2vh'
                         >
                             <Button onClick={handleOnClickAddNote} color="black">ADD NOTE</Button>
+                            <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
                         </Grid>
                     )}
-                    <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
+                    
                 </Grid>
             </Grid>
         </>
