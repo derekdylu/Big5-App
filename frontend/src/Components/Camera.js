@@ -5,7 +5,7 @@ import Webcam from "react-webcam";
 import { useStopwatch } from 'react-timer-hook';
 import theme from '../Themes/Theme';
 import AWS from 'aws-sdk';
-import { postInterview } from '../Utils/Axios';
+import { postInterview, testInterview } from '../Utils/Axios';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -66,11 +66,22 @@ const industriesList = [
   "🛠️ ENGINEERING",
   "💻 SOFTWARE",
   "🏗️ CIVIL ENGINEERING",
-  "💼 CONSULTANTING",
+  "💼 BUSINESS",
   "👥 MANAGEMENT",
-  "⚽️ SPORTS",
+  "⚽️ SPORT",
   "🎥 MEDIA",
-  "🏭 MANUFACTURING"
+  "🏭 MANUFACTURING",
+  "🌿 FARMING",
+  "🧑‍🏫 EDUCATION",
+  "🏥 MEDICAL",
+  "🍜 FOOD",
+  "🤵 GOVERNMENT",
+  "📈 FINANCE",
+  "🔬 SCIENCE",
+  "🚗 TRANSPORT",
+  "🔋 ENERGY",
+  "🪩 ENTERTAINMENT",
+  "🧿 OTHER"
 ]
 
 const StyledLinearProgress = withStyles({
@@ -165,7 +176,8 @@ const Camera = (expiryTimestamp) => {
       const link = "s3://" + S3_BUCKET + "/" + filename
       postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", link)
         .then((res) => {
-        navigate("/");
+          testInterview(res.id, blob)
+          navigate("/");
         }).catch((err) => {
           console.log("err", err)
         })
@@ -304,8 +316,9 @@ const Camera = (expiryTimestamp) => {
                       justifyContent="flex-start"
                       alignItems="flex-start"
                       spacing={1}
+                      height="85%"
                       sx={{mt:1.5}}
-                      style={{overflow: 'auto'}}
+                      style={{overflow: 'scroll'}}
                     >
                       {industriesList.map(x => 
                         <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
