@@ -72,10 +72,14 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
 
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
-    const [openNote, setOpenNOte] = useState(false);
+    const [note, setNote] = useState('') 
+    const [openNote, setOpenNote] = useState(false);
     const [readOnly, setReadOnly] = useState(false);
-    const [note, setNote] = useState('')
-    const [delWindowOpen, setDelWindowOpen] = useState(false)
+    const [delNoteWarning, setDelNoteWarning] = useState(false);
+    const [topic, setTopic] = useState(interview.topic)
+    const [topicEditWindow, setTopicEditWindow] = useState(false)
+    const [delInterviewWarning, setDelInterviewWarning] = useState(false)
+    
 
     useEffect(() => {
         getInterviewById(interview._id).then((res) => {
@@ -86,22 +90,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         })
     }, [])
 
-    const handleEditTopic = () => {
-        console.log('edit topic')
-    }
-
-    const handleOnClickAddNote = () => {
-        setOpenNOte(true);
-        setReadOnly(false);
-    }
-    const handleOnClickDelNote = () => {
-        setOpenNOte(false);
-    }
-
-    const editNoteOn = () => {
-        setReadOnly(false)
-    }
-    const editNoteOff = () => {
+    const updateNote = () => {
         // console.log("press SAVE")
         setReadOnly(true)
         updateInterviewById(interview._id, null, null, null, null, null, note, null)
@@ -112,28 +101,40 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
             })
     }
 
-    const handleChange = (event) => {
-        setNote(event.target.value);
-    };
-    
-    const handleDelOpen = () => {
-    //   console.log('delete interview')
-      setDelWindowOpen(true)
-   
+    const delNote = () => {
+        setDelNoteWarning(false)
+        setNote('')
+        updateInterviewById(interview._id, null, null, null, null, null, note, null)
+            .then()
+            .catch((err) => {
+                console.log('ERROR:(')
+                console.log(err)
+            })
     }
-
-    const handleDelClose = () => {
-        setDelWindowOpen(false)
+  
+    const handleEditClose = () => {
+        setTopicEditWindow(false)
+        setTopic(interview.topic)
     }
 
     const delInterview = () => {
-        setDelWindowOpen(false)
+        setDelInterviewWarning(false)
         deleteInterviewById(interview._id).then((res) => {
         setInterviews(res)
         console.log(res)
       }).catch((err) => {
         console.log(err)
       })
+    }
+
+    const editInterviewTopic = () => {
+        setTopicEditWindow(false)
+        updateInterviewById(interview._id, null, null, topic, null, null, null, null)
+            .then()
+            .catch((err) => {
+                console.log('ERROR:(')
+                console.log(err)
+            })
     }
 
     const exportRef = useRef();
@@ -163,8 +164,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     return(
         <>
             <Dialog
-                open={delWindowOpen}
-                onClose={handleDelClose}
+                open={delInterviewWarning}
             >
                 <DialogTitle>
                 {"Delete this interview record?"}
@@ -175,7 +175,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleDelClose} autoFocus variant="secondary2">
+                <Button onClick={() => {setDelInterviewWarning(false)}} autoFocus variant="secondary2">
                     Cancel
                 </Button>
                 <Button onClick={delInterview} variant="secondary3">
@@ -183,6 +183,59 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     Delete
                     </Link>
                 </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={topicEditWindow}
+            >
+                <DialogTitle>
+                {"Change the interview topic?"}
+                </DialogTitle>
+                <Grid
+                    display="flex" 
+                    flexDirection="column"
+                    justifyContent="center"
+                    marginTop='0vh'
+                    marginBottom='0vh'
+                    paddingLeft='5vw'
+                    paddingRight='5vw'
+                >
+                    <TextField 
+                        multiline
+                        variant="outlined" 
+                        value = {topic}
+                        onChange={(e) => {setTopic(e.target.value)}}
+                    />
+                    <Grid
+                        display="flex" 
+                        flexDirection="row"
+                        justifyContent="space-around"
+                    >
+                        <Button onClick={handleEditClose} autoFocus variant="secondary2">
+                            Cancel
+                        </Button>
+                        <Button onClick={editInterviewTopic} autoFocus variant="secondary2">
+                            Save
+                        </Button>    
+                    </Grid>
+                </Grid>
+            </Dialog>
+            <Dialog
+                open={delNoteWarning}
+            >
+                <DialogTitle>
+                {"Delete this interview note?"}
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    You are going to discard this note, it can not be restore.
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => {setDelNoteWarning(false)}} autoFocus variant="secondary2">
+                    Cancel
+                </Button>
+                <Button onClick={delNote} variant="secondary3"> Delete </Button>
                 </DialogActions>
             </Dialog>
             <Grid
@@ -220,7 +273,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     <IconButton 
                         aria-label="back"
                         size='large'
-                        onClick = {handleDelOpen}
+                        onClick = {() => {setDelInterviewWarning(true)}}
                     >
                         <DeleteIcon style={{ color: '#ED5564' }}/>
                     </IconButton>
@@ -258,7 +311,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                         <IconButton 
                             aria-label="back"
                             size='large'
-                            onClick={handleEditTopic}
+                            onClick={() => {setTopicEditWindow(true)}}
                         >
                             <CreateIcon style={{ color: 'black' }}/>     
                         </IconButton>
@@ -288,13 +341,15 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             justifyContent="space-around"
                             marginTop='2vh'
                         >
-                            
+                            <Button onClick={() => { setOpenNote(false)}} color="black">HIDE</Button>
                             { readOnly ? (
-                                <Button onClick={editNoteOn} color="black">EDIT</Button>
+                                <Button onClick={() => {setReadOnly(false)}} color="black">EDIT</Button>
                             ):(
-                                <Button onClick={editNoteOff} color="black">SAVE</Button>
+                                <>
+                                <Button onClick={updateNote} color="black">SAVE</Button>
+                                <Button onClick={() => {setDelNoteWarning(true)}} color="warning">DELETE ALL</Button>
+                                </>
                             )}
-                            <Button onClick={handleOnClickDelNote} color="warning">DELETE</Button>
                             <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
                         </Grid>
                         <Grid
@@ -319,7 +374,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                     variant="outlined" 
                                     defaultValue="Add/Edit Note"
                                     value = {note}
-                                    onChange={handleChange}
+                                    onChange={(e) => {setNote(e.target.value)}}
                                     InputProps={{
                                         readOnly: readOnly,
                                     }}
@@ -343,8 +398,19 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             justifyContent="space-around"
                             marginTop='2vh'
                         >
-                            <Button onClick={handleOnClickAddNote} color="black">ADD NOTE</Button>
-                            <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
+                            <Button 
+                                onClick={() => {
+                                    setOpenNote(true);
+                                    setReadOnly(false);
+                                }} 
+                                color="black"
+                            >ADD NOTE</Button>
+                            <Button 
+                                onClick={() => 
+                                    exportAsImage(exportRef.current, "test")
+                                } 
+                                color="black"
+                            >EXPORT</Button>
                         </Grid>
                     )}
                     
