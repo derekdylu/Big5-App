@@ -77,7 +77,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     const [readOnly, setReadOnly] = useState(false);
     const [delNoteWarning, setDelNoteWarning] = useState(false);
     const [topic, setTopic] = useState(interview.topic)
-    const [topicEditWindow, setTopicEditWindow] = useState(false)
+    const [topicEdit, setTopicEdit] = useState(false)
     const [delInterviewWarning, setDelInterviewWarning] = useState(false)
     
 
@@ -112,8 +112,8 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
             })
     }
   
-    const handleEditClose = () => {
-        setTopicEditWindow(false)
+    const topicEditClose = () => {
+        setTopicEdit(false)
         setTopic(interview.topic)
     }
 
@@ -128,7 +128,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
 
     const editInterviewTopic = () => {
-        setTopicEditWindow(false)
+        setTopicEdit(false)
         updateInterviewById(interview._id, null, null, topic, null, null, null, null)
             .then()
             .catch((err) => {
@@ -186,7 +186,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                 </DialogActions>
             </Dialog>
             <Dialog
-                open={topicEditWindow}
+                open={topicEdit}
             >
                 <DialogTitle>
                 {"Change the interview topic?"}
@@ -211,7 +211,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                         flexDirection="row"
                         justifyContent="space-around"
                     >
-                        <Button onClick={handleEditClose} autoFocus variant="secondary2">
+                        <Button onClick={topicEditClose} autoFocus variant="secondary2">
                             Cancel
                         </Button>
                         <Button onClick={editInterviewTopic} autoFocus variant="secondary2">
@@ -256,13 +256,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     alignItems="stretch"
                     marginBottom='0.5vh'
                 >
-                    {/* <IconButton 
-                        aria-label="back"
-                        size='large'
-                        // onClick={handleLast}
-                    >
-                        <ArrowBackIosIcon style={{ color: '#E5E7E9' }}/>
-                    </IconButton> */}
                     <IconButton 
                         aria-label="back"
                         size='large'
@@ -277,13 +270,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     >
                         <DeleteIcon style={{ color: '#ED5564' }}/>
                     </IconButton>
-                    {/* <IconButton 
-                        aria-label="delete"
-                        size='large'
-                        // onClick={handleNext}
-                    >
-                        <ArrowForwardIosIcon style={{ color: '#E5E7E9' }}/>
-                    </IconButton> */}
                 </Grid>
                 <Grid
                     className='resultBox'
@@ -311,7 +297,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                         <IconButton 
                             aria-label="back"
                             size='large'
-                            onClick={() => {setTopicEditWindow(true)}}
+                            onClick={() => {setTopicEdit(true)}}
                         >
                             <CreateIcon style={{ color: 'black' }}/>     
                         </IconButton>
@@ -370,7 +356,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             >
                                 <TextField 
                                     multiline
-                                    label="My Note" 
+                                    // label="My Note" 
                                     variant="outlined" 
                                     defaultValue="Add/Edit Note"
                                     value = {note}
@@ -379,16 +365,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                         readOnly: readOnly,
                                     }}
                                 />
-                                {/* <TextField
-                                    multiline
-                                    variant="outlined"
-                                    defaultValue="note"
-                                    value={interview.note}
-                                    onChange={handleChange}
-                                    InputProps={{
-                                        readOnly: readOnly,
-                                    }}
-                                /> */}
                             </Box>
                         </Grid>
                         </>
