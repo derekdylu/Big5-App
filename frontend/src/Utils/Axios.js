@@ -70,7 +70,7 @@ export const updateInterviewById = async (id, _userId, _timestamp, _topic, _scor
     param = JSON.stringify(param);
     console.log('params: ', param)
     return await instance.put(`/update_interview/${id}`, param, jsonHeader).then((res) => {
-        // console.log('response: ', res)
+        console.log('response: ', res)
         return res.data;
     })
 }
