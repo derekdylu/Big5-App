@@ -18,11 +18,22 @@ const industriesList = [
   "🛠️ ENGINEERING",
   "💻 SOFTWARE",
   "🏗️ CIVIL ENGINEERING",
-  "💼 CONSULTANTING",
+  "💼 BUSINESS",
   "👥 MANAGEMENT",
-  "⚽️ SPORTS",
+  "⚽️ SPORT",
   "🎥 MEDIA",
-  "🏭 MANUFACTURING"
+  "🏭 MANUFACTURING",
+  "🌿 FARMING",
+  "🧑‍🏫 EDUCATION",
+  "🏥 MEDICAL",
+  "🍜 FOOD",
+  "🤵 GOVERNMENT",
+  "📈 FINANCE",
+  "🔬 SCIENCE",
+  "🚗 TRANSPORT",
+  "🔋 ENERGY",
+  "🪩 ENTERTAINMENT",
+  "🧿 OTHER"
 ]
 
 const ShowChart = () => {
@@ -69,9 +80,11 @@ const ShowChart = () => {
     let _rank = []
     for (let j = 0; j < _order.length - 1; j++) {
       let percentile = Math.floor((1 - _order[j].indexOf(big[j]) / _order[j].length) * 100)
+      if (percentile === 100) percentile = 99
       _rank.push(percentile)
     }
     let percentile = Math.floor((1 - _order[_order.length - 1].indexOf(score) / _order[_order.length - 1].length) * 100)
+    if (percentile === 100) percentile = 99
     _rank.push(percentile)
     setRank(_rank)
     setLoading(false)
