@@ -34,10 +34,9 @@ const TestItem = ({interview, interviews, setInterviews}) => {
     const [open, setOpen] = useState(false);
 
     const changeDateFormat = (timestamp) => {
-        let result = Date(timestamp)
-        let arr = result.split(' ')
+        var result = new Date(parseInt(timestamp))
+        let arr = result.toString().split(' ')
         let newFormat = arr[3] + ' ' + arr[1] + ' ' + arr[2]
-        // console.log(newFormat)
         return newFormat
     }
     const handleClickOpen = () => {

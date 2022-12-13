@@ -127,7 +127,7 @@ def post_user(user: model.User = Body(...)):
   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.user_helper(inserted_user)))
 
 @app.put("/update_user/{id}", response_description="update an user by ID", response_model=model.User)
-def update_user(id: str, user: model.User = Body(...)):
+def update_user(id: str, user: model.UpdatedUser = Body(...)):
   user = {k: v for k, v in user.dict().items() if v is not None}
 
   if len(user) >= 1:
@@ -212,9 +212,8 @@ def post_interview(interview: model.Interview = Body(...)):
   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.interview_helper(inserted_interview)))
 
 @app.put("/update_interview/{id}", response_description="update an interview", response_model=model.Interview)
-def update_interview(id: str, interview: model.Interview = Body(...)):
+def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
   interview = {k: v for k, v in interview.dict().items() if v is not None}
-  print(interview)
 
   if len(interview) >= 1:
     update_result = interviews_col.update_one({"_id": id}, {"$set": interview})
