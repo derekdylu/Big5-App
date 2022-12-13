@@ -57,20 +57,36 @@ export const postInterview = async (_userId, _timestamp, _topic, _industry, _sco
 }
 
 // update an interview by id
-export const updateInterviewById = async (id, _userId, _timestamp, _topic, _score, _big, _note, _link) => {
+export const updateInterviewById = async (id, _userId, _timestamp, _topic, _industry, _score, _big, _note, _link) => {
     let param = {};
 
+    if (_userId != null) {
+        param = {...param, "userId": _userId}
+    }
+    if (_timestamp != null) {
+        param = {...param, "timestamp": _timestamp}
+    }
     if (_topic != null) {
         param = {...param, "topic": _topic}
+    }
+    if (_industry != null) {
+        param = {...param, "industry": _industry}
+    }
+    if (_score != null) {
+        param = {...param, "score": _score}
+    }
+    if (_big != null) {
+        param = {...param, "big": _big}
     }
     if (_note != null) {
         param = {...param, "note": _note}
     }
+    if (_link != null) {
+        param = {...param, "link": _link}
+    }
 
     param = JSON.stringify(param);
-    console.log('params: ', param)
     return await instance.put(`/update_interview/${id}`, param, jsonHeader).then((res) => {
-        console.log('response: ', res)
         return res.data;
     })
 }

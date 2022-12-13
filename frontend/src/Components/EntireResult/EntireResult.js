@@ -22,51 +22,8 @@ import { updateInterviewById, getInterviewById, deleteInterviewById } from '../.
 
 import ScoreBar from '../EntireResult/ScoreBar';
 import ShowChart from './ShowChart';
-// import Graph from './Graph';
 
 import html2canvas from "html2canvas";
-
-// fake data
-// const fake_interview_id1 = "639049dfdcc8d88496be5004";
-// const fake_interview_id2 = "63904a41dcc8d88496be5005";
-// const fake_interview_id3 = "6390517fdcc8d88496be5006";
-
-// const interviews = [
-//     {
-//       _id: fake_interview_id1,
-//       userId: "638cc603363b3cb6e72dacbf",
-//       timestamp: "2022/09/04",
-//       topic: "11111.....11111.....",
-//       industry: "🎨 ART",
-//       score: 111,
-//       big: [33, 90, 100, 44, 76],
-//       note: "This is note 1 .................",
-//       link: "111"
-//     },
-//     {
-//       _id: fake_interview_id2,
-//       userId: "638cc603363b3cb6e72dacbf",
-//       timestamp: "2022/10/08",
-//       topic: "22222............22222............",
-//       industry: "🎥 MEDIA",
-//       score: 222,
-//       big: [10, 48, 39, 85, 40],
-//       note: "This is note 2 ....................",
-//       link: "222"
-//     },
-//     {
-//       _id: fake_interview_id3,
-//       userId: "638cc603363b3cb6e72dacbf",
-//       timestamp: "2022/11/19",
-//       topic: "333",
-//       industry: "🏗️ CIVIL ENGINEERING",
-//       score: 333,
-//       big: [78, 41, 9, 30, 57],
-//       note: "This is note 3 .........................",
-//       link: "333"
-//     },
-//   ]
-  //===========================================================
 
 const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
 
@@ -90,9 +47,8 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }, [])
 
     const updateNote = () => {
-        // console.log("press SAVE")
         setReadOnly(true)
-        updateInterviewById(interview._id, null, null, null, null, null, note, null)
+        updateInterviewById(interview._id, null, null, null, null, null, null, note)
             .then()
             .catch((err) => {
                 console.log('ERROR:(')
@@ -101,10 +57,9 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
 
     const delNote = () => {
-        // console.log("press DELETE ALL after clicking ADD NOTE")
         setDelNoteWarning(false)
         setNote('')
-        updateInterviewById(interview._id, null, null, null, null, null, note, null)
+        updateInterviewById(interview._id, null, null, null, null, null, null, "")
             .then()
             .catch((err) => {
                 console.log('ERROR:(')
@@ -113,26 +68,23 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
   
     const topicEditClose = () => {
-        // console.log("press CANCEL after clicking the pencil icon")
         setTopicEdit(false)
         setTopic(interview.topic)
     }
 
     const delInterview = () => {
-        // console.log("press DELETE after clicking the trashcan icon")
         setDelInterviewWarning(false)
         deleteInterviewById(interview._id).then((res) => {
-        setInterviews(res)
-        console.log(res)
-      }).catch((err) => {
-        console.log(err)
-      })
+            setInterviews(res)
+            console.log(res)
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     const editInterviewTopic = () => {
-        // console.log("press SAVE after clicking the pencil icon")
         setTopicEdit(false)
-        updateInterviewById(interview._id, null, null, topic, null, null, null, null)
+        updateInterviewById(interview._id, null, null, topic)
             .then()
             .catch((err) => {
                 console.log('ERROR:(')
@@ -174,7 +126,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
-                    You are going to discard this record, it can not be restore.
+                    You are going to discard this record, it can not be restored.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -192,7 +144,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                 open={topicEdit}
             >
                 <DialogTitle>
-                {"Change the interview topic?"}
+                    {"New topic"}
                 </DialogTitle>
                 <Grid
                     display="flex" 
@@ -231,14 +183,17 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
-                    You are going to discard this note, it can not be restore.
+                    You are going to discard this note, it can not be restored.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={() => {setDelNoteWarning(false)}} autoFocus variant="secondary2">
                     Cancel
                 </Button>
-                <Button onClick={delNote} variant="secondary3"> Delete </Button>
+                <Button onClick={() => {
+                    delNote();
+                    setReadOnly(true);
+                }} variant="secondary3"> Delete </Button>
                 </DialogActions>
             </Dialog>
             <Grid
@@ -295,18 +250,13 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                         display="flex" 
                         justifyContent="center"
                         alignItems="center"
+                        height="24px"
+                        sx={{mb: .75, mt: 1}}
                     >
-                         <p style = {{ fontSize: 20, margin: '0px'}}>{interview.topic}</p>
-                        <IconButton 
-                            aria-label="back"
-                            size='large'
-                            onClick={() => {setTopicEdit(true)}}
-                        >
-                            <CreateIcon style={{ color: 'black' }}/>     
-                        </IconButton>
+                         <p style = {{ fontSize: 20, margin: '0px'}} onClick={() => {setTopicEdit(true)}}>{topic}</p>
                     </Grid>
                    
-                    <p style = {{ color: "#5C5C5C", marginBlockStart: '0em'}}
+                    <p style = {{ color: "#5C5C5C", marginBlockStart: '0em', fontSize: 12}}
                     >{date}</p>
                     {
                         interview.big.map((s, id) => 
@@ -335,8 +285,8 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                 <Button onClick={() => {setReadOnly(false)}} color="black">EDIT</Button>
                             ):(
                                 <>
-                                <Button onClick={updateNote} color="black">SAVE</Button>
-                                <Button onClick={() => {setDelNoteWarning(true)}} color="warning">DELETE ALL</Button>
+                                <Button onClick={updateNote} color="black">DONE</Button>
+                                <Button onClick={() => {setDelNoteWarning(true)}} color="warning">CLEAR</Button>
                                 </>
                             )}
                             <Button onClick={() => exportAsImage(exportRef.current, "test")} color="black">EXPORT</Button>
@@ -383,7 +333,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                     setReadOnly(false);
                                 }} 
                                 color="black"
-                            >ADD NOTE</Button>
+                            >NOTE</Button>
                             <Button 
                                 onClick={() => 
                                     exportAsImage(exportRef.current, "test")

@@ -11,6 +11,7 @@ import Post from './Post'
 import Grid from '@mui/material/Grid';
 
 // fake data 2.0
+/*=================================================================================*/ 
 const fake_interview_id1 = "639049dfdcc8d88496be5004";
 const fake_interview_id2 = "63904a41dcc8d88496be5005";
 const fake_interview_id3 = "6390517fdcc8d88496be5006";
@@ -71,8 +72,8 @@ const PersonalPage = ({userId}) => {
 
   useEffect(() => {
     getInterviewsByUserId(userId).then((res) => {
-      setData(res)
-      // console.log(res)
+      const _res = res.sort((a,b) => b.timestamp - a.timestamp)
+      setData(_res)
     }).catch((err) => {
       console.log(err)
     })
