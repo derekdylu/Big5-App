@@ -66,13 +66,13 @@ const interviews = [
 
 const PersonalPage = ({userId}) => {
 
-  console.log("user id", userId)
+  // console.log("user id", userId)
   const [data, setData] = useState()
 
   useEffect(() => {
     getInterviewsByUserId(userId).then((res) => {
       setData(res)
-      console.log(res)
+      // console.log(res)
     }).catch((err) => {
       console.log(err)
     })
