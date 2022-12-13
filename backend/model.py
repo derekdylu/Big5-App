@@ -50,6 +50,34 @@ def user_helper(user) -> dict:
     "interview": user["interview"]
   }
 
+class UpdatedUser(BaseModel):
+  username: Optional[str]
+  email: Optional[str]
+  img: Optional[str]
+  interview: Optional[list]
+
+  class Config:
+    allow_population_by_field_name = True
+    arbitrary_types_allowed = True
+    json_encoders = {ObjectId: str}
+    schema_extra = {
+      "example": {
+        "username": "derekdylu",
+        "email": "abc@bcg.com",
+        "img": "./",
+        "interview": [],
+      }
+    }
+
+def user_helper(user) -> dict:
+  return {
+    "id": user["_id"],
+    "username": user["username"],
+    "email": user["email"],
+    "img": user["img"],
+    "interview": user["interview"]
+  }
+
 class Interview(BaseModel):
   id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
   userId: str = Field(...)
@@ -60,6 +88,46 @@ class Interview(BaseModel):
   big: list = Field(...)
   note: str = Field(...)
   link: str = Field(...)
+
+  class Config:
+    allow_population_by_field_name = True
+    arbitrary_types_allowed = True
+    json_encoders = {ObjectId: str}
+    schema_extra = {
+      "example": {
+        "userId": "abc1234567890",
+        "timestamp": "1234567890",
+        "topic": "topic",
+        "industry": "軟體工程師",
+        "score": 0,
+        "big": [1,2,3,4,5],
+        "note": "note",
+        "link": "./"
+      }
+    }
+
+def interview_helper(interview) -> dict:
+  return {
+    "id": interview["_id"],
+    "userId": interview["userId"],
+    "timestamp": interview["timestamp"],
+    "topic": interview["topic"],
+    "industry": interview["industry"],
+    "score": interview["score"],
+    "big": interview["big"],
+    "note": interview["note"],
+    "link": interview["link"]
+  }
+
+class UpdatedInterview(BaseModel):
+  userId: Optional[str]
+  timestamp: Optional[str]
+  topic: Optional[str]
+  industry: Optional[str]
+  score: Optional[int]
+  big: Optional[list]
+  note: Optional[str]
+  link: Optional[str]
 
   class Config:
     allow_population_by_field_name = True
