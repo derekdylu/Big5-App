@@ -73,13 +73,14 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     const OCEAN = ["OPENESS", "CONSCIENTIOUS", "EXTRAVERSION", "AGREEABLENESS","NEUROTICISM"];
     
     const [openNote, setOpenNOte] = useState(false);
-    const [readOnly, setReadOnly] = useState(true);
-    const [note, setNote] = useState(interview.note || '')
+    const [readOnly, setReadOnly] = useState(false);
+    const [note, setNote] = useState('')
     const [delWindowOpen, setDelWindowOpen] = useState(false)
 
     useEffect(() => {
         getInterviewById(interview._id).then((res) => {
-            setNote(res)
+            // console.log('useEffect note', res)
+            setNote(res.note)
         }).catch((err) => {
             console.log(err)
         })
@@ -101,10 +102,12 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         setReadOnly(false)
     }
     const editNoteOff = () => {
+        // console.log("press SAVE")
         setReadOnly(true)
-        updateInterviewById(interview._id, interview.userId, interview.timestamp, interview.topic, interview.score, interview.big, interview.note)
+        updateInterviewById(interview._id, null, null, null, null, null, note, null)
             .then()
             .catch((err) => {
+                console.log('ERROR:(')
                 console.log(err)
             })
     }
@@ -114,7 +117,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     };
     
     const handleDelOpen = () => {
-      console.log('delete interview')
+    //   console.log('delete interview')
       setDelWindowOpen(true)
    
     }
@@ -310,7 +313,18 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                 noValidate
                                 autoComplete="off"
                             >
-                                <TextField
+                                <TextField 
+                                    multiline
+                                    label="My Note" 
+                                    variant="outlined" 
+                                    defaultValue="Add/Edit Note"
+                                    value = {note}
+                                    onChange={handleChange}
+                                    InputProps={{
+                                        readOnly: readOnly,
+                                    }}
+                                />
+                                {/* <TextField
                                     multiline
                                     variant="outlined"
                                     defaultValue="note"
@@ -319,7 +333,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                                     InputProps={{
                                         readOnly: readOnly,
                                     }}
-                                />
+                                /> */}
                             </Box>
                         </Grid>
                         </>

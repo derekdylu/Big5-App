@@ -37,7 +37,7 @@ const TestItem = ({interview, interviews, setInterviews}) => {
         let result = Date(timestamp)
         let arr = result.split(' ')
         let newFormat = arr[3] + ' ' + arr[1] + ' ' + arr[2]
-        console.log(newFormat)
+        // console.log(newFormat)
         return newFormat
     }
     const handleClickOpen = () => {

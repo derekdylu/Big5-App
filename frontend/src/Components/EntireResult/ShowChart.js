@@ -39,7 +39,7 @@ const ShowChart = () => {
   const changeIndustry = (target) => {
     setLoading(true)
     getInterviewsByIndustry(target).then((res) => {
-      console.log("get interviews by industry", res)
+      // console.log("get interviews by industry", res)
       setAllInterviews(res)
       calculateRank(fakeBig, fakeScore, res)
     }).catch((err) => {
@@ -75,7 +75,7 @@ const ShowChart = () => {
     _rank.push(percentile)
     setRank(_rank)
     setLoading(false)
-    console.log(_rank)
+    // console.log(_rank)
   }
 
   const handleChange = (event) => {
