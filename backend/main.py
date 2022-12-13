@@ -1,6 +1,6 @@
 import os
 import uvicorn
-from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request
+from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -227,22 +227,19 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
+@app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
+def test_interview(id: str, file: UploadFile = File(...)):
+  print("id", id)
+  print("file", file)
+
+  return 0
+
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
 def delete_interview(id: str):
   delete_result = interviews_col.delete_one({"_id": id})
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
-
-@app.post("/interview", status_code=201)
-async def add_interview(file: UploadFile):
-  print("Create endpoint hit")
-  print(file.filename)
-  print(file.content_type)
-
-  #upload file to s3
-  s3 = boto3.client('s3')
-  bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
 
 @app.get("/predict")
 async def predict():
