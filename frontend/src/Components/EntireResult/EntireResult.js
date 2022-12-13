@@ -83,7 +83,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
 
     useEffect(() => {
         getInterviewById(interview._id).then((res) => {
-            // console.log('useEffect note', res)
             setNote(res.note)
         }).catch((err) => {
             console.log(err)
@@ -102,6 +101,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
 
     const delNote = () => {
+        // console.log("press DELETE ALL after clicking ADD NOTE")
         setDelNoteWarning(false)
         setNote('')
         updateInterviewById(interview._id, null, null, null, null, null, note, null)
@@ -113,11 +113,13 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
   
     const topicEditClose = () => {
+        // console.log("press CANCEL after clicking the pencil icon")
         setTopicEdit(false)
         setTopic(interview.topic)
     }
 
     const delInterview = () => {
+        // console.log("press DELETE after clicking the trashcan icon")
         setDelInterviewWarning(false)
         deleteInterviewById(interview._id).then((res) => {
         setInterviews(res)
@@ -128,6 +130,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     }
 
     const editInterviewTopic = () => {
+        // console.log("press SAVE after clicking the pencil icon")
         setTopicEdit(false)
         updateInterviewById(interview._id, null, null, topic, null, null, null, null)
             .then()
