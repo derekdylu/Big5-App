@@ -212,6 +212,13 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 def test_interview(id: str, file: UploadFile = File(...)):
   # to access file, use file.file or file.file.read()
 
+  # get big 5 score
+  big5 = [50, 50, 50, 50, 50]
+
+  # after getting the big5 response, update the score from -1 (loading) to a value
+  score = sum(big5) / len(big5)
+  update_interview(id, { "score": score })
+
   return 0
 
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
