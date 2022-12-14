@@ -106,7 +106,7 @@ const Camera = (expiryTimestamp) => {
   const [uploading, setUploading] = useState(false)
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = useState({})
-  const [s3Progress , setS3Progress] = useState(0);
+  // const [s3Progress , setS3Progress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
@@ -305,9 +305,6 @@ const Camera = (expiryTimestamp) => {
                 complete ?
                 (
                   <>
-                    <Typography variant="body1" sx={{ color: '#fff'}}>
-                      upoload: {s3Progress}
-                    </Typography>
                     <Typography variant="body1" sx={{ color: '#fff'}}>
                       Select your purpose (industry)
                     </Typography>
