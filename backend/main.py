@@ -217,9 +217,17 @@ def test_interview(id: str, file: UploadFile = File(...)):
 
   # after getting the big5 response, update the score from -1 (loading) to a value
   score = sum(big5) / len(big5)
-  update_interview(id, { "score": score })
+  
+  update_result = interviews_col.update_one({"_id": id}, {"$set": { "big": big5, "score": score }})
 
-  return 0
+  if update_result.modified_count == 1:
+    if (updated_result := interviews_col.find_one({"_id": id})) is not None:
+      return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(updated_result)))
+  
+  if (existing_result := interviews_col.find_one({"_id": id})) is not None:
+    return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(existing_result)))
+
+  raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
 def delete_interview(id: str):
