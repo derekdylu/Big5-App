@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
+import ffmpeg
 from dotenv import load_dotenv
 from typing import List, Optional
 
@@ -15,14 +16,14 @@ from starlette.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuthError
 
 #AWS settings
-import boto3
+# import boto3
 # AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
 # AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 # AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-AWS_S3_BUCKET_NAME = "imp-big5"
-AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
-AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
-REGION = "ap-northeast-1"
+# AWS_S3_BUCKET_NAME = "imp-big5"
+# AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
+# AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
+# REGION = "ap-northeast-1"
 
 # import model
 from . import model
@@ -183,26 +184,6 @@ def get_interviews_by_user_id(industry: str):
   
   return list
 
-# @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
-# def post_interview(interview: model.Interview = Body(...)):
-#   print("Endpoint hit")
-#   print(file.filename)
-#   print(file.content_type)
-
-#   # Upload file to S3
-#   s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_KEY)
-#   bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
-#   bucket.upload_fileObj(file.file, file.filename, ExtraArgs={'ACL': 'public-read'})
-
-#   upload_file_url = f"https://{AWS_S3_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
-#   interview.link = upload_file_url
-  
-#   interview = jsonable_encoder(interview)
-#   insert_interview = interviews_col.insert_one(interview)
-#   inserted_interview = interviews_col.find_one({"_id": insert_interview.inserted_id})
-
-#   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.interview_helper(inserted_interview)))
-
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
   interview = jsonable_encoder(interview)
@@ -229,8 +210,7 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
 def test_interview(id: str, file: UploadFile = File(...)):
-  print("id", id)
-  print("file", file)
+  # to access file, use file.file or file.file.read()
 
   return 0
 

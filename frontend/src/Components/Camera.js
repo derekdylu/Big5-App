@@ -32,18 +32,18 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import useWindowDimensions from '../Hooks/useWindowDimensions'
 
 
-const S3_BUCKET = "imp-big5";
-const REGION = "ap-northeast-1";
+// const S3_BUCKET = "imp-big5";
+// const REGION = "ap-northeast-1";
 
-AWS.config.update({
-  accessKeyId: "AKIASOAYAC7MCO7RLK5Y",
-  secretAccessKey: "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"
-})
+// AWS.config.update({
+//   accessKeyId: "AKIASOAYAC7MCO7RLK5Y",
+//   secretAccessKey: "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"
+// })
 
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET},
-  region: REGION,
-})
+// const myBucket = new AWS.S3({
+//   params: { Bucket: S3_BUCKET},
+//   region: REGION,
+// })
 
 const questions = [
   "請你簡單的自我介紹。",
@@ -166,15 +166,15 @@ const Camera = (expiryTimestamp) => {
         type: "video/webm"
       });
       const filename = JSON.parse(user)._id.toString() + Date.now().toString()
-      const params = {
-        ACL: 'public-read',
-        Body: blob,
-        Bucket: S3_BUCKET,
-        Key: filename
-      };
+      // const params = {
+      //   ACL: 'public-read',
+      //   Body: blob,
+      //   Bucket: S3_BUCKET,
+      //   Key: filename
+      // };
 
-      const link = "s3://" + S3_BUCKET + "/" + filename
-      postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", link)
+      // const link = "s3://" + S3_BUCKET + "/" + filename
+      postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", "")
         .then((res) => {
           testInterview(res.id, blob)
           navigate("/");
@@ -182,13 +182,13 @@ const Camera = (expiryTimestamp) => {
           console.log("err", err)
         })
   
-      myBucket.putObject(params)
-        .on('httpUploadProgress', (evt) => {
-          setS3Progress(Math.round((evt.loaded / evt.total) * 100))
-        })
-        .send((err) => {
-          if (err) console.log(err)
-        })
+      // myBucket.putObject(params)
+      //   .on('httpUploadProgress', (evt) => {
+      //     setS3Progress(Math.round((evt.loaded / evt.total) * 100))
+      //   })
+      //   .send((err) => {
+      //     if (err) console.log(err)
+      //   })
       
       setRecordedChunks([]);
     } else {
@@ -316,7 +316,6 @@ const Camera = (expiryTimestamp) => {
                       justifyContent="flex-start"
                       alignItems="flex-start"
                       spacing={1}
-                      height="85%"
                       sx={{mt:1.5}}
                       style={{overflow: 'scroll'}}
                     >
