@@ -77,6 +77,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         }).catch((err) => {
             console.log(err)
         })
+        window.location.reload();
     }
 
     const editInterviewTopic = () => {
@@ -109,8 +110,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         const image = canvas.toDataURL("image/png", 1.0);
         downloadImage(image, imageFileName);
     };
-
-    const currNote = interview.note;
 
     return(
         <>
@@ -336,7 +335,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             >NOTE</Button>
                             <Button 
                                 onClick={() => 
-                                    exportAsImage(exportRef.current, "test")
+                                    exportAsImage(exportRef.current, `test${interview.topic}`)
                                 } 
                                 color="black"
                             >EXPORT</Button>
