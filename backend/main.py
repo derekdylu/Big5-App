@@ -14,6 +14,7 @@ from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuthError
+from mlmain import *
 
 #AWS settings
 # import boto3
@@ -211,10 +212,11 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
 def test_interview(id: str, file: UploadFile = File(...)):
   # to access file, use file.file or file.file.read()
-
+  print(file.file.read())
+  # big5model(file.file.read())
   # get big 5 score
   big5 = [50, 50, 50, 50, 50]
-
+  
   # after getting the big5 response, update the score from -1 (loading) to a value
   score = sum(big5) / len(big5)
   
