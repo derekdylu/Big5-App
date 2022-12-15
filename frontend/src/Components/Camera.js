@@ -5,7 +5,7 @@ import Webcam from "react-webcam";
 import { useStopwatch } from 'react-timer-hook';
 import theme from '../Themes/Theme';
 import AWS from 'aws-sdk';
-import { postInterview } from '../Utils/Axios';
+import { postInterview, testInterview } from '../Utils/Axios';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -32,18 +32,18 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import useWindowDimensions from '../Hooks/useWindowDimensions'
 
 
-const S3_BUCKET = "imp-big5";
-const REGION = "ap-northeast-1";
+// const S3_BUCKET = "imp-big5";
+// const REGION = "ap-northeast-1";
 
-AWS.config.update({
-  accessKeyId: "AKIASOAYAC7MCO7RLK5Y",
-  secretAccessKey: "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"
-})
+// AWS.config.update({
+//   accessKeyId: "AKIASOAYAC7MCO7RLK5Y",
+//   secretAccessKey: "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"
+// })
 
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET},
-  region: REGION,
-})
+// const myBucket = new AWS.S3({
+//   params: { Bucket: S3_BUCKET},
+//   region: REGION,
+// })
 
 const questions = [
   "請你簡單的自我介紹。",
@@ -66,11 +66,22 @@ const industriesList = [
   "🛠️ ENGINEERING",
   "💻 SOFTWARE",
   "🏗️ CIVIL ENGINEERING",
-  "💼 CONSULTANTING",
+  "💼 BUSINESS",
   "👥 MANAGEMENT",
-  "⚽️ SPORTS",
+  "⚽️ SPORT",
   "🎥 MEDIA",
-  "🏭 MANUFACTURING"
+  "🏭 MANUFACTURING",
+  "🌿 FARMING",
+  "🧑‍🏫 EDUCATION",
+  "🏥 MEDICAL",
+  "🍜 FOOD",
+  "🤵 GOVERNMENT",
+  "📈 FINANCE",
+  "🔬 SCIENCE",
+  "🚗 TRANSPORT",
+  "🔋 ENERGY",
+  "🪩 ENTERTAINMENT",
+  "🧿 OTHER"
 ]
 
 const StyledLinearProgress = withStyles({
@@ -95,7 +106,7 @@ const Camera = (expiryTimestamp) => {
   const [uploading, setUploading] = useState(false)
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = useState({})
-  const [s3Progress , setS3Progress] = useState(0);
+  // const [s3Progress , setS3Progress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
@@ -155,28 +166,29 @@ const Camera = (expiryTimestamp) => {
         type: "video/webm"
       });
       const filename = JSON.parse(user)._id.toString() + Date.now().toString()
-      const params = {
-        ACL: 'public-read',
-        Body: blob,
-        Bucket: S3_BUCKET,
-        Key: filename
-      };
+      // const params = {
+      //   ACL: 'public-read',
+      //   Body: blob,
+      //   Bucket: S3_BUCKET,
+      //   Key: filename
+      // };
 
-      const link = "s3://" + S3_BUCKET + "/" + filename
-      postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", link)
+      // const link = "s3://" + S3_BUCKET + "/" + filename
+      postInterview(JSON.parse(user)._id, Date.now().toString(), "new test", industry, -1, [0,0,0,0,0], "", "")
         .then((res) => {
-        navigate("/");
+          testInterview(res.id, blob)
+          navigate("/");
         }).catch((err) => {
           console.log("err", err)
         })
   
-      myBucket.putObject(params)
-        .on('httpUploadProgress', (evt) => {
-          setS3Progress(Math.round((evt.loaded / evt.total) * 100))
-        })
-        .send((err) => {
-          if (err) console.log(err)
-        })
+      // myBucket.putObject(params)
+      //   .on('httpUploadProgress', (evt) => {
+      //     setS3Progress(Math.round((evt.loaded / evt.total) * 100))
+      //   })
+      //   .send((err) => {
+      //     if (err) console.log(err)
+      //   })
       
       setRecordedChunks([]);
     } else {
@@ -294,9 +306,6 @@ const Camera = (expiryTimestamp) => {
                 (
                   <>
                     <Typography variant="body1" sx={{ color: '#fff'}}>
-                      upoload: {s3Progress}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#fff'}}>
                       Select your purpose (industry)
                     </Typography>
                     <Stack
@@ -305,7 +314,7 @@ const Camera = (expiryTimestamp) => {
                       alignItems="flex-start"
                       spacing={1}
                       sx={{mt:1.5}}
-                      style={{overflow: 'auto'}}
+                      style={{overflow: 'scroll'}}
                     >
                       {industriesList.map(x => 
                         <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />

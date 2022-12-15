@@ -1,10 +1,11 @@
 import os
 import uvicorn
-from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request
+from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
+import ffmpeg
 from dotenv import load_dotenv
 from typing import List, Optional
 
@@ -15,14 +16,14 @@ from starlette.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuthError
 
 #AWS settings
-import boto3
+# import boto3
 # AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
 # AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 # AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-AWS_S3_BUCKET_NAME = "imp-big5"
-AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
-AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
-REGION = "ap-northeast-1"
+# AWS_S3_BUCKET_NAME = "imp-big5"
+# AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
+# AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
+# REGION = "ap-northeast-1"
 
 # import model
 from . import model
@@ -183,26 +184,6 @@ def get_interviews_by_user_id(industry: str):
   
   return list
 
-# @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
-# def post_interview(interview: model.Interview = Body(...)):
-#   print("Endpoint hit")
-#   print(file.filename)
-#   print(file.content_type)
-
-#   # Upload file to S3
-#   s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_KEY)
-#   bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
-#   bucket.upload_fileObj(file.file, file.filename, ExtraArgs={'ACL': 'public-read'})
-
-#   upload_file_url = f"https://{AWS_S3_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
-#   interview.link = upload_file_url
-  
-#   interview = jsonable_encoder(interview)
-#   insert_interview = interviews_col.insert_one(interview)
-#   inserted_interview = interviews_col.find_one({"_id": insert_interview.inserted_id})
-
-#   return JSONResponse(status_code=status.HTTP_201_CREATED, content=jsonable_encoder(model.interview_helper(inserted_interview)))
-
 @app.post("/post_interview", response_description="post an interview", response_model=model.Interview)
 def post_interview(interview: model.Interview = Body(...)):
   interview = jsonable_encoder(interview)
@@ -227,22 +208,33 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
+@app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
+def test_interview(id: str, file: UploadFile = File(...)):
+  # to access file, use file.file or file.file.read()
+
+  # get big 5 score
+  big5 = [50, 50, 50, 50, 50]
+
+  # after getting the big5 response, update the score from -1 (loading) to a value
+  score = sum(big5) / len(big5)
+  
+  update_result = interviews_col.update_one({"_id": id}, {"$set": { "big": big5, "score": score }})
+
+  if update_result.modified_count == 1:
+    if (updated_result := interviews_col.find_one({"_id": id})) is not None:
+      return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(updated_result)))
+  
+  if (existing_result := interviews_col.find_one({"_id": id})) is not None:
+    return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(existing_result)))
+
+  raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
+
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
 def delete_interview(id: str):
   delete_result = interviews_col.delete_one({"_id": id})
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
-
-@app.post("/interview", status_code=201)
-async def add_interview(file: UploadFile):
-  print("Create endpoint hit")
-  print(file.filename)
-  print(file.content_type)
-
-  #upload file to s3
-  s3 = boto3.client('s3')
-  bucket = s3.Bucket(AWS_S3_BUCKET_NAME)
 
 @app.get("/predict")
 async def predict():

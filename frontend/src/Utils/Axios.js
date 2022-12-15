@@ -8,6 +8,11 @@ const jsonHeader = {
         'Content-Type': 'application/json'
     }
 };
+const formHeader = {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+}
 
 // --- Interview
 // get all interviews
@@ -54,6 +59,16 @@ export const postInterview = async (_userId, _timestamp, _topic, _industry, _sco
     return await instance.post('/post_interview', param, jsonHeader).then((res) => {
         return res.data;
     });
+}
+
+// test interview
+export const testInterview = async (id, file) => {
+    let form = new FormData();
+    form.append("file", file);
+
+    return await instance.post(`/test_interview/${id}`, form, formHeader).then((res) => {
+        return res.data;
+    })
 }
 
 // update an interview by id
@@ -148,6 +163,3 @@ export const updateUserById = async (id, _username, _img, _interview) => {
         return res.data
     })
 }
-
-// --- OAuth
-// TODO
