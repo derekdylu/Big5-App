@@ -15,13 +15,27 @@ import ScoreBar from '../EntireResult/ScoreBar';
 import PureBar from '../EntireResult/PureBar'
 import EntireResult from '../EntireResult/EntireResult';
 
+import { getInterviewsByUserId } from '../../Utils/Axios';
+
 const Transition = React.forwardRef(
     function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
-const TestItem = ({interview, interviews, setInterviews}) => {
+const TestItem = ({userId, interview, interviews, setInterviews}) => {
+
+    // useEffect(() => {
+    //     console.log('render')
+    //     navigate('/');
+    //     // getInterviewsByUserId(userId).then((res) => {
+    //     //     // interviews = interviews
+    //     //     console.log('res', res)
+    //     // }).catch((err) => {
+    //     //     console.log(err)
+    //     // })
+    // }, [])
+
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -39,18 +53,10 @@ const TestItem = ({interview, interviews, setInterviews}) => {
         let newFormat = arr[3] + ' ' + arr[1] + ' ' + arr[2]
         return newFormat
     }
-    const handleClickOpen = () => {
-        // console.log('func')
-        // navigate('/interview/id/test', {
-        //     state: {
-        //         interviewId: interview._id
-        //     }
-        // });
-        setOpen(true);
-    };
 
     const handleClose = () => {
         // navigate('/');
+        window.location.reload();
         setOpen(false);
     };
 
@@ -59,7 +65,7 @@ const TestItem = ({interview, interviews, setInterviews}) => {
             <div style = {itemObj} className='testItem'>
                 <Grid 
                     container spacing={2}
-                    onClick = {handleClickOpen}
+                    onClick = {() => {setOpen(true)}}
                     cursor = 'pointer'
                 >
                     <Grid item xs={7}>
@@ -83,7 +89,6 @@ const TestItem = ({interview, interviews, setInterviews}) => {
             <Dialog
                 fullScreen
                 open={open}
-                onClose={handleClose}
                 TransitionComponent={Transition}
             >
                 <EntireResult
