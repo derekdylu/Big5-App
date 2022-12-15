@@ -278,7 +278,9 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             justifyContent="space-around"
                             marginTop='2vh'
                         >
-                            <Button onClick={() => { setOpenNote(false)}} color="black">HIDE</Button>
+                            { readOnly &&
+                                <Button onClick={() => { setOpenNote(false)}} color="black">HIDE</Button>
+                            }
                             { readOnly ? (
                                 <Button onClick={() => {setReadOnly(false)}} color="black">EDIT</Button>
                             ):(
@@ -328,7 +330,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             <Button 
                                 onClick={() => {
                                     setOpenNote(true);
-                                    setReadOnly(false);
+                                    // setReadOnly(false);
                                 }} 
                                 color="black"
                             >NOTE</Button>
