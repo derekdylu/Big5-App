@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import NativeSelect from '@mui/material/NativeSelect';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { getInterviewsByIndustry } from '../../Utils/Axios'
+import { getInterviewsByIndustry, updateInterviewById } from '../../Utils/Axios'
 
 import theme from '../../Themes/Theme';
 

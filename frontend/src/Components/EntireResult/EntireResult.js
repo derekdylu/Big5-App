@@ -10,8 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -37,9 +35,10 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
     const [topicEdit, setTopicEdit] = useState(false)
     const [delInterviewWarning, setDelInterviewWarning] = useState(false)
     
-
     useEffect(() => {
+        // console.log('render')
         getInterviewById(interview._id).then((res) => {
+            setTopic(res.topic)
             setNote(res.note)
         }).catch((err) => {
             console.log(err)
@@ -51,7 +50,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         updateInterviewById(interview._id, null, null, null, null, null, null, note)
             .then()
             .catch((err) => {
-                console.log('ERROR:(')
                 console.log(err)
             })
     }
@@ -62,7 +60,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         updateInterviewById(interview._id, null, null, null, null, null, null, "")
             .then()
             .catch((err) => {
-                console.log('ERROR:(')
                 console.log(err)
             })
     }
@@ -87,7 +84,6 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
         updateInterviewById(interview._id, null, null, topic)
             .then()
             .catch((err) => {
-                console.log('ERROR:(')
                 console.log(err)
             })
     }
@@ -214,6 +210,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     alignItems="stretch"
                     marginBottom='0.5vh'
                 >
+                    
                     <IconButton 
                         aria-label="back"
                         size='large'
@@ -255,7 +252,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                     >
                          <p style = {{ fontSize: 20, margin: '0px'}} onClick={() => {setTopicEdit(true)}}>{topic}</p>
                     </Grid>
-                   
+                    {/* <p style = {{ color: "#5C5C5C", marginBlockStart: '0em', fontSize: 12}}>{interview.industry}</p> */}
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em', fontSize: 12}}
                     >{date}</p>
                     {
@@ -263,13 +260,14 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             <ScoreBar score = {s} id = {id}/>
                         )
                     }
+                    <ScoreBar score = {interview.score}/>
                     <Grid
                         container
                         direction="column"
                     >
                         <ShowChart 
                             industry = { interview.industry }
-                            big5 = { interview.big }                        
+                            big5 = { interview.big }                      
                         />
                     </Grid>
                     
