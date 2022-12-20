@@ -12,7 +12,7 @@ const formHeader = {
     headers: {
         'Content-Type': 'multipart/form-data'
     }
-}
+};
 
 // --- Interview
 // get all interviews
