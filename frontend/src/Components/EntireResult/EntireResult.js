@@ -117,16 +117,13 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
             <Dialog
                 open={delInterviewWarning}
             >
-                <DialogTitle>
-                {"Delete this interview record?"}
-                </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
                     You are going to discard this record, it can not be restored.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={() => {setDelInterviewWarning(false)}} autoFocus variant="secondary2">
+                <Button onClick={() => {setDelInterviewWarning(false)}} autoFocus variant="secondary3">
                     Cancel
                 </Button>
                 <Button onClick={delInterview} variant="secondary3">
