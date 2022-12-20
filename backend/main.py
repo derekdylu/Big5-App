@@ -3,9 +3,9 @@ import uvicorn
 from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-# from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+# from starlette.middleware import Middleware
+# from starlette.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from typing import List, Optional
@@ -40,26 +40,31 @@ if __name__ == "__main__":
 
 load_dotenv()
 
+# origins = [
+#   "http://localhost",
+#   "http://localhost:3000",
+#   "https://5eeyou.netlify.app",
+#   "https://5eeyou.netlify.app/"
+# ]
+
 origins = [
-  "http://localhost",
-  "http://localhost:3000",
-  "https://5eeyou.netlify.app",
-  "https://5eeyou.netlify.app/"
+  "*"
 ]
 
-middleware = [
-  Middleware(CORSMiddleware, allow_origins=origins)
-]
+# middleware = [
+#   Middleware(CORSMiddleware, allow_origins=origins)
+# ]
 
-app = FastAPI(middleware=middleware)
+# app = FastAPI(middleware=middleware)
+app = FastAPI()
 
-# app.add_middleware(
-#   CORSMiddleware,
-#   allow_origins=origins,
-#   allow_credentials=True,
-#   allow_methods=["*"],
-#   allow_headers=["*"],
-# )
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=origins,
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
 
 # MONGO_URI = os.environ.get("MONGO_URI")
 MONGO_URI = "mongodb+srv://ntuim:ntuim@cluster0.rounr8v.mongodb.net/?retryWrites=true&w=majority"
