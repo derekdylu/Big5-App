@@ -4,6 +4,7 @@ from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, F
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 # from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -38,7 +39,27 @@ if __name__ == "__main__":
   uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
 
 load_dotenv()
-app = FastAPI()
+
+origins = [
+  "http://localhost",
+  "http://localhost:3000",
+  "https://5eeyou.netlify.app",
+  "https://5eeyou.netlify.app/"
+]
+
+middleware = [
+  Middleware(CORSMiddleware, allow_origins=origins)
+]
+
+app = FastAPI(middleware=middleware)
+
+# app.add_middleware(
+#   CORSMiddleware,
+#   allow_origins=origins,
+#   allow_credentials=True,
+#   allow_methods=["*"],
+#   allow_headers=["*"],
+# )
 
 # MONGO_URI = os.environ.get("MONGO_URI")
 MONGO_URI = "mongodb+srv://ntuim:ntuim@cluster0.rounr8v.mongodb.net/?retryWrites=true&w=majority"
@@ -76,21 +97,6 @@ oauth.register(
 # if SECRET_KEY is None:
 #     raise 'Missing SECRET_KEY'
 # app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
-
-origins = [
-  "http://localhost",
-  "http://localhost:3000",
-  "https://5eeyou.netlify.app",
-  "https://5eeyou.netlify.app/"
-]
-
-app.add_middleware(
-  CORSMiddleware,
-  allow_origins=origins,
-  allow_credentials=True,
-  allow_methods=["*"],
-  allow_headers=["*"],
-)
 
 def ResponseModel(data, message="success"):
   return {
