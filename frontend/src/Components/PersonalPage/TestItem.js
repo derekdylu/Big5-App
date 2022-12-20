@@ -10,10 +10,13 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import ScoreBar from '../EntireResult/ScoreBar';
 import PureBar from '../EntireResult/PureBar'
 import EntireResult from '../EntireResult/EntireResult';
+
+import { getInterviewById } from '../../Utils/Axios';
 
 const Transition = React.forwardRef(
     function Transition(props, ref) {
@@ -21,7 +24,19 @@ const Transition = React.forwardRef(
 });
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
-const TestItem = ({interview, interviews, setInterviews}) => {
+const TestItem = ({userId, interview, interviews, setInterviews}) => {
+
+    useEffect(() => {
+        getInterviewById(interview._id).then((res) => {
+            // console.log('score', res.score)
+            if(res.score != 50){
+                setLoading(false)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [])
+
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -29,9 +44,11 @@ const TestItem = ({interview, interviews, setInterviews}) => {
         marginTop: '1vh',
         marginBottom: '1vh',
         paddingLeft: '8vw',
+        cursor: 'pointer'
     };
     
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const changeDateFormat = (timestamp) => {
         var result = new Date(parseInt(timestamp))
@@ -39,18 +56,10 @@ const TestItem = ({interview, interviews, setInterviews}) => {
         let newFormat = arr[3] + ' ' + arr[1] + ' ' + arr[2]
         return newFormat
     }
-    const handleClickOpen = () => {
-        // console.log('func')
-        // navigate('/interview/id/test', {
-        //     state: {
-        //         interviewId: interview._id
-        //     }
-        // });
-        setOpen(true);
-    };
 
     const handleClose = () => {
         // navigate('/');
+        window.location.reload();
         setOpen(false);
     };
 
@@ -59,31 +68,42 @@ const TestItem = ({interview, interviews, setInterviews}) => {
             <div style = {itemObj} className='testItem'>
                 <Grid 
                     container spacing={2}
-                    onClick = {handleClickOpen}
-                    cursor = 'pointer'
+                    onClick = {() => {setOpen(true)}}
+                    marginTop = '0px'
                 >
                     <Grid item xs={7}>
-                        <p style = {{fontWeight: '700', marginBottom: '-0.5em'}}>{interview.topic}</p>
+                        <p style = {{fontWeight: '700',marginTop: '0em', marginBottom: '0em'}}>{interview.topic}</p>
                         <p style = {{color: 'gray', fontWeight: '500'}}>{changeDateFormat(interview.timestamp)}</p>
                     </Grid>
-                    <Grid 
-                        item xs={4}
-                        container
-                        direction="column"
-                        justifyContent="center"
-                    >
-                        {
-                            interview.big.map((b, id) => 
-                                <PureBar pro = {b} color = {c[id]}/>
-                            )
-                        }
-                    </Grid>
+                    { loading ? 
+                        (<Grid 
+                            item xs={4}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            marginTop= '-1vh'
+                        >
+                            <CircularProgress/>
+                        </Grid>)
+                        :
+                        (<Grid 
+                            item xs={4}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                        >
+                            {
+                                interview.big.map((b, id) => 
+                                    <PureBar pro = {b} color = {c[id]}/>
+                                )
+                            }
+                        </Grid>)
+                    }
                 </Grid>
             </div>
             <Dialog
                 fullScreen
                 open={open}
-                onClose={handleClose}
                 TransitionComponent={Transition}
             >
                 <EntireResult

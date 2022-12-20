@@ -99,7 +99,7 @@ def extract_N_video_frames(file_path: str, number_of_samples: int = 6) -> List[n
     random_indexes = list(range(block, block*number_of_samples+1, block))
 
     find = False
-    print('nb_frames ',nb_frames, random_indexes)
+    # print('nb_frames ',nb_frames, random_indexes)
     for ind in random_indexes:
       cap = cv2.VideoCapture(file_path)
       cap.set(1,ind)
