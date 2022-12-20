@@ -3,6 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import jwt_decode from 'jwt-decode';
 
+import theme from '../Themes/Theme';
+
 import { getUserbyEmail, postUser } from '../Utils/Axios';
 
 import Navigation from '../Components/Navigation'
@@ -12,7 +14,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
-const tmpImg = "https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/hevy6dvk7gien0rmg37n"
+import profileImage from '../Images/profile.png'
 
 const Login = ({stateChanged}) => {
   const googleClientId = "278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
@@ -26,12 +28,22 @@ const Login = ({stateChanged}) => {
   )
   // const [ user, setUser ] = useState(null)
 
+  function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   function guestLogin() {
     document.getElementById("signInDiv").hidden = true
     const guestUser = {
-      "username": "guest",
-      "email": "guest@email",
-      "img": "./",
+      "username": "guest_" + makeid(9),
+      "email": makeid(9) + "@email",
+      "img": profileImage,
       "interview": [],
     }
     postUser(guestUser.username, guestUser.email, guestUser.img, guestUser.interview).then((res) => {
@@ -144,6 +156,7 @@ const Login = ({stateChanged}) => {
             }
           </>
           <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={guestLogin}>Guest Login</Button>
+          <Typography color={theme.palette.white.main} variant="caption" sx={{mt: 2, px: 8}} align="center">By logging in you agreeing to our privacy policy and the use of cookies.</Typography>
         </>
       )
       }
