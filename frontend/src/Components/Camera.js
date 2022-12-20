@@ -45,6 +45,8 @@ import useWindowDimensions from '../Hooks/useWindowDimensions'
 //   region: REGION,
 // })
 
+const mediaType = "video/webm"
+
 const questions = [
   "請你簡單的自我介紹。",
   "請簡述你昨天做了什麼事。",
@@ -163,7 +165,7 @@ const Camera = (expiryTimestamp) => {
     setUploading(true)
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: "video/webm"
+        type: mediaType
       });
       const filename = JSON.parse(user)._id.toString() + Date.now().toString()
       // const params = {
@@ -208,7 +210,7 @@ const Camera = (expiryTimestamp) => {
     start()
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: "video/mp4"
+      mimeType: mediaType
     });
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
@@ -237,7 +239,7 @@ const Camera = (expiryTimestamp) => {
   const handleDownload = useCallback(() => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: "video/webm"
+        type: mediaType
       });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -269,7 +271,7 @@ const Camera = (expiryTimestamp) => {
           <Button onClick={handleClose} autoFocus variant="secondary2">
             Cancel
           </Button>
-          <Button onClick={handleClose} variant="secondary3">
+          <Button onClick={handleClose} variant="secondary2">
             <Link to="/" style={{ textDecoration: 'none', color: theme.palette.warning.main }}>
               Discard
             </Link>
@@ -290,10 +292,16 @@ const Camera = (expiryTimestamp) => {
             }}
           >
             { 
-              !complete &&
-              <Typography variant="body1" sx={{color: '#ffffff', mb: 1.5}}>
-                {questions[index]}
-              </Typography>
+              !complete ?
+              (
+                <Typography variant="body1" sx={{color: '#ffffff', mb: 1.5}}>
+                  {questions[index]}
+                </Typography>
+              ) : (
+                <Typography variant="body1" sx={{ color: '#fff', mb: 1.5}}>
+                  Select your industry
+                </Typography>
+              )
             }
             {
               !complete &&
@@ -306,9 +314,6 @@ const Camera = (expiryTimestamp) => {
                 complete ?
                 (
                   <>
-                    <Typography variant="body1" sx={{ color: '#fff', mb: 1.5}}>
-                      Select your purpose (industry)
-                    </Typography>
                     <Grid
                       height={videoConstraints.height}
                       style={{overflow: 'scroll'}}
@@ -319,7 +324,7 @@ const Camera = (expiryTimestamp) => {
                         justifyContent="flex-start"
                         alignItems="flex-start"
                         spacing={1}
-                        sx={{mt:1.5}}
+                        sx={{mt:1.5, mx: 1}}
                       >
                         {industriesList.map(x => 
                           <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
@@ -343,9 +348,11 @@ const Camera = (expiryTimestamp) => {
                 }}
               >
                 {!uploading &&
-                  <IconButton aria-label="back" size="large" sx={{mr: 4}} onClick={handleClickOpen}>
-                    <ArrowBackIosRoundedIcon fontSize="inherit" color="white"/>
-                  </IconButton>
+                  <Link to="/" style={{ textDecoration: 'none', color: theme.palette.warning.main }}>
+                    <IconButton aria-label="back" size="large" sx={{mr: 4}} onClick={handleClickOpen}>
+                      <ArrowBackIosRoundedIcon fontSize="inherit" color="white"/>
+                    </IconButton>
+                  </Link>
                 }
                 {capturing ? (
                   <Button variant="secondary2" onClick={handleStopCaptureClick}>Cancel</Button>
@@ -353,7 +360,7 @@ const Camera = (expiryTimestamp) => {
                   <>
                   {
                     complete ? (
-                      <Button variant="secondary2" onClick={handleConfirm}>
+                      <Button variant="secondary2" onClick={handleConfirm} disabled={uploading}>
                       {
                         uploading ?
                         (
@@ -383,8 +390,8 @@ const Camera = (expiryTimestamp) => {
                   <>
                   {
                     complete ?
-                    <IconButton aria-label="reset" size="large" sx={{ml: 4}} onClick={handleRetake}>
-                      <UndoRoundedIcon fontSize="inherit" color="white"/>
+                    <IconButton aria-label="reset" size="large" sx={{ml: 4}}>
+                      <UndoRoundedIcon fontSize="inherit" color="black"/>
                     </IconButton>
                     :
                     <IconButton aria-label="reset" size="large" sx={{ml: 4}}>
