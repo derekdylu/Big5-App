@@ -53,7 +53,7 @@ interviews_col = database["interviews"]
 origins = [
   "http://localhost",
   "http://localhost:3000",
-  "https://5eeyou.netlify.app"
+  "https://5eeyou.netlify.app",
 ]
 
 app.add_middleware(

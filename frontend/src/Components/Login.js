@@ -31,7 +31,7 @@ const Login = ({stateChanged}) => {
     const guestUser = {
       "username": "guest",
       "email": "guest@email",
-      "img": tmpImg,
+      "img": "./",
       "interview": [],
     }
     postUser(guestUser.username, guestUser.email, guestUser.img, guestUser.interview).then((res) => {

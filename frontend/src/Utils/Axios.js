@@ -1,7 +1,7 @@
 import axios from "axios"
 
-// const SERVER_URL = "https://ntu-tap-game.herokuapp.com/";
-const SERVER_URL = null;
+const SERVER_URL = "https://ntu-tap-game.herokuapp.com/";
+// const SERVER_URL = null;
 const instance = axios.create({ baseURL: SERVER_URL || 'http://127.0.0.1:8000' });
 const jsonHeader = {
     headers: {
