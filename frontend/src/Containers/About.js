@@ -39,7 +39,7 @@ const About = () => {
         style={{ background: "#000", width: "100%", height: "auto" }}
       >
         <Navigation />
-        <Typography variant="h2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 8, ml: 3, mr: 10}}>
+        <Typography variant="h2" color={theme.palette.white.main} sx={{ fontWeight: '700', mt: 8, ml: 3, mr: 10}}>
           Pricacy Policy
         </Typography>
         <Grid
@@ -49,7 +49,7 @@ const About = () => {
           alignItems="flex-start"
           sx={{ mt: 4, ml: 3}}
         >
-          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '500' }}>
+          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
             {who[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
@@ -63,7 +63,7 @@ const About = () => {
           alignItems="flex-start"
           sx={{ mt: 4, ml: 3}}
         >
-          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '500' }}>
+          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
             {data[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
@@ -77,7 +77,7 @@ const About = () => {
           alignItems="flex-start"
           sx={{ mt: 4, ml: 3}}
         >
-          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '500' }}>
+          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
             {account[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
@@ -91,7 +91,7 @@ const About = () => {
           alignItems="flex-start"
           sx={{ mt: 4, ml: 3}}
         >
-          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '500' }}>
+          <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
             {change[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
