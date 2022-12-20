@@ -45,7 +45,7 @@ import useWindowDimensions from '../Hooks/useWindowDimensions'
 //   region: REGION,
 // })
 
-const mediaType = "video/webm"
+const mediaType = "video/mp4"
 
 const questions = [
   "請你簡單的自我介紹。",
