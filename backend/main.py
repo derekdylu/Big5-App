@@ -50,18 +50,20 @@ database = client["db"]
 users_col = database["users"]
 interviews_col = database["interviews"]
 
-origins = [
-  "http://localhost",
-  "http://localhost:3000",
-  "https://5eeyou.netlify.app",
-]
+# origins = [
+#   "http://localhost",
+#   "http://localhost:3000",
+#   "https://5eeyou.netlify.app",
+# ]
+
+origins = ["*"]
 
 app.add_middleware(
   CORSMiddleware,
   allow_origins=origins,
   allow_credentials=True,
-  allow_headers=["*"],
   allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 # OAuth settings
