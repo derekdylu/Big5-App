@@ -34,7 +34,7 @@ const Setting = () => {
         style={{ background: "#000", width: "100%", height: "100vh" }}
       >
         <Navigation />
-        <Typography variant="h2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 8, ml: 3, mr: 10}}>
+        <Typography variant="h2" color={theme.palette.white.main} sx={{ fontWeight: '700', mt: 8, ml: 3, mr: 10}}>
           Settings
         </Typography>
         <Grid
