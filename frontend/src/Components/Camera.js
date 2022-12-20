@@ -199,7 +199,8 @@ const Camera = (expiryTimestamp) => {
 
   const videoConstraints = {
     width: width - 32,
-    height: ((width - 32)/3) * 4,
+    // height: ((width - 32)/3) * 4,
+    height: width - 32,
     facingMode: "user"
   }
 
@@ -207,7 +208,7 @@ const Camera = (expiryTimestamp) => {
     start()
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: "video/webm"
+      mimeType: "video/mp4"
     });
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
@@ -290,7 +291,7 @@ const Camera = (expiryTimestamp) => {
           >
             { 
               !complete &&
-              <Typography variant="body1" sx={{color: '#ffffff', mb: 1}}>
+              <Typography variant="body1" sx={{color: '#ffffff', mb: 1.5}}>
                 {questions[index]}
               </Typography>
             }
@@ -305,12 +306,13 @@ const Camera = (expiryTimestamp) => {
                 complete ?
                 (
                   <>
-                    <Typography variant="body1" sx={{ color: '#fff'}}>
+                    <Typography variant="body1" sx={{ color: '#fff', mb: 1.5}}>
                       Select your purpose (industry)
                     </Typography>
                     <Grid
                       height={videoConstraints.height}
                       style={{overflow: 'scroll'}}
+                      sx={{mb: 1.5}}
                     >
                       <Stack
                         direction="column"

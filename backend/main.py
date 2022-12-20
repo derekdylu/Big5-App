@@ -39,24 +39,14 @@ if __name__ == "__main__":
   uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
 
 load_dotenv()
-
-# origins = [
-#   "http://localhost",
-#   "http://localhost:3000",
-#   "https://5eeyou.netlify.app",
-#   "https://5eeyou.netlify.app/"
-# ]
+app = FastAPI()
 
 origins = [
-  "*"
+  "http://localhost",
+  "http://localhost:3000",
+  "https://5eeyou.netlify.app",
+  "https://5eeyou.netlify.app/"
 ]
-
-# middleware = [
-#   Middleware(CORSMiddleware, allow_origins=origins)
-# ]
-
-# app = FastAPI(middleware=middleware)
-app = FastAPI()
 
 app.add_middleware(
   CORSMiddleware,

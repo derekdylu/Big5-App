@@ -8,7 +8,7 @@ const easeSlow = css`
 
 const navBtn = css`
   position: absolute;
-  z-index: 101;
+  z-index: 1000;
   right: 35px;
   top: 35px;
   cursor: pointer;
@@ -66,7 +66,7 @@ const navOverlay = css`
       height: 30px;
       text-decoration: none;
       color: #000;
-      font-family: 'Noto Sans CJK TC';
+      font-family: 'Avenir-Black';
       font-style: normal;
       font-weight: 700;
       font-size: 36px;

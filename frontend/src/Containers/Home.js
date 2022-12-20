@@ -68,7 +68,7 @@ const Home = () => {
           <Login stateChanged={stateChanged} />
         </Grid>
         {
-          user && (
+          (user) && (
             <>
               <Link to="/camera">
                 <Fab variant="extended" style={style} color="primary" sx={{ boxShadow: 3 }}>
