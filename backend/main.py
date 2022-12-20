@@ -50,22 +50,6 @@ database = client["db"]
 users_col = database["users"]
 interviews_col = database["interviews"]
 
-# origins = [
-#   "http://localhost",
-#   "http://localhost:3000",
-#   "https://5eeyou.netlify.app",
-# ]
-
-origins = ["*"]
-
-app.add_middleware(
-  CORSMiddleware,
-  allow_origins=origins,
-  allow_credentials=True,
-  allow_methods=["*"],
-  allow_headers=["*"],
-)
-
 # OAuth settings
 # GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
 # GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
@@ -91,6 +75,20 @@ oauth.register(
 # if SECRET_KEY is None:
 #     raise 'Missing SECRET_KEY'
 # app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+
+origins = [
+  "http://localhost",
+  "http://localhost:3000",
+  "https://5eeyou.netlify.app",
+]
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=origins,
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
 
 def ResponseModel(data, message="success"):
   return {
