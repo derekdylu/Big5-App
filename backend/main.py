@@ -3,7 +3,8 @@ import uvicorn
 from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from typing import List, Optional
