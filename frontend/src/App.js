@@ -75,7 +75,7 @@ const App = () => {
         <Router>
           <Routes>
 
-            <Route path="/" element={<Home />} forceRefresh={true} />
+            <Route path="/" element={<Home />} />
             <Route path="*" element={<Error />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/about" element={<About />} />

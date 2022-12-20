@@ -61,7 +61,7 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
 
     const handleClose = () => {
         // navigate('/');
-        window.location.reload();
+        // window.location.reload();
         setOpen(false);
     };
 
