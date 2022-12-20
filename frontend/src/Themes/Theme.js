@@ -111,16 +111,16 @@ const theme = createTheme({
             height: '64px',
             backgroundColor: globalPalette.palette.primary.main,
             "&:hover":{
-              backgroundColor: globalPalette.palette.primary[300],
+              backgroundColor: globalPalette.palette.primary.main,
             },
             "&:active":{
-              backgroundColor: globalPalette.palette.primary[300],
+              backgroundColor: globalPalette.palette.primary.main,
             },
             "&:focus":{
               backgroundColor: globalPalette.palette.primary.main,
             },
             "&:disabled":{
-              backgroundColor: globalPalette.palette.grey[300],
+              backgroundColor: globalPalette.palette.primary.main,
             }
           },
           
@@ -132,10 +132,10 @@ const theme = createTheme({
             height: '48px',
             backgroundColor: globalPalette.palette.secondary.main,
             "&:hover":{
-              backgroundColor: globalPalette.palette.secondary[300],
+              backgroundColor: globalPalette.palette.secondary.main,
             },
             "&:active":{
-              backgroundColor: globalPalette.palette.secondary[300],
+              backgroundColor: globalPalette.palette.secondary.main,
             },
             "&:focus":{
               backgroundColor: globalPalette.palette.secondary.main,
@@ -149,30 +149,13 @@ const theme = createTheme({
             height: '48px',
             backgroundColor: "#ffffff",
             "&:hover":{
-              backgroundColor: globalPalette.palette.primary[300],
+              backgroundColor: "#ffffff",
             },
             "&:active":{
-              backgroundColor: globalPalette.palette.primary[300],
+              backgroundColor: "#ffffff",
             },
             "&:focus":{
               backgroundColor: "#ffffff",
-            },
-          },
-        },
-        {
-          props: { variant: 'secondary3' },
-          style: {
-            color: globalPalette.palette.error.main,
-            borderRadius: '33px',
-            height: '48px',
-            backgroundColor: "#ffffff",
-            "&:hover":{
-              backgroundColor: globalPalette.palette.error.main,
-              color: globalPalette.palette.error.contrastText,
-            },
-            "&:active":{
-              backgroundColor: globalPalette.palette.error.main,
-              color: globalPalette.palette.error.contrastText,
             },
           },
         },
@@ -187,8 +170,8 @@ const theme = createTheme({
               backgroundColor: globalPalette.palette.secondary[100],
             },
             "&:active":{
-              backgroundColor: globalPalette.palette.secondary[700],
-              color: globalPalette.palette.secondary[100],
+              backgroundColor: globalPalette.palette.secondary[100],
+              color: globalPalette.palette.secondary[700],
             },
           },
         },

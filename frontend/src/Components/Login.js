@@ -8,7 +8,7 @@ import theme from '../Themes/Theme';
 import { getUserbyEmail, postUser } from '../Utils/Axios';
 
 import Navigation from '../Components/Navigation'
-
+import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -19,6 +19,7 @@ import profileImage from '../Images/profile.png'
 const Login = ({stateChanged}) => {
   const googleClientId = "278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
   const [devlogclicked, setDevlogclicked] = useState(false)
+  const [loading, setLoading] = useState(false)
   
   // localStorage.removeItem("user")
   const [ user, setUser ] = useState(
@@ -39,6 +40,7 @@ const Login = ({stateChanged}) => {
   }
 
   function guestLogin() {
+    setLoading(true)
     document.getElementById("signInDiv").hidden = true
     const guestUser = {
       "username": "guest_" + makeid(9),
@@ -53,14 +55,15 @@ const Login = ({stateChanged}) => {
         localStorage.setItem("user", JSON.stringify(res))
         console.log("new account has been created", res)
         stateChanged()
+        setLoading(false)
       })
     }).catch((err) => {
       console.log(err)
     })
-
   }
 
   function handleCallbackResponse(response) {
+    setLoading(true)
     var userObject = jwt_decode(response.credential)
     console.log("user object", userObject)
 
@@ -90,12 +93,11 @@ const Login = ({stateChanged}) => {
         console.log(err)
       })
     })
-
+    setLoading(false)
     document.getElementById("signInDiv").hidden = true
   }
 
   useEffect(() => {
-
     window.google.accounts.id.initialize({
       client_id: googleClientId,
       callback: handleCallbackResponse
@@ -105,6 +107,8 @@ const Login = ({stateChanged}) => {
       document.getElementById("signInDiv"),
       { theme: "outline", size: "large" }
     )
+    document.getElementById("signInDiv").style.marginBottom = "2px"
+    document.getElementById("signInDiv").style.marginTop = "4px"
     document.getElementById("signInDiv").hidden = true
 
     if (localStorage.getItem('user')) {
@@ -155,7 +159,26 @@ const Login = ({stateChanged}) => {
               !devlogclicked && <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={clickDev}>Developer Login</Button>
             }
           </>
-          <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={guestLogin}>Guest Login</Button>
+          <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={guestLogin} disabled={loading}>
+          {
+            loading ?
+            (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: theme.palette.primary[500],
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            ) : (
+              <>Guest Login</>
+            )
+          }
+          </Button>
           <Typography color={theme.palette.white.main} variant="caption" sx={{mt: 2, px: 8}} align="center">By logging in you agreeing to our privacy policy and the use of cookies.</Typography>
         </>
       )
