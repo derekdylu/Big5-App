@@ -259,7 +259,7 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                             <ScoreBar score = {s} id = {id}/>
                         )
                     }
-                    <ScoreBar score = {interview.score}/>
+                    <ScoreBar score = {interview.score} id={5}/>
                     <Grid
                         container
                         direction="column"

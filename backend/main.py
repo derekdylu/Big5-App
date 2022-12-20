@@ -8,6 +8,9 @@ from pymongo import MongoClient
 import ffmpeg
 from dotenv import load_dotenv
 from typing import List, Optional
+import random
+import numpy as np
+import math
 
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
@@ -213,13 +216,21 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
 def test_interview(id: str, file: UploadFile = File(...)):
   # to access file, use file.file or file.file.read()
-  print(file.file.read())
+  # for example to pass it into the big5model
   # big5model(file.file.read())
-  # get big 5 score
-  big5 = [50, 50, 50, 50, 50]
+  print(file.file.read())
+
+  # after getting response from big5model, write the big5 scores
+  mean = [0.5800158709,0.5447636679,0.4966138764,0.5635496749,0.5390425805]
+  std = [0.1449336351,0.1514346201,0.1447676211,0.1298055643,0.1492095726]
+  big5 = []
+  score = -1
+  for i in range(5):
+    big5.append(math.floor(100 * np.random.normal(mean[i], std[i], 1)[0]))
   
-  # after getting the big5 response, update the score from -1 (loading) to a value
-  score = sum(big5) / len(big5)
+  # after writing the big5 scores, update the score from -1 (loading) to a value
+  if len(big5) == 5:
+    score = (np.sum(big5) - big5[4] + (100 - big5[4])) / 5
   
   update_result = interviews_col.update_one({"_id": id}, {"$set": { "big": big5, "score": score }})
 

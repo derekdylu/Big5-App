@@ -29,7 +29,9 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
     useEffect(() => {
         getInterviewById(interview._id).then((res) => {
             // console.log('score', res.score)
-            if(res.score != 50){
+            if(res.score === -1){
+                setLoading(true)
+            } else {
                 setLoading(false)
             }
         }).catch((err) => {
@@ -48,7 +50,7 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
     };
     
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const changeDateFormat = (timestamp) => {
         var result = new Date(parseInt(timestamp))
@@ -82,6 +84,9 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                             direction="column"
                             justifyContent="center"
                             marginTop= '-1vh'
+                            sx={{
+                                ml: 2.5
+                            }}
                         >
                             <CircularProgress/>
                         </Grid>)
@@ -91,6 +96,10 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                             container
                             direction="column"
                             justifyContent="center"
+                            marginTop= '-2vh'
+                            sx={{
+                                
+                            }}
                         >
                             {
                                 interview.big.map((b, id) => 

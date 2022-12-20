@@ -308,18 +308,22 @@ const Camera = (expiryTimestamp) => {
                     <Typography variant="body1" sx={{ color: '#fff'}}>
                       Select your purpose (industry)
                     </Typography>
-                    <Stack
-                      direction="column"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      spacing={1}
-                      sx={{mt:1.5}}
+                    <Grid
+                      height={videoConstraints.height}
                       style={{overflow: 'scroll'}}
                     >
-                      {industriesList.map(x => 
-                        <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
-                      )}
-                    </Stack>
+                      <Stack
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                        spacing={1}
+                        sx={{mt:1.5}}
+                      >
+                        {industriesList.map(x => 
+                          <Chip label={x} style={{background: industry === x ? theme.palette.primary.main : theme.palette.white.main, color: industry === x ? theme.palette.white.main : theme.palette.grey[700]}} onClick={() => setIndustry(x)} />
+                        )}
+                      </Stack>
+                    </Grid>
                   </>
                 ):(
                   <Webcam audio={false} ref={webcamRef} videoConstraints={videoConstraints}/>
