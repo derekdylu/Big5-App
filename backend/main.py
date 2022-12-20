@@ -5,12 +5,11 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
-import ffmpeg
 from dotenv import load_dotenv
 from typing import List, Optional
 import random
-import numpy as np
 import math
+import numpy as np
 
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
@@ -18,6 +17,7 @@ from authlib.integrations.starlette_client import OAuth
 # from starlette.responses import RedirectResponse
 # from authlib.integrations.starlette_client import OAuthError
 
+# import ffmpeg
 # from mlmain import *
 
 #AWS settings
