@@ -3,14 +3,12 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
-const alp = ['O', 'C', 'E', 'A', 'N']
-const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
+const alp = ['O', 'C', 'E', 'A', 'N', 'O']
 
 const ScoreBar = ({score, id}) => {
     
-    const color_name = ['OCEAN_O', 'OCEAN_C', 'OCEAN_E', 'OCEAN_A', 'OCEAN_N']
+    const color_name = ['OCEAN_O', 'OCEAN_C', 'OCEAN_E', 'OCEAN_A', 'OCEAN_N', 'grey']
     const bar_length = Math.max(parseInt(score)/100*8, 0.6);
-    // console.log(bar_length)
 
     const [progress, setProgress] = useState(0);
 
@@ -49,7 +47,7 @@ const ScoreBar = ({score, id}) => {
                 <LinearProgress
                     variant="determinate" 
                     value={progress} 
-                    color = {color_name[id]}
+                    color={color_name[id]}
                     sx={{
                         height: 10,
                       }}

@@ -28,9 +28,10 @@ const globalPalette = createTheme({
       contrastText: '#000000'
     },
     grey: {
+      main: '#5C5C5C',
       300: '#DBDBDB',
       500: '#CCCCCC',
-      700: '#5C5C5C'
+      700: '#5C5C5C',
     },    
     warning: {
       main: '#FF2E00',
