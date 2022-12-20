@@ -71,13 +71,14 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
 
     const delInterview = () => {
         setDelInterviewWarning(false)
+        // console.log("id", interview._id)
         deleteInterviewById(interview._id).then((res) => {
-            setInterviews(res)
-            console.log(res)
+            // setInterviews(res)
+            // console.log(res)
+            window.location.reload();
         }).catch((err) => {
             console.log(err)
         })
-        window.location.reload();
     }
 
     const editInterviewTopic = () => {
@@ -173,22 +174,19 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
             <Dialog
                 open={delNoteWarning}
             >
-                <DialogTitle>
-                {"Delete this interview note?"}
-                </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
                     You are going to discard this note, it can not be restored.
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={() => {setDelNoteWarning(false)}} autoFocus variant="secondary2">
+                <Button onClick={() => {setDelNoteWarning(false)}} autoFocus variant="secondary3">
                     Cancel
                 </Button>
                 <Button onClick={() => {
                     delNote();
                     setReadOnly(true);
-                }} variant="secondary3"> Delete </Button>
+                }} variant="secondary3" style={{color: "red"}}>Clear</Button>
                 </DialogActions>
             </Dialog>
             <Grid
