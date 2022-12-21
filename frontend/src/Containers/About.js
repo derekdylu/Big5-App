@@ -8,24 +8,24 @@ import Typography from '@mui/material/Typography';
 
 import logo from '../Images/logo.png'
 
-const who = [
-  "Who we are",
-  "At 5ee you, we are committed to maintaining the trust and confidence of all visitors to our web site. In particular, we want you to know that [5ee you] is not in the business of selling, renting or trading email lists with other companies and businesses for marketing purposes. In this Privacy Policy, we’ve provided detailed information on when and why we collect personal information, how we use it, the limited conditions under which we may disclose it to others, and how we keep it secure. We take your privacy seriously and take measures to provide all visitors and users of 5ee you with a safe and secure environment."
+const content_a = [
+  "What's 5ee you",
+  "5ee you is a web-based application sepcially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing user's face. The five traits are openness to experience (O), conscientiousness (C), extraversion (E), agreeableness (A), and  neuroticism (N). Besides, 5ee you also calculate an overall score from those values."
 ]
 
-const data = [
-  "Data usage",
-  "We won't exploit your personal information related data. According to ..."
+const content_b = [
+  "Terms of use",
+  "(1) This application serves as a research preview of machine learning model, all generated predictions can not be a valid record or document on any field, including human resourcing, psychology, or medicine. (2) The accuracy of prediction may varied from different lighting conditions or device settings. It may also be invalid because user's face doesnt't fully stay in the frame or there're more than one clear face in the frame. (3) 5ee you uses video-only material, no sound will be recorded. (4) By logging in you agreeing to our terms of use and the use of cookies. (5) We may make changes to our terms of use in the future."
 ]
 
-const account = [
-  "Account",
-  "In beta version, only developers can log in through Google SSO, the rest common users can only log in as guest. Further update will bring more functions."
+const content_c = [
+  "Restrictions",
+  "In this version, only developers can log in through Google SSO, the others can only log in as guest. Further update will bring more functions related to maintaining account."
 ]
 
-const change = [
-  "Changes to our policy",
-  "We may make changes to our Privacy Policy in the future, however, the most current version of the policy will govern our processing of your personal data and will always be available to you. If we make a change to this policy that, in our sole discretion, is material, we will notify you by an update or email, where possible. By continuing to access or use our services, you agree to be bound to the terms of our Privacy Policy."
+const content_d = [
+  "",
+  "v0.5 (Research Preview)"
 ]
 
 const About = () => {
@@ -50,10 +50,10 @@ const About = () => {
           sx={{ mt: 4, ml: 3}}
         >
           <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
-            {who[0]}
+            {content_a[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
-            {who[1]}
+            {content_a[1]}
           </Typography>
         </Grid>
         <Grid
@@ -64,10 +64,10 @@ const About = () => {
           sx={{ mt: 4, ml: 3}}
         >
           <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
-            {data[0]}
+            {content_b[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
-            {data[1]}
+            {content_b[1]}
           </Typography>
         </Grid>
         <Grid
@@ -78,10 +78,10 @@ const About = () => {
           sx={{ mt: 4, ml: 3}}
         >
           <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
-            {account[0]}
+            {content_c[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
-            {account[1]}
+            {content_c[1]}
           </Typography>
         </Grid>
         <Grid
@@ -92,10 +92,10 @@ const About = () => {
           sx={{ mt: 4, ml: 3}}
         >
           <Typography variant="body1" color={theme.palette.white.main} sx={{ fontWeight: '700' }}>
-            {change[0]}
+            {content_d[0]}
           </Typography>
           <Typography variant="body2" color={theme.palette.white.main} sx={{ fontWeight: '500', mt: 1, mr: 10}}>
-            {change[1]}
+            {content_d[1]}
           </Typography>
         </Grid>
         <Grid sx={{ml: 3, my: 4}}>
