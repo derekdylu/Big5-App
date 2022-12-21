@@ -179,7 +179,7 @@ const Login = ({stateChanged}) => {
             )
           }
           </Button>
-          <Typography color={theme.palette.white.main} variant="caption" sx={{mt: 2, px: 8}} align="center">By logging in you agreeing to our privacy policy and the use of cookies.</Typography>
+          <Typography color={theme.palette.white.main} variant="caption" sx={{mt: 2, px: 8}} align="center">By logging in you agreeing to our terms of use and the use of cookies.</Typography>
         </>
       )
       }
