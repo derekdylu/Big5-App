@@ -35,6 +35,9 @@ from authlib.integrations.starlette_client import OAuth
 # import model
 from . import model
 
+# import machine learning stuff
+from . import mlmain
+
 if __name__ == "__main__":
   uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
 
