@@ -112,6 +112,12 @@ const Camera = (expiryTimestamp) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
+  const highlight = {
+    color: 'red'
+  }
+
+  const [videoInstructionOpen, setVideoInstructionOpen] = useState(false)
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -207,6 +213,7 @@ const Camera = (expiryTimestamp) => {
   }
 
   const handleStartCaptureClick = useCallback(() => {
+    setVideoInstructionOpen(false)
     start()
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
@@ -255,6 +262,29 @@ const Camera = (expiryTimestamp) => {
 
   return (
     <>
+      <Dialog
+          open={videoInstructionOpen}
+      >
+          <DialogContent>
+            <DialogContentText>
+                Please make sure there's <span style={highlight}>adequate light</span> andenough space for you to record video and <span style={highlight}>hold your device steadily</span>.
+            </DialogContentText>
+            <DialogContentText style = {{marginTop: '1em'}}>
+                Be sure to take off your mask and <span style={highlight}>put your face in the middle of the screen</span>. Don't let others show in your video.
+            </DialogContentText>
+            <DialogContentText style = {{marginTop: '1em'}}>
+                The question shown above is only used for reference. Just <span style={highlight}>be yourself and talk with ease</span>. The voice are not going to be processed so it doesn't matter whether you speak loudly or not.  
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+              <Button onClick={() => {setVideoInstructionOpen(false)}} autoFocus variant="secondary3">
+                  Back
+              </Button>
+              <Button onClick={handleStartCaptureClick} autoFocus variant="secondary3" style = {{color: '#00D1FF'}}>
+                  OK, Start recording!
+              </Button>
+          </DialogActions>
+      </Dialog>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -381,7 +411,8 @@ const Camera = (expiryTimestamp) => {
                       }
                       </Button>
                     ):(
-                      <Button variant="secondary2" onClick={handleStartCaptureClick}>Record</Button>
+                      // <Button variant="secondary2" onClick={handleStartCaptureClick}>Record</Button>
+                      <Button variant="secondary2" onClick={() => {setVideoInstructionOpen(true)}}>Record</Button>
                     )
                   }
                   </>
