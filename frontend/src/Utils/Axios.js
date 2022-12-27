@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const SERVER_URL = "https://ntu-big5-app.herokuapp.com";
+// const SERVER_URL = "https://ntu-big5-app.herokuapp.com";
+const SERVER_URL = "https://ntu-big5-app.onrender.com";
 // const SERVER_URL = null;
 const instance = axios.create({ baseURL: SERVER_URL || 'http://127.0.0.1:8000' });
 const jsonHeader = {
