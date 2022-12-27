@@ -299,7 +299,7 @@ const Camera = (expiryTimestamp) => {
                 </Typography>
               ) : (
                 <Typography variant="body1" sx={{ color: '#fff', mb: 1.5}}>
-                  Select your industry
+                  Select your target industry
                 </Typography>
               )
             }
