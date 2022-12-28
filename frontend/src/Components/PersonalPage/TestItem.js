@@ -39,6 +39,21 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
         })
     }, [])
 
+    useEffect(() => {
+        let interval = null;
+        interval = setInterval(() => {
+            setOpacity(opacity => opacity*(-1) + 1);
+            // if(opacity < 0.5){
+            //     console.log(opacity)
+            //     clearInterval(interval);
+            //     setOpacity(1);
+            // }
+            // else
+            //     setOpacity(opacity => opacity*0.9)
+        }, 500);
+        return () => clearInterval(interval);
+    }, [])
+
     const itemObj = {
         backgroundColor: '#FFFFFF',
         borderRadius: '50px',
@@ -51,6 +66,7 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
     
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [opacity, setOpacity] = useState(1);
 
     const changeDateFormat = (timestamp) => {
         var result = new Date(parseInt(timestamp))
@@ -88,7 +104,8 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                                 ml: 2.5
                             }}
                         >
-                            <CircularProgress/>
+                            {/* <CircularProgress/> */}
+                            <p style = {{fontWeight: '500'}}>Loading<span style = {{opacity: opacity}}>......</span></p>
                         </Grid>)
                         :
                         (<Grid 
@@ -102,7 +119,7 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                             }}
                         >
                             {
-                                interview.big.map((b, id) => 
+                                interview.big?.map((b, id) => 
                                     <PureBar pro = {b} color = {c[id]}/>
                                 )
                             }
