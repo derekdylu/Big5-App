@@ -10,78 +10,31 @@ import Post from './Post'
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-
-// fake data 2.0
-/*=================================================================================*/ 
-// const fake_interview_id1 = "639049dfdcc8d88496be5004";
-// const fake_interview_id2 = "63904a41dcc8d88496be5005";
-// const fake_interview_id3 = "6390517fdcc8d88496be5006";
-
-// const fake_user = {
-//   _id: "638cc603363b3cb6e72dacbf",
-//   username: "黃晨亘",
-//   email: "isa20202020@gmail.com",
-//   img: "https://lh3.googleusercontent.com/a/AEdFTp5a1Fhn-LGykBl5hwPCgFpi5rUaYT…",
-//   interview: [
-//     fake_interview_id1,
-//     fake_interview_id2,
-//     fake_interview_id3
-//   ]
-// }
-
-// const interviews = [
-//   {
-//     _id: fake_interview_id1,
-//     userId: "638cc603363b3cb6e72dacbf",
-//     timestamp: "2022/09/04",
-//     topic: "New test 11111....",
-//     industry: "🎨 ART",
-//     score: 111,
-//     big: [33, 90, 100, 44, 76],
-//     note: "This is note 1 .................",
-//     link: "111"
-//   },
-//   {
-//     _id: fake_interview_id2,
-//     userId: "638cc603363b3cb6e72dacbf",
-//     timestamp: "2022/10/08",
-//     topic: "New test 22222....",
-//     industry: "🎥 MEDIA",
-//     score: 222,
-//     big: [10, 48, 39, 85, 40],
-//     note: "This is note 2 ....................",
-//     link: "222"
-//   },
-//   {
-//     _id: fake_interview_id3,
-//     userId: "638cc603363b3cb6e72dacbf",
-//     timestamp: "2022/11/19",
-//     topic: "New test 33333....",
-//     industry: "🏗️ CIVIL ENGINEERING",
-//     score: 333,
-//     big: [78, 41, 9, 30, 57],
-//     note: "This is note 3 .........................",
-//     link: "333"
-//   },
-// ]
-/*=================================================================================*/ 
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
 const descriptionBox = {
   backgroundColor: '#FFFFFF',
-  borderRadius: '50px',
+  borderRadius: '24px',
   width: '80%',
   marginTop: '2vh',
   marginBottom: '1vh',
-  paddingTop: '2vh',
+  paddingTop: '4vh',
   paddingLeft: '8vw',
   paddingRight: '8vw',
+  paddingBottom: '4vh',
 };
 
 const style = {
   backgroundColor: '#00D1FF',
+  // boxShadow: '2px 2px 5px 3px rgba(0, 255, 194, 0.5), -2px -2px 5px 3px rgba(0, 209, 255, 0.5)'
+};
+
+const styleClose = {
+  backgroundColor: '#5C5C5C',
   // boxShadow: '2px 2px 5px 3px rgba(0, 255, 194, 0.5), -2px -2px 5px 3px rgba(0, 209, 255, 0.5)'
 };
 
@@ -127,15 +80,31 @@ const PersonalPage = ({userId}) => {
   // console.log("user id", userId)
   const [data, setData] = useState()
   const [openDes, setOpenDes] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     getInterviewsByUserId(userId).then((res) => {
       const _res = res.sort((a,b) => b.timestamp - a.timestamp)
       setData(_res)
+      setLoading(false)
     }).catch((err) => {
       console.log(err)
+      setLoading(false)
     })
   }, [])
+
+  const refresh = () => {
+    setLoading(true)
+    getInterviewsByUserId(userId).then((res) => {
+      const _res = res.sort((a,b) => b.timestamp - a.timestamp)
+      setData(_res)
+      setLoading(false)
+    }).catch((err) => {
+      console.log(err)
+      setLoading(false)
+    })
+  }
 
   const navigate = useNavigate()
 
@@ -177,7 +146,7 @@ const PersonalPage = ({userId}) => {
           >
             <Button onClick={() => {setOpenDes(!openDes)}} style={style} color="white" size="large">
               {openDes? (<ArrowDropUpIcon style={{ color: 'white' }}/>):(<ArrowDropDownIcon style={{ color: 'white' }}/>)}
-              Description  
+              Tutorial  
             </Button>
             {openDes ? (
               <div style = {descriptionBox} >
@@ -205,6 +174,17 @@ const PersonalPage = ({userId}) => {
                   <p style = {{fontWeight: '400', color: 'gray', marginLeft: '1em'}}>{steps[2][2][2]}</p>
                   <p style = {{fontWeight: '700',marginTop: '0em', marginBottom: '0em'}}>{steps[3][0]}</p>
                   <p style = {{fontWeight: '500', color: 'gray'}}>{steps[3][1]}</p>
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Button onClick={() => {setOpenDes(!openDes)}} style={styleClose} color="white" size="large">
+                      <ArrowDropUpIcon style={{ color: 'white' }}/>
+                        Close  
+                    </Button>
+                  </Grid>
                 </Grid>
             </div>
             ) : (<></>)}
@@ -220,22 +200,44 @@ const PersonalPage = ({userId}) => {
             paddingLeft="8vw"
             paddingRight="8vw"
           >
-            <p style = {{ color: 'white'}}>INTERVIEW HISTORY</p>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <p style = {{ color: 'white'}}>MY TEST HISTORY</p>
+              <RefreshRoundedIcon style={{ color: 'white' }} onClick={() => {refresh()}}/>
+            </Grid>
             {
-              data?.map((interview, i) => 
-                <>
-                  <TestItem
-                    userId = {userId}
-                    interview={interview}
-                    interviews = {data}
-                    setInterviews = {setData}
-                  />
-                </>
+              loading ? (
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{
+                    mt: 6
+                  }}
+                >
+                  <CircularProgress/>
+                </Grid>
+              ) : (
+                data?.map((interview, i) => 
+                  <>
+                    <TestItem
+                      userId = {userId}
+                      interview={interview}
+                      interviews = {data}
+                      setInterviews = {setData}
+                    />
+                  </>
+                )
               )
             }
           </Grid>
-          <Follow/>
-          <Post/>
+          {/* <Follow/> */}
+          {/* <Post/> */}
         </Grid>
       </Grid>
     </>

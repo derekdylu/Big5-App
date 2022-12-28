@@ -25,6 +25,9 @@ const Transition = React.forwardRef(
 const c = ['#4FC1E8', '#AC92EB', '#FFCE54', '#A0D568', '#ED5564']
 
 const TestItem = ({userId, interview, interviews, setInterviews}) => {
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [opacity, setOpacity] = useState(1);
 
     useEffect(() => {
         getInterviewById(interview._id).then((res) => {
@@ -39,20 +42,20 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
         })
     }, [])
 
-    useEffect(() => {
-        let interval = null;
-        interval = setInterval(() => {
-            setOpacity(opacity => opacity*(-1) + 1);
-            // if(opacity < 0.5){
-            //     console.log(opacity)
-            //     clearInterval(interval);
-            //     setOpacity(1);
-            // }
-            // else
-            //     setOpacity(opacity => opacity*0.9)
-        }, 500);
-        return () => clearInterval(interval);
-    }, [])
+    // useEffect(() => {
+    //     let interval = null;
+    //     interval = setInterval(() => {
+    //         setOpacity(opacity => opacity*(-1) + 1);
+    //         // if(opacity < 0.5){
+    //         //     console.log(opacity)
+    //         //     clearInterval(interval);
+    //         //     setOpacity(1);
+    //         // }
+    //         // else
+    //         //     setOpacity(opacity => opacity*0.9)
+    //     }, 500);
+    //     return () => clearInterval(interval);
+    // }, [])
 
     const itemObj = {
         backgroundColor: '#FFFFFF',
@@ -64,10 +67,6 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
         cursor: 'pointer'
     };
     
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [opacity, setOpacity] = useState(1);
-
     const changeDateFormat = (timestamp) => {
         var result = new Date(parseInt(timestamp))
         let arr = result.toString().split(' ')
@@ -87,6 +86,7 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                 <Grid 
                     container spacing={2}
                     onClick = {() => {setOpen(true)}}
+                    alignItems="center"
                     marginTop = '0px'
                 >
                     <Grid item xs={7}>
@@ -95,17 +95,17 @@ const TestItem = ({userId, interview, interviews, setInterviews}) => {
                     </Grid>
                     { loading ? 
                         (<Grid 
-                            item xs={4}
+                            xs={4}
                             container
                             direction="column"
                             justifyContent="center"
-                            marginTop= '-1vh'
                             sx={{
                                 ml: 2.5
                             }}
                         >
                             {/* <CircularProgress/> */}
-                            <p style = {{fontWeight: '500'}}>Loading<span style = {{opacity: opacity}}>......</span></p>
+                            {/* <p style = {{fontWeight: '500'}}>Loading<span style = {{opacity: opacity}}>...</span></p> */}
+                            <p style = {{color: "#5C5C5C", fontWeight: '500'}}>Loading...</p>
                         </Grid>)
                         :
                         (<Grid 
