@@ -45,7 +45,8 @@ import useWindowDimensions from '../Hooks/useWindowDimensions'
 //   region: REGION,
 // })
 
-const mediaType = "video/mp4"
+const mediaType = "video/mp4";
+// const mediaType = "video/webm";
 
 const questions = [
   "請你簡單的自我介紹。",
@@ -113,7 +114,7 @@ const Camera = (expiryTimestamp) => {
   const navigate = useNavigate();
 
   const highlight = {
-    color: 'red'
+    color: '#00D1FF'
   }
 
   const [videoInstructionOpen, setVideoInstructionOpen] = useState(false)
@@ -138,6 +139,7 @@ const Camera = (expiryTimestamp) => {
   } = useStopwatch({ autoStart: false });
 
   useEffect(() => {
+    setVideoInstructionOpen(true)
     if (localStorage.getItem('user')) {
       setLogin(true)
       setUser(localStorage.getItem('user'))
@@ -213,7 +215,6 @@ const Camera = (expiryTimestamp) => {
   }
 
   const handleStartCaptureClick = useCallback(() => {
-    setVideoInstructionOpen(false)
     start()
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
@@ -280,8 +281,8 @@ const Camera = (expiryTimestamp) => {
               <Button onClick={() => {setVideoInstructionOpen(false)}} autoFocus variant="secondary3">
                   Back
               </Button>
-              <Button onClick={handleStartCaptureClick} autoFocus variant="secondary3" style = {{color: '#00D1FF'}}>
-                  OK, Start recording!
+              <Button onClick={() => {setVideoInstructionOpen(false)}} autoFocus variant="secondary3" style = {{color: '#00D1FF'}}>
+                  OK
               </Button>
           </DialogActions>
       </Dialog>
@@ -411,8 +412,7 @@ const Camera = (expiryTimestamp) => {
                       }
                       </Button>
                     ):(
-                      // <Button variant="secondary2" onClick={handleStartCaptureClick}>Record</Button>
-                      <Button variant="secondary2" onClick={() => {setVideoInstructionOpen(true)}}>Record</Button>
+                      <Button variant="secondary2" onClick={handleStartCaptureClick}>Record</Button>
                     )
                   }
                   </>
