@@ -1,2 +1,2 @@
-sudo pip install cmake
+pip install cmake
 pip install -r requirements.txt
