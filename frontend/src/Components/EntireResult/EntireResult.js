@@ -244,11 +244,11 @@ const EntireResult = ({ interview, handleClose, setInterviews, date}) => {
                         height="24px"
                         sx={{mb: .75, mt: 1}}
                     >
-                         <p style = {{ fontSize: 20, margin: '0px', textDecoration: "underline dotted grey"}} onClick={() => {setTopicEdit(true)}}>{topic}</p>
+                         <p style = {{ fontSize: 20, margin: '0px', textDecoration: "underline dotted grey !important"}} onClick={() => {setTopicEdit(true)}}>{topic}</p>
                     </Grid>
                     {/* <p style = {{ color: "#5C5C5C", marginBlockStart: '0em', fontSize: 12}}>{interview.industry}</p> */}
                     <p style = {{ color: "#5C5C5C", marginBlockStart: '0em', fontSize: 12}}
-                    >{date}</p>
+                    >{interview.industry} • {date}</p>
                     {
                         interview.big.map((s, id) => 
                             <ScoreBar score = {s} id = {id}/>

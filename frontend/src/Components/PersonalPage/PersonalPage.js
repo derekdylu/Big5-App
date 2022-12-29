@@ -47,7 +47,8 @@ const intro = [
   ["C - Conscientiousness", "Organized and mindful of details. Planning ahead, think about how one's behavior affects others, and are mindful of deadlines."],
   ["E - Extraversion", "The state of or tendency toward being predominantly concerned with and obtaining gratification from what is outside the self."],
   ["A - Agreeableness", "The state or condition of being pleasing or likeable."],
-  ["N - Neuroticism", "Experiences the world as distressing, threatening, and unsafe."]  
+  ["N - Neuroticism", "Experiences the world as distressing, threatening, and unsafe."],
+  ["O - Overall", "Overall score based on above value, higher score means better performance."]  
 ]
 const steps = [
   [
@@ -70,7 +71,7 @@ const steps = [
   ],
   [
     "(4) Edit the interview topic and export the result",
-    "After seeing the result, you can choose to export the whole result card as an image, and the image will be downloaded."
+    "After seeing the result, you can change the topic by tapping the topic text, you can also choose to export the whole result card as an image, and the image will be downloaded."
 
   ]
 ]
@@ -162,6 +163,8 @@ const PersonalPage = ({userId}) => {
                   <p style = {{fontWeight: '500', color: 'gray'}}>{intro[3][1]}</p>
                   <p style = {{fontWeight: '700',marginTop: '0em', marginBottom: '0em'}}>{intro[4][0]}</p>
                   <p style = {{fontWeight: '500', color: 'gray'}}>{intro[4][1]}</p>
+                  <p style = {{fontWeight: '700',marginTop: '0em', marginBottom: '0em'}}>{intro[5][0]}</p>
+                  <p style = {{fontWeight: '500', color: 'gray'}}>{intro[5][1]}</p>
                   <p style = {{fontWeight: '900',marginTop: '0em', marginBottom: '1em'}}>{cap[1]}</p>
                   <p style = {{fontWeight: '700',marginTop: '0em', marginBottom: '0em'}}>{steps[0][0]}</p>
                   <p style = {{fontWeight: '500', color: 'gray'}}>{steps[0][1]}</p>
@@ -199,6 +202,10 @@ const PersonalPage = ({userId}) => {
             }}
             paddingLeft="8vw"
             paddingRight="8vw"
+            sx={{
+              mt:0.5,
+              mb: 14
+            }}
           >
             <Grid
               container
