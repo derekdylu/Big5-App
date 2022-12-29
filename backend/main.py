@@ -12,6 +12,7 @@ from typing import List, Optional
 import random
 import math
 import numpy as np
+import aiofiles
 
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
@@ -20,7 +21,7 @@ from authlib.integrations.starlette_client import OAuth
 # from authlib.integrations.starlette_client import OAuthError
 
 # import ffmpeg
-# from mlmain import *
+from mlmain import *
 
 #AWS settings
 # import boto3
@@ -32,11 +33,11 @@ from authlib.integrations.starlette_client import OAuth
 # AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
 # REGION = "ap-northeast-1"
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+
 # import model
 from . import model
-
-# import machine learning stuff
-from . import mlmain
 
 if __name__ == "__main__":
   uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
@@ -220,26 +221,31 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
-def test_interview(id: str, file: UploadFile = File(...)):
+async def test_interview(id: str, file: UploadFile = File(...)):
   # to access file, use file.file or file.file.read()
   # for example to pass it into the big5model
   # big5model(file.file.read())
   print(file.file.read())
-
+  SAVE_FILE_PATH = os.path.join(UPLOAD_DIR, file.filename)
+  print(SAVE_FILE_PATH)
+  async with aiofiles.open(SAVE_FILE_PATH, 'wb') as out_file:
+    content = await file.read()
+    await out_file.write(content)
+  
   # after getting response from big5model, write the big5 scores
   mean = [0.5800158709,0.5447636679,0.4966138764,0.5635496749,0.5390425805]
   std = [0.1449336351,0.1514346201,0.1447676211,0.1298055643,0.1492095726]
   big5 = []
   score = -1
-  for i in range(5):
-    big5.append(math.floor(100 * np.random.normal(mean[i], std[i], 1)[0]))
-  
+  # for i in range(5):
+  #   big5.append(math.floor(100 * np.random.normal(mean[i], std[i], 1)[0]))
+  big5 = big5model(SAVE_FILE_PATH)
   # after writing the big5 scores, update the score from -1 (loading) to a value
   if len(big5) == 5:
     score = (np.sum(big5) - big5[4] + (100 - big5[4])) / 5
   
   update_result = interviews_col.update_one({"_id": id}, {"$set": { "big": big5, "score": score }})
-
+  os.remove(file.filename)
   if update_result.modified_count == 1:
     if (updated_result := interviews_col.find_one({"_id": id})) is not None:
       return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(updated_result)))
@@ -248,6 +254,7 @@ def test_interview(id: str, file: UploadFile = File(...)):
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(existing_result)))
 
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
+
 
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
 def delete_interview(id: str):
