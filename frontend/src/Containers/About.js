@@ -40,7 +40,7 @@ const About = () => {
       >
         <Navigation />
         <Typography variant="h2" color={theme.palette.white.main} sx={{ fontWeight: '700', mt: 8, ml: 3, mr: 10}}>
-          Pricacy Policy
+          About
         </Typography>
         <Grid
           item
