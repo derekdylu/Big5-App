@@ -47,7 +47,7 @@ B07610008 黃茹暄 | B08705021 盧德原 | B08705027 林暐倫<br>B08705028 葉
   <a href="https://ibb.co/jzX2Wgq"><img src="https://i.ibb.co/T8F4K8k/header.png" alt="mockup" border="0" height="400"></a>
 </p>
 
-**5ee you** is a web-based application sepcially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing user's face. The five traits are openness to experience (O), conscientiousness (C), extraversion (E), agreeableness (A), and  neuroticism (N). Besides, 5ee you also calculate an overall score from those values.
+**5ee you** is a web-based application specially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing the user's face. The five traits are openness to experience (O), conscientiousness (C), extraversion (E), agreeableness (A), and  neuroticism (N). Besides, 5ee you also calculate an overall score from those values.
 
 ## Development 
 ![](https://img.shields.io/badge/Platform-macOS-lightgrey)
