@@ -10,7 +10,7 @@ import logo from '../Images/logo.png'
 
 const content_a = [
   "What's 5ee you",
-  "5ee you is a web-based application sepcially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing user's face. The five traits are openness to experience (O), conscientiousness (C), extraversion (E), agreeableness (A), and  neuroticism (N). Besides, 5ee you also calculate an overall score from those values."
+  "5ee you is a web-based application specially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing the user's face. The five traits are openness to experience (O), conscientiousness (C), extraversion (E), agreeableness (A), and  neuroticism (N). Besides, 5ee you also calculate an overall score from those values."
 ]
 
 const content_b = [
