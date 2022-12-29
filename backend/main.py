@@ -12,6 +12,7 @@ from typing import List, Optional
 import random
 import math
 import numpy as np
+import aiofiles
 
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
@@ -20,7 +21,7 @@ from authlib.integrations.starlette_client import OAuth
 # from authlib.integrations.starlette_client import OAuthError
 
 # import ffmpeg
-# from mlmain import *
+from mlmain import *
 
 #AWS settings
 # import boto3
@@ -32,11 +33,11 @@ from authlib.integrations.starlette_client import OAuth
 # AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
 # REGION = "ap-northeast-1"
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+
 # import model
 from . import model
-
-# import machine learning stuff
-from . import mlmain
 
 if __name__ == "__main__":
   uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
@@ -220,12 +221,15 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
-def test_interview(id: str, file: UploadFile = File(...)):
+async def test_interview(id: str, file: UploadFile = File(...)):
   # to access file, use file.file or file.file.read()
   # for example to pass it into the big5model
-  # big5model(file.file.read())
+  big5model(file.file.read())
   print(file.file.read())
-
+  SAVE_FILE_PATH = os.path.join(UPLOAD_DIR, file.filename)
+  async with aiofiles.open(SAVE_FILE_PATH, 'wb') as out_file:
+    content = await file.read()
+    await out_file.write(content)
   # after getting response from big5model, write the big5 scores
   mean = [0.5800158709,0.5447636679,0.4966138764,0.5635496749,0.5390425805]
   std = [0.1449336351,0.1514346201,0.1447676211,0.1298055643,0.1492095726]
