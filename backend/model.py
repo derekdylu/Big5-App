@@ -5,7 +5,6 @@ from typing import Dict, List, Optional
 from sympy import true
 
 
-
 class PyObjectId(ObjectId):
   @classmethod
   def __get_validators__(cls):
