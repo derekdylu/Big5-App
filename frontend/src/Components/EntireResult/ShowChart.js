@@ -243,7 +243,7 @@ const ShowChart = () => {
                     : rank[2]
                   }
                 </Typography>
-                <Typography color="#ffffff" variant="body2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
+                <Typography color="#ffffff" variant="h2" fontWeight="700" noWrap sx={{pl: 0.5, pb: 1.25}}>
                   %
                 </Typography>
               </Grid>
