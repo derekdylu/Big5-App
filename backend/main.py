@@ -23,16 +23,6 @@ from authlib.integrations.starlette_client import OAuth
 # import ffmpeg
 # from mlmain import *
 
-#AWS settings
-# import boto3
-# AWS_ACCESS_KEY_ID = os.getenv('POSTGRES_HOST')
-# AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
-# AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-# AWS_S3_BUCKET_NAME = "imp-big5"
-# AWS_SECRET_KEY = "wYaQbbrFuzRe3yEh54hXr/q9+K/r+QbtzpEG02oN"
-# AWS_ACCESS_KEY_ID = "AKIASOAYAC7MCO7RLK5Y"
-# REGION = "ap-northeast-1"
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 
