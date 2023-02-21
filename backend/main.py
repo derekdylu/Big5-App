@@ -21,7 +21,7 @@ from authlib.integrations.starlette_client import OAuth
 # from authlib.integrations.starlette_client import OAuthError
 
 # import ffmpeg
-# from mlmain import *
+from mlmain import *
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
@@ -50,10 +50,8 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-# MONGO_URI = os.environ.get("MONGO_URI")
-MONGO_URI = "mongodb+srv://ntuim:ntuim@cluster0.rounr8v.mongodb.net/?retryWrites=true&w=majority"
-# PORT = os.environ.get("PORT")
-PORT = "8000"
+MONGO_URI = os.environ.get("MONGO_URI")
+PORT = os.environ.get("PORT")
 
 client = MongoClient(MONGO_URI, int(PORT))
 
@@ -62,10 +60,8 @@ users_col = database["users"]
 interviews_col = database["interviews"]
 
 # OAuth settings
-# GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
-# GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
-GOOGLE_CLIENT_ID="278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="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"
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
 
 if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
   raise BaseException('Missing env variables')
@@ -76,7 +72,7 @@ starlette_config = Config(environ=config_data)
 oauth = OAuth(starlette_config)
 oauth.register(
     name='google',
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    server_metadata_url='',
     client_kwargs={'scope': 'openid email profile'},
 )
 
@@ -222,15 +218,9 @@ async def test_interview(id: str, file: UploadFile = File(...)):
     content = await file.read()
     await out_file.write(content)
   
-  # after getting response from big5model, write the big5 scores
-  mean = [0.5800158709,0.5447636679,0.4966138764,0.5635496749,0.5390425805]
-  std = [0.1449336351,0.1514346201,0.1447676211,0.1298055643,0.1492095726]
   big5 = []
   score = -1
-  # for i in range(5):
-  #   big5.append(math.floor(100 * np.random.normal(mean[i], std[i], 1)[0]))
   big5 = big5model(SAVE_FILE_PATH)
-  # after writing the big5 scores, update the score from -1 (loading) to a value
   if len(big5) == 5:
     score = (np.sum(big5) - big5[4] + (100 - big5[4])) / 5
   
