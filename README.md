@@ -1,5 +1,3 @@
-# 5ee You
-
 <h1 align="center">
   <br>
   <img src="https://i.ibb.co/VJVSC0p/wordmark.png" alt="logo" width="350">
