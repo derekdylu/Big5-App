@@ -5,7 +5,7 @@
   <img src="https://i.ibb.co/VJVSC0p/wordmark.png" alt="logo" width="350">
 </h1>
 
-<h4 align="center">2022 台大資管專題</h4>
+<h4 align="center">2022 台大資管專題 5ee you</h4>
 <h6 align="center">
 [student-id-removed] 黃茹暄 | [student-id-removed] 盧德原 | [student-id-removed] 林暐倫<br>[student-id-removed] 葉柏辰 | [student-id-removed] 朱修平 | [student-id-removed] 黃晨亘
 </h6>
