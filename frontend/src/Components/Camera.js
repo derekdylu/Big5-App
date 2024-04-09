@@ -31,15 +31,6 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 import useWindowDimensions from '../Hooks/useWindowDimensions'
 
-
-// const S3_BUCKET = "imp-big5";
-// const REGION = "ap-northeast-1";
-
-// const myBucket = new AWS.S3({
-//   params: { Bucket: S3_BUCKET},
-//   region: REGION,
-// })
-
 const mediaType = "video/mp4";
 // const mediaType = "video/webm";
 
