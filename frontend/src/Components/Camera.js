@@ -35,11 +35,6 @@ import useWindowDimensions from '../Hooks/useWindowDimensions'
 // const S3_BUCKET = "imp-big5";
 // const REGION = "ap-northeast-1";
 
-// AWS.config.update({
-//   accessKeyId: "",
-//   secretAccessKey: ""
-// })
-
 // const myBucket = new AWS.S3({
 //   params: { Bucket: S3_BUCKET},
 //   region: REGION,
