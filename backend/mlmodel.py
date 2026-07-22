@@ -1,12 +1,13 @@
-import numpy as np
-import pandas as pd
+"""3D video model components.
+
+Portions were adapted from kenshohara/3D-ResNets-PyTorch. See the repository's
+THIRD_PARTY_NOTICES.md for the upstream MIT license and attribution.
+"""
 
 import os
-import pickle as pickle
 
 import torch
 import torch.nn as nn
-from torchinfo import summary
 from functools import partial
 import torch.nn.functional as F
 
@@ -399,4 +400,4 @@ class Res_CNN(nn.Module):
 
 if __name__ == "__main__":
     model = Res_CNN(in_planes = 3, num_classes = 5, droprate = 0.4)
-    summary(model, input_size=(8, 3, 30, 256, 256))
+    print(model)

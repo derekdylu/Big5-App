@@ -12,56 +12,60 @@
     4. In main.py, set the video as 'filePath' as you like '''
 
 import datetime
-import numpy as np
-import cv2
-import pickle as pickle
+import os
+from pathlib import Path
+
 import torch
 import torchvision.transforms as tf
-from mlmodel import *
-from mlpreprocess_video import *
 
-def big5model(filePath: str):
+from .mlmodel import Res_CNN, load_checkpoint
+from .mlpreprocess_video import preprocessing_input
+
+
+def big5model(file_path: str, model_path: str = None):
     t1 = datetime.datetime.utcnow()
+
+    configured_model_path = Path(
+        model_path or os.environ.get("BIG5_MODEL_PATH", "")
+    ).expanduser()
+    if not configured_model_path.is_file():
+        raise RuntimeError(
+            "Inference is disabled until BIG5_MODEL_PATH points to a trusted "
+            "model checkpoint. Model weights are not distributed in this repository."
+        )
 
 
     '''load the parameters onto the model'''
     model = Res_CNN(in_planes = 3, num_classes = 5, droprate = 0.4)
-    # summary(model, input_size=(8, 3, 30, 256, 256))
-
-    # test_model_path = './best.pkl'
-    # _ = load_checkpoint(model, filepath=test_model_path)
-    # model.eval()
+    load_checkpoint(model, filepath=str(configured_model_path))
+    model.eval()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model=model.to(device)
 
 
     '''prepocess data'''
-    filePath = './test_clip.mp4'
-    images = preprocessing_input(file_path= filePath, dictionary= None)
+    images = preprocessing_input(file_path=file_path, dictionary=None)
 
     # 如果影片檔不能preprocess，可先改用已process好的.dat試試看model的部分有無問題
     # with open('./p1.000.dat', "rb") as dat:
     #   images = pickle.load(dat)
 
-    result = np.concatenate(images,axis=1)
-    show_64_image = cv2.resize(result, dsize=(3840, 128), interpolation=cv2.INTER_LINEAR)  #*255.0
-    # cv2.imshow('press any key to close the window',show_64_image)
-    # cv2.waitKey(0) 
-
     images = torch.from_numpy(images).float()
     images = torch.unsqueeze(images, 0)          #  add channel (D,H,W) -> (C,D,H,W) 
     images = torch.cat((images, images, images), 0)   # resnet needs input channel = 3
     images = torch.unsqueeze(images, 0)          # add batch size = 1, (C,D,H,W) -> (B,C,D,H,W) 
+    images = images.to(device)
     # print('input shape', images.shape)
     inputs_hf = tf.functional.hflip(images)
 
 
     '''testing...'''
-    output = model(images)
-    outputs_hf = model(inputs_hf)  # horizon flip augmentation
-    output = torch.cat((output, outputs_hf), 0)
-    output = torch.mean(output, 0, keepdim = True)
+    with torch.no_grad():
+        output = model(images)
+        outputs_hf = model(inputs_hf)  # horizon flip augmentation
+        output = torch.cat((output, outputs_hf), 0)
+        output = torch.mean(output, 0, keepdim = True)
     # print('output (e,n,a,c,o)',output.tolist()[0])
 
     t2 = datetime.datetime.utcnow()
@@ -70,5 +74,5 @@ def big5model(filePath: str):
 
 if __name__ == "__main__":
 
-    filePath = './test_clip.mp4' 
-    print(big5model(filePath))
+    file_path = './test_clip.mp4'
+    print(big5model(file_path))
