@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Webcam from "react-webcam";
 import { useStopwatch } from 'react-timer-hook';
 import theme from '../Themes/Theme';
-import AWS from 'aws-sdk';
 import { postInterview, testInterview } from '../Utils/Axios';
 
 import Grid from '@mui/material/Grid';
@@ -129,7 +128,6 @@ const Camera = (expiryTimestamp) => {
     if (localStorage.getItem('user')) {
       setLogin(true)
       setUser(localStorage.getItem('user'))
-      console.log("user is set to", user)
     }
   }, [])
 

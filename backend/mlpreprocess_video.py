@@ -7,12 +7,9 @@
 import numpy as np
 import ffmpeg as ff
 from typing import List, Tuple, Dict
-import matplotlib.pyplot as plt
 import cv2
 import dlib
 
-# from imutils import face_utils
-from PIL import Image
 pretrained_dlib_detector = "./shape_predictor_68_face_landmarks.dat"
 detector = dlib.get_frontal_face_detector()
 
@@ -24,7 +21,7 @@ imput_size = 256
 
 
 def extract_audio_from_video(file_path: str) -> np.ndarray:
-    inputfile = ff.input(filePath)
+    inputfile = ff.input(file_path)
     out = inputfile.output('-', format='f32le', acodec='pcm_f32le', ac=1, ar='44100')
     raw = out.run(capture_stdout=True)
     del inputfile, out
@@ -104,6 +101,9 @@ def extract_N_video_frames(file_path: str, number_of_samples: int = 6) -> List[n
       cap = cv2.VideoCapture(file_path)
       cap.set(1,ind)
       res, frame = cap.read()
+      if not res or frame is None:
+        cap.release()
+        raise ValueError("Unable to decode the uploaded video")
       
       frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
       # cv2_imshow(frame)
@@ -127,7 +127,9 @@ def extract_N_video_frames(file_path: str, number_of_samples: int = 6) -> List[n
           # frame= cv2.copyMakeBorder(frame,300,300,300,300,cv2.BORDER_CONSTANT,value=(255,255,255))
           # rect = detector(frame, 1)
           find = True
+          cap.release()
           break
+      cap.release()
     if find:
       # top, bottom, left, right = crop_image_window(rect, frame)
       top = square[0]+300
@@ -138,10 +140,14 @@ def extract_N_video_frames(file_path: str, number_of_samples: int = 6) -> List[n
       top, bottom, left, right = crop_image_window([], frame)
     square_h = bottom - top
     square_w = right - left
+    cap = cv2.VideoCapture(file_path)
     # print('face size:' ,square_h, square_w, 'video size:',frame.shape)
     for ind in random_indexes:
         cap.set(1,ind)
         res, frame = cap.read()
+        if not res or frame is None:
+          cap.release()
+          raise ValueError("Unable to decode the uploaded video")
         if frame.ndim == 2:
           height, width = frame.shape
         elif frame.ndim == 3:
@@ -175,9 +181,6 @@ def extract_N_video_frames(file_path: str, number_of_samples: int = 6) -> List[n
 
     del cap, random_indexes
     # print('frame shape ', video_frames[0].shape)
-    result = np.concatenate(video_frames,axis=1)
-    show_64_image = cv2.resize(result, dsize=(1920,64), interpolation=cv2.INTER_LINEAR)
-    plt.imshow(show_64_image)
     return video_frames
 
 def resize_image(image: np.ndarray, new_size: Tuple[int,int]) -> np.ndarray:
@@ -192,7 +195,7 @@ def reading_label_data(file_name: str, dictionary: Dict[str,str]) -> np.ndarray:
 def preprocessing_input(file_path: str, dictionary: Dict[str,str], use_audio = audio_modal) -> Tuple[np.ndarray,np.ndarray,np.ndarray]:
     # Audio
     if use_audio:
-      extracted_audio_raw = extract_audio_from_video(file_path= filePath)
+      extracted_audio_raw = extract_audio_from_video(file_path=file_path)
       preprocessed_audio = preprocess_audio_series(raw_data= extracted_audio_raw)
     
     #Video

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
 import jwt_decode from 'jwt-decode';
 
 import theme from '../Themes/Theme';
@@ -17,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import profileImage from '../Images/profile.png'
 
 const Login = ({stateChanged}) => {
-  const googleClientId = "278069779564-qfghpg04t9ha3kpoa7k05cpvhv3gi12s.apps.googleusercontent.com"
+  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
   const [devlogclicked, setDevlogclicked] = useState(false)
   const [loading, setLoading] = useState(false)
   
@@ -49,11 +47,9 @@ const Login = ({stateChanged}) => {
       "interview": [],
     }
     postUser(guestUser.username, guestUser.email, guestUser.img, guestUser.interview).then((res) => {
-      console.log(res)
       setUser(guestUser)
       getUserbyEmail(guestUser.email).then((res) => {
         localStorage.setItem("user", JSON.stringify(res))
-        console.log("new account has been created", res)
         stateChanged()
         setLoading(false)
       })
@@ -65,13 +61,11 @@ const Login = ({stateChanged}) => {
   function handleCallbackResponse(response) {
     setLoading(true)
     var userObject = jwt_decode(response.credential)
-    console.log("user object", userObject)
 
     // check if user's regisered in db
     getUserbyEmail(userObject.email).then((res) => {
       setUser(res)
       localStorage.setItem("user", JSON.stringify(res))
-      console.log("a registered account has been found in DB", res)
       stateChanged()
     }).catch((err) => {
       const newUser = {
@@ -80,13 +74,10 @@ const Login = ({stateChanged}) => {
         "img": userObject.picture,
         "interview": [],
       }
-      console.log("new user", newUser)
       postUser(userObject.name, userObject.email, userObject.picture, []).then((res) => {
-        console.log(res)
         setUser(newUser)
         getUserbyEmail(newUser.email).then((res) => {
           localStorage.setItem("user", JSON.stringify(res))
-          console.log("new account has been created", res)
           stateChanged()
         })
       }).catch((err) => {
@@ -98,6 +89,10 @@ const Login = ({stateChanged}) => {
   }
 
   useEffect(() => {
+    if (!googleClientId || !window.google?.accounts?.id) {
+      return
+    }
+
     window.google.accounts.id.initialize({
       client_id: googleClientId,
       callback: handleCallbackResponse
@@ -126,6 +121,9 @@ const Login = ({stateChanged}) => {
 
   function clickDev(e) {
     e.preventDefault()
+    if (!googleClientId || !window.google?.accounts?.id) {
+      return
+    }
     document.getElementById("signInDiv").hidden = false
     setDevlogclicked(true)
   }
@@ -156,7 +154,7 @@ const Login = ({stateChanged}) => {
         <>
           <>
             {
-              !devlogclicked && <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={clickDev}>Developer Login</Button>
+                !devlogclicked && googleClientId && <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={clickDev}>Developer Login</Button>
             }
           </>
           <Button variant="secondary2" sx={{mt:2}} style={{width: "240px"}} onClick={guestLogin} disabled={loading}>

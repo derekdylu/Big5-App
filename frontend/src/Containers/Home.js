@@ -29,7 +29,6 @@ const Home = () => {
 
   function stateChanged () {
     setUser(localStorage.getItem('user'))
-    console.log("update user", user)
   }
 
   return (

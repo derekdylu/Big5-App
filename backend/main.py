@@ -1,46 +1,37 @@
 import os
+import tempfile
+from pathlib import Path
+from typing import List
+
+import numpy as np
 import uvicorn
-from fastapi import FastAPI, Body, HTTPException, status, UploadFile, Request, File, UploadFile
+from bson import ObjectId
+from fastapi import Body, FastAPI, File, HTTPException, Request, UploadFile, status
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-# from starlette.middleware import Middleware
-# from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from typing import List, Optional
-import random
-import math
-import numpy as np
-import aiofiles
 
-from starlette.config import Config
-from authlib.integrations.starlette_client import OAuth
-# from starlette.middleware.sessions import SessionMiddleware
-# from starlette.responses import RedirectResponse
-# from authlib.integrations.starlette_client import OAuthError
-
-# import ffmpeg
-from mlmain import *
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-
-# import model
+from .mlmain import big5model
 from . import model
 
-if __name__ == "__main__":
-  uvicorn.run("app", host="0.0.0.0", port=8000, reload=True)
-
 load_dotenv()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", 25 * 1024 * 1024))
+ALLOWED_VIDEO_TYPES = {
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+  "video/quicktime": ".mov",
+}
+
 app = FastAPI()
 
-origins = [
-  "http://localhost",
-  "http://localhost:3000",
-  "https://5eeyou.netlify.app",
-  "https://5eeyou.netlify.app/"
-]
+origins = [origin.strip() for origin in os.environ.get(
+  "CORS_ORIGINS",
+  "http://localhost,http://localhost:3000",
+).split(",") if origin.strip()]
 
 app.add_middleware(
   CORSMiddleware,
@@ -51,37 +42,40 @@ app.add_middleware(
 )
 
 MONGO_URI = os.environ.get("MONGO_URI")
-PORT = os.environ.get("PORT")
-
-client = MongoClient(MONGO_URI, int(PORT))
-
-database = client["db"]
-users_col = database["users"]
-interviews_col = database["interviews"]
-
-# OAuth settings
-GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID') or None
-GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET') or None
-
-if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
-  raise BaseException('Missing env variables')
-
-# Set up OAuth
-config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
-starlette_config = Config(environ=config_data)
-oauth = OAuth(starlette_config)
-oauth.register(
-    name='google',
-    server_metadata_url='',
-    client_kwargs={'scope': 'openid email profile'},
+ENABLE_UNAUTHENTICATED_DEMO_API = (
+  os.environ.get("ENABLE_UNAUTHENTICATED_DEMO_API", "false").lower() == "true"
 )
 
-# middleware, secret key
-# SECRET_KEY = os.environ.get('SECRET_KEY') or None
-# SECRET_KEY=""
-# if SECRET_KEY is None:
-#     raise 'Missing SECRET_KEY'
-# app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+client = MongoClient(MONGO_URI) if MONGO_URI else None
+database = client["db"] if client is not None else None
+users_col = database["users"] if database is not None else None
+interviews_col = database["interviews"] if database is not None else None
+
+PUBLIC_PATHS = {"/", "/docs", "/docs/oauth2-redirect", "/openapi.json", "/redoc"}
+
+
+@app.middleware("http")
+async def require_explicit_demo_mode(request: Request, call_next):
+  if request.url.path not in PUBLIC_PATHS:
+    if not ENABLE_UNAUTHENTICATED_DEMO_API:
+      return JSONResponse(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={
+          "detail": "The unauthenticated research API is disabled by default."
+        },
+      )
+    if database is None:
+      return JSONResponse(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={"detail": "MONGO_URI is not configured."},
+      )
+  return await call_next(request)
+
+
+def database_id(value: str) -> ObjectId:
+  if not ObjectId.is_valid(value):
+    raise HTTPException(status_code=404, detail="Record not found")
+  return ObjectId(value)
 
 def ResponseModel(data, message="success"):
   return {
@@ -107,7 +101,7 @@ def get_users():
 
 @app.get("/user/{id}", response_description="get an user by ID", response_model=model.User)
 def get_user(id: str):
-  if (user := users_col.find_one({"_id": id})) is not None:
+  if (user := users_col.find_one({"_id": database_id(id)})) is not None:
     return user
   raise HTTPException(status_code=404, detail=f"User id {id} not found")
 
@@ -130,20 +124,21 @@ def update_user(id: str, user: model.UpdatedUser = Body(...)):
   user = {k: v for k, v in user.dict().items() if v is not None}
 
   if len(user) >= 1:
-    update_result = users_col.update_one({"_id": id}, {"$set": user})
+    object_id = database_id(id)
+    update_result = users_col.update_one({"_id": object_id}, {"$set": user})
 
     if update_result.modified_count == 1:
-      if (updated_result := users_col.find_one({"_id": id})) is not None:
+      if (updated_result := users_col.find_one({"_id": object_id})) is not None:
         return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.user_helper(updated_result)))
   
-  if (existing_result := users_col.find_one({"_id": id})) is not None:
+  if (existing_result := users_col.find_one({"_id": database_id(id)})) is not None:
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.user_helper(existing_result)))
 
   raise HTTPException(status_code=404, detail=f"User id {id} not found")
 
 @app.delete("/delete_user/{id}", response_description="delete an user by ID")
 def delete_user(id: str):
-  delete_result = users_col.delete_one({"_id": id})
+  delete_result = users_col.delete_one({"_id": database_id(id)})
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
@@ -159,7 +154,7 @@ def get_interviews():
 
 @app.get("/interview/id/{id}", response_description="get an interview by ID", response_model=model.Interview)
 def get_interview(id: str):
-  if (interview := interviews_col.find_one({"_id": id})) is not None:
+  if (interview := interviews_col.find_one({"_id": database_id(id)})) is not None:
     return interview
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
@@ -195,42 +190,69 @@ def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
   interview = {k: v for k, v in interview.dict().items() if v is not None}
 
   if len(interview) >= 1:
-    update_result = interviews_col.update_one({"_id": id}, {"$set": interview})
+    object_id = database_id(id)
+    update_result = interviews_col.update_one({"_id": object_id}, {"$set": interview})
 
     if update_result.modified_count == 1:
-      if (updated_result := interviews_col.find_one({"_id": id})) is not None:
+      if (updated_result := interviews_col.find_one({"_id": object_id})) is not None:
         return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(updated_result)))
   
-  if (existing_result := interviews_col.find_one({"_id": id})) is not None:
+  if (existing_result := interviews_col.find_one({"_id": database_id(id)})) is not None:
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(existing_result)))
 
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
 
 @app.post("/test_interview/{id}", response_description="upload the clip to predict the result with interview ID")
 async def test_interview(id: str, file: UploadFile = File(...)):
-  # to access file, use file.file or file.file.read()
-  # for example to pass it into the big5model
-  # big5model(file.file.read())
-  print(file.file.read())
-  SAVE_FILE_PATH = os.path.join(UPLOAD_DIR, file.filename)
-  print(SAVE_FILE_PATH)
-  async with aiofiles.open(SAVE_FILE_PATH, 'wb') as out_file:
-    content = await file.read()
-    await out_file.write(content)
-  
-  big5 = []
+  suffix = ALLOWED_VIDEO_TYPES.get(file.content_type or "")
+  if suffix is None:
+    raise HTTPException(
+      status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+      detail="Only MP4, WebM, and QuickTime video uploads are accepted.",
+    )
+
+  temporary_path = None
+  try:
+    total_bytes = 0
+    with tempfile.NamedTemporaryFile(mode="wb", suffix=suffix, delete=False) as upload:
+      temporary_path = Path(upload.name)
+      while chunk := await file.read(1024 * 1024):
+        total_bytes += len(chunk)
+        if total_bytes > MAX_UPLOAD_BYTES:
+          raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"Video exceeds the {MAX_UPLOAD_BYTES}-byte upload limit.",
+          )
+        upload.write(chunk)
+
+    try:
+      big5 = big5model(str(temporary_path))
+    except RuntimeError as error:
+      raise HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail=str(error),
+      ) from error
+    except ValueError as error:
+      raise HTTPException(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        detail="The uploaded video could not be processed.",
+      ) from error
+  finally:
+    await file.close()
+    if temporary_path is not None:
+      temporary_path.unlink(missing_ok=True)
+
   score = -1
-  big5 = big5model(SAVE_FILE_PATH)
   if len(big5) == 5:
     score = (np.sum(big5) - big5[4] + (100 - big5[4])) / 5
-  
-  update_result = interviews_col.update_one({"_id": id}, {"$set": { "big": big5, "score": score }})
-  os.remove(file.filename)
+
+  object_id = database_id(id)
+  update_result = interviews_col.update_one({"_id": object_id}, {"$set": { "big": big5, "score": score }})
   if update_result.modified_count == 1:
-    if (updated_result := interviews_col.find_one({"_id": id})) is not None:
+    if (updated_result := interviews_col.find_one({"_id": object_id})) is not None:
       return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(updated_result)))
   
-  if (existing_result := interviews_col.find_one({"_id": id})) is not None:
+  if (existing_result := interviews_col.find_one({"_id": object_id})) is not None:
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(model.interview_helper(existing_result)))
 
   raise HTTPException(status_code=404, detail=f"Interview id {id} not found")
@@ -238,7 +260,7 @@ async def test_interview(id: str, file: UploadFile = File(...)):
 
 @app.delete("/delete_interview/{id}", response_description="delete an interview by ID")
 def delete_interview(id: str):
-  delete_result = interviews_col.delete_one({"_id": id})
+  delete_result = interviews_col.delete_one({"_id": database_id(id)})
 
   if delete_result.deleted_count == 1:
     return status.HTTP_204_NO_CONTENT
@@ -246,3 +268,7 @@ def delete_interview(id: str):
 @app.get("/predict")
 async def predict():
   return {"message": "Hello World"}
+
+
+if __name__ == "__main__":
+  uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)

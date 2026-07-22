@@ -1,8 +1,6 @@
-from unittest.mock import Base
 from bson import ObjectId
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional
-from sympy import true
+from typing import Optional
 
 
 class PyObjectId(ObjectId):
@@ -33,8 +31,8 @@ class User(BaseModel):
     json_encoders = {ObjectId: str}
     schema_extra = {
       "example": {
-        "username": "derekdylu",
-        "email": "abc@bcg.com",
+        "username": "sample-user",
+        "email": "alice@example.com",
         "img": "./",
         "interview": [],
       }
@@ -61,8 +59,8 @@ class UpdatedUser(BaseModel):
     json_encoders = {ObjectId: str}
     schema_extra = {
       "example": {
-        "username": "derekdylu",
-        "email": "abc@bcg.com",
+        "username": "sample-user",
+        "email": "alice@example.com",
         "img": "./",
         "interview": [],
       }
