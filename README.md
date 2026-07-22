@@ -12,7 +12,7 @@ This repository is preserved for study, not as a supported product:
 - Model checkpoints are not distributed in the current tree, so inference is disabled until an operator supplies a trusted checkpoint.
 - The backend data API has no end-user authorization model and is disabled by default. Do not expose it to a public network.
 - The model and its outputs have not been established as valid psychological, medical, educational, or employment assessments.
-- Dependency versions reflect the 2022 prototype and still require a complete security upgrade and audit.
+- The maintained frontend and Python dependency sets have been upgraded from their 2022 versions and audited locally.
 
 ## Historical features
 
@@ -25,7 +25,7 @@ This repository is preserved for study, not as a supported product:
 
 ```text
 backend/                 FastAPI routes, MongoDB models, and ML inference code
-frontend/                Create React App frontend
+frontend/                React and Vite frontend
 backend/.env.defaults    Safe backend configuration template
 frontend/.env.example    Safe public frontend configuration template
 requirements.txt         Python dependency pins
@@ -33,14 +33,14 @@ requirements.txt         Python dependency pins
 
 ## Requirements
 
-The historical development environment used Python 3.9 and the Node.js/npm ecosystem. You will also need:
+The backend requires Python 3.13. The maintained frontend toolchain supports Node.js 20.19+, 22.13+, or 24+ with npm. You will also need:
 
 - MongoDB for the data API;
 - FFmpeg and FFprobe for video inspection;
 - native build tooling required by `dlib` and PyTorch;
 - a trusted, compatible model checkpoint for inference.
 
-Modern runtime and dependency versions have not yet been qualified.
+The checks documented below were verified with Python 3.13, Node.js 24, and npm 11.
 
 ## Frontend setup
 
@@ -51,7 +51,7 @@ npm ci
 npm start
 ```
 
-Set `REACT_APP_API_URL` to the local backend address. `REACT_APP_GOOGLE_CLIENT_ID` is a public browser OAuth client identifier, not a secret. Never place secrets in a `REACT_APP_*` variable because Create React App embeds those values in the browser bundle.
+Set `VITE_API_URL` to the local backend address. `VITE_GOOGLE_CLIENT_ID` is a public browser OAuth client identifier, not a secret. Never place secrets in a `VITE_*` variable because Vite embeds those values in the browser bundle.
 
 ## Backend setup
 
@@ -78,20 +78,26 @@ The health endpoint and API documentation remain available with the default conf
 | `CORS_ORIGINS` | Backend | Comma-separated browser origins; defaults to local development origins. |
 | `MAX_UPLOAD_BYTES` | Backend | Maximum accepted video size; defaults to 25 MiB. |
 | `BIG5_MODEL_PATH` | Backend | Absolute path to a trusted model checkpoint. |
-| `REACT_APP_API_URL` | Frontend | Public URL used by the browser client. |
-| `REACT_APP_GOOGLE_CLIENT_ID` | Frontend | Public Google browser OAuth client identifier. |
+| `VITE_API_URL` | Frontend | Public URL used by the browser client. |
+| `VITE_GOOGLE_CLIENT_ID` | Frontend | Public Google browser OAuth client identifier. |
 
 ## Testing and verification
 
-The frontend retains the Create React App commands:
+Run the frontend tests and production build with:
 
 ```bash
 cd frontend
-npm test -- --watchAll=false
+npm test
 npm run build
 ```
 
-No automated backend test suite is currently included. This is an archive limitation, not a claim that the backend is production-ready.
+Run the backend smoke tests from the repository root after installing the Python requirements:
+
+```bash
+python -m unittest backend.test_smoke
+```
+
+These checks cover dependency integration and basic API schema behavior; they are not a production-readiness claim.
 
 ## Privacy and responsible use
 
@@ -107,4 +113,4 @@ Portions of the 3D ResNet implementation were adapted from an MIT-licensed upstr
 
 ## License
 
-No project license has been selected. Public visibility alone does not grant permission to copy, modify, or redistribute this repository. The repository owner and all contributors must confirm publication rights and choose a license before presenting the project as open source.
+This project is licensed under the [MIT License](LICENSE). Third-party components remain subject to the terms listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

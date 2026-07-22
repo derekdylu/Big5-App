@@ -21,10 +21,14 @@ def load_checkpoint(model=None, optimizer=None, filepath=None):
   if torch.cuda.is_available():
     # Load all tensors onto previous state
     model.cuda() # move to cuda before load state, or else error will occur at optimizer.step
-    checkpoint = torch.load(filepath)
+    checkpoint = torch.load(filepath, weights_only=True)
   else:
     # Load all tensors onto the CPU
-    checkpoint = torch.load(filepath, map_location=lambda storage, loc: storage)
+    checkpoint = torch.load(
+      filepath,
+      map_location=lambda storage, loc: storage,
+      weights_only=True,
+    )
   epoch = checkpoint['epoch']
   if optimizer:
     try:

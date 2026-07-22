@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
 import Webcam from "react-webcam";
 import { useStopwatch } from 'react-timer-hook';
 import theme from '../Themes/Theme';
@@ -9,7 +8,8 @@ import { postInterview, testInterview } from '../Utils/Axios';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -72,14 +72,12 @@ const industriesList = [
   "🧿 OTHER"
 ]
 
-const StyledLinearProgress = withStyles({
-  colorPrimary: {
-    backgroundColor: "rgba(0,0,0,0)",
-  },
-  barColorPrimary: {
+const StyledLinearProgress = styled(LinearProgress)({
+  backgroundColor: "rgba(0,0,0,0)",
+  '& .MuiLinearProgress-bar': {
     backgroundColor: "#00D1FF",
   }
-})(LinearProgress);
+});
 
 const Camera = (expiryTimestamp) => {
   const [progress, setProgress] = useState(0);

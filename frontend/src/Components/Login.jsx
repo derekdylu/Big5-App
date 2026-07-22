@@ -15,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import profileImage from '../Images/profile.png'
 
 const Login = ({stateChanged}) => {
-  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
   const [devlogclicked, setDevlogclicked] = useState(false)
   const [loading, setLoading] = useState(false)
   

@@ -30,7 +30,7 @@ app = FastAPI()
 
 origins = [origin.strip() for origin in os.environ.get(
   "CORS_ORIGINS",
-  "http://localhost,http://localhost:3000",
+  "http://localhost:5173,http://127.0.0.1:5173",
 ).split(",") if origin.strip()]
 
 app.add_middleware(
@@ -121,7 +121,7 @@ def post_user(user: model.User = Body(...)):
 
 @app.put("/update_user/{id}", response_description="update an user by ID", response_model=model.User)
 def update_user(id: str, user: model.UpdatedUser = Body(...)):
-  user = {k: v for k, v in user.dict().items() if v is not None}
+  user = user.model_dump(exclude_none=True)
 
   if len(user) >= 1:
     object_id = database_id(id)
@@ -187,7 +187,7 @@ def post_interview(interview: model.Interview = Body(...)):
 
 @app.put("/update_interview/{id}", response_description="update an interview", response_model=model.Interview)
 def update_interview(id: str, interview: model.UpdatedInterview = Body(...)):
-  interview = {k: v for k, v in interview.dict().items() if v is not None}
+  interview = interview.model_dump(exclude_none=True)
 
   if len(interview) >= 1:
     object_id = database_id(id)

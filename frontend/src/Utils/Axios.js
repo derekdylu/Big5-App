@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const SERVER_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+const SERVER_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 const instance = axios.create({ baseURL: SERVER_URL });
 const jsonHeader = {
     headers: {
