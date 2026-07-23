@@ -2,7 +2,7 @@
 
 ![5ee You wordmark](frontend/src/Images/wordmark.png)
 
-5ee You is an archived 2022 university research prototype that explored estimating Big Five personality traits from a short, face-containing video. It combines a React mobile-oriented interface, a FastAPI/MongoDB backend, and an experimental PyTorch video model.
+5ee you is a web-based application specially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing the user's face.
 
 ## Project status
 
