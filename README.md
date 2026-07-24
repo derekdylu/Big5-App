@@ -1,6 +1,6 @@
 # 5ee You
 
-![5ee You wordmark](frontend/src/Images/wordmark.png)
+<img width="1488" height="912" alt="1776402402170-proj_SEE" src="https://github.com/user-attachments/assets/29f8610d-c889-417f-8d25-e6c3d5af1d97" />
 
 5ee you is a web-based application specially designed for mobile. Utilizing our machine learning model, It provides instant prediction of Big Five personality based on a 15 seconds clip containing the user's face.
 
