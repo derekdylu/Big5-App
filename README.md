@@ -99,14 +99,6 @@ python -m unittest backend.test_smoke
 
 These checks cover dependency integration and basic API schema behavior; they are not a production-readiness claim.
 
-## Privacy and responsible use
-
-Video of a person's face and inferred personality data are sensitive. Obtain informed consent, minimize collection and retention, and comply with applicable privacy and biometric-data rules. Do not use this prototype to make decisions about employment, health, education, credit, housing, or access to services.
-
-## Security
-
-See [SECURITY.md](SECURITY.md). Do not report credentials or personal data in a public issue.
-
 ## Third-party material
 
 Portions of the 3D ResNet implementation were adapted from an MIT-licensed upstream project. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Model checkpoints, datasets, and other large research assets are not distributed here; their separate terms must be reviewed before use.
